@@ -11,7 +11,6 @@ function RegistrationScreen({navigation}) {
   const [phone, setPhone] = useState(null);
   const [password, setPassword] = useState(null);
   const [password2, setPassword2] = useState(null);
-  const [rate_id, setRate_id] = useState(0);
   const [gender, setGender] = useState(false);
 
   const { registration } = useContext(AuchContext)
@@ -73,15 +72,6 @@ function RegistrationScreen({navigation}) {
 
           <TextInput
           style={styles.input}
-          value={rate_id}
-          placeholder="Тариф"
-          secureTextEntry
-          options={headerShow=false}
-          onChangeText={(text)=>{setRate_id(text)}}
-          />
-
-          <TextInput
-          style={styles.input}
           value={gender}
           placeholder="Выберите пол"
           options={headerShow=false}
@@ -98,7 +88,6 @@ function RegistrationScreen({navigation}) {
               phone,
               password,
               password2,
-              rate_id,
               gender
               );
               navigation.navigate('Verification');
