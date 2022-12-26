@@ -3,7 +3,6 @@ import React, {createContext, useState} from "react";
 import {useSafeAreaFrame} from "react-native-safe-area-context";
 import Navigation from "../components/Navigation";
 import * as urls from "./urls";
-import {CHECK_FIRST_ENTRY, DELETE_USER, SET_COMPLEX_VIEWED, SET_MOOD} from "./urls";
 
 export const AuchContext = createContext();
 

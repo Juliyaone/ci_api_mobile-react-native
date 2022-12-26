@@ -1,84 +1,99 @@
-import React, { useContext, useState } from 'react';
-import { StyleSheet, Button, View, TextInput, Text, TouchableOpacity } from 'react-native';
-import { AuchContext } from '../context/AuchContext';
+import React, {useEffect} from 'react';
+import {Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {useDispatch, useSelector} from "react-redux";
+import {loginUser, setPassword, setPhone} from "../redux/actions"
+
 
 function LoginScreen({navigation}) {
-  const [phone, setphone] = useState(null);
-  const [password, setPassword] = useState(null);
+    // const [phone, setphone] = useState(null);
+    // const [password, setPassword] = useState(null);
 
-  const { login } = useContext(AuchContext);
+    const { phone, password } = useSelector(state => state.loginReducer)
+    const dispatch = useDispatch()
+    useEffect(() => {
 
-  return (
-    <View style={styles.container}>
+    }, [])
+    // const {login} = useContext(AuchContext);
 
-      <View style={styles.wrapper}>
-        {/* <Text>{val}</Text> */}
-        <TextInput
-          style={styles.input}
-          value={phone}
-          tel 
-          autoFocus
-          placeholder='+7(___)-__-__'
-          onChangeText={(text)=>{setphone(text)}}
-          />
-        <TextInput
-          style={styles.input}
-          value={password}
-          placeholder="Введите пароль"
-          secureTextEntry
-          options={headerShow=false}
-          onChangeText={(text)=>{setPassword(text)}}
-          />
-        <Button
-          onPress={() => {
-            login(phone, password);
-            navigation.navigate('Profile');
-          }}
-          style={styles.button}
-          title="Войти"
-          accessibilityLabel="Войти"
-        />
-      </View>
 
-      <View>
-         <Text>У вас еще нет аккаунта?</Text>
-         <TouchableOpacity onPress={()=>{navigation.navigate('Registration')}}>
-          <Text style={styles.link}>Зарегистрироваться</Text>
-         </TouchableOpacity>
-      </View>
+    return (
+        <View style={styles.container}>
 
-    </View>
-  );
+            <View style={styles.wrapper}>
+                {/* <Text>{val}</Text> */}
+                <TextInput
+                    style={styles.input}
+                    value={phone}
+                    tel
+                    autoFocus
+                    placeholder='+7(___)-__-__'
+                    onChangeText={(text) => {
+                        dispatch(setPhone(text))
+                    }}
+                />
+                <TextInput
+                    style={styles.input}
+                    value={password}
+                    placeholder="Введите пароль"
+                    secureTextEntry
+                    options={headerShow = false}
+                    onChangeText={(text) => {
+                        dispatch(setPassword(text))
+                    }}
+                />
+                <Button
+                    // onPress={() => {
+                    //     dispatch(loginUser({phone, password}))
+                    //     // login(phone, password);
+                    //     navigation.navigate('Profile');
+                    // }}
+                    style={styles.button}
+                    title="Войти"
+                    accessibilityLabel="Войти"
+                />
+            </View>
+
+            <View>
+                <Text>У вас еще нет аккаунта?</Text>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('Registration')
+                }}>
+                    <Text style={styles.link}>Зарегистрироваться</Text>
+                </TouchableOpacity>
+            </View>
+
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  wrapper: {
-    width: '50%'
-  },
-  input: {
-    borderWidth: 1,
-    borderRadius: 40,
-    borderColor: '#bbb',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    marginBottom: 10
-  },
-  button: {
-    borderWidth: '1px',
-    borderRadius: 40,
-    color: '#ffffff',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    marginBottom: 10
-  },
-  link: {
-    color: '#d63225'
-  }
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    wrapper: {
+        width: '50%'
+    },
+    input: {
+        borderWidth: 1,
+        borderRadius: 40,
+        borderColor: '#bbb',
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        marginBottom: 10
+    },
+    button: {
+        borderWidth: '1px',
+        borderRadius: 40,
+        color: '#ffffff',
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        marginBottom: 10
+    },
+    link: {
+        color: '#d63225'
+    }
 
 })
 
