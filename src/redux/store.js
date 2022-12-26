@@ -5,7 +5,11 @@ import loginReducer from "./reducers/authorize"
 import smsEntryReducer from "./reducers/sms_entry";
 
 
-const rootReducer = combineReducers(loginReducer)
+const rootReducer = combineReducers(
+    {
+        loginReducer
+    }
+)
 
 
 export const Store = legacy_createStore(rootReducer, applyMiddleware(thunk))

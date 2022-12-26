@@ -8,11 +8,11 @@ function LoginScreen({navigation}) {
     // const [phone, setphone] = useState(null);
     // const [password, setPassword] = useState(null);
 
-    const { phone, password } = useSelector(state => state.loginReducer)
+    const { phone, password } = useSelector(store => store.loginReducer)
     const dispatch = useDispatch()
-    useEffect(() => {
-
-    }, [])
+    // useEffect(() => {
+    //
+    // }, [])
     // const {login} = useContext(AuchContext);
 
 
@@ -42,11 +42,11 @@ function LoginScreen({navigation}) {
                     }}
                 />
                 <Button
-                    // onPress={() => {
-                    //     dispatch(loginUser({phone, password}))
-                    //     // login(phone, password);
-                    //     navigation.navigate('Profile');
-                    // }}
+                    onPress={() => {
+                        dispatch(loginUser({phone, password}))
+                        // login(phone, password);
+                        navigation.navigate('Profile');
+                    }}
                     style={styles.button}
                     title="Войти"
                     accessibilityLabel="Войти"
