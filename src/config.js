@@ -1,0 +1,1 @@
+export const BASE_URL = 'http://energy.qidoctor.ru:8000/api/v1'
