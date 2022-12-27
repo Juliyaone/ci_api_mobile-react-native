@@ -47,12 +47,13 @@ const verification = async (number1, number2, number3, number4) => {
 
 export const login = async (payload) => {
     try {
-        const response = await axios.post(urls.LOGIN, payload)
-        console.log(response);
-        console.log(response.data);
-        console.log(response.data.detail);
+        const response = await axios.post(urls.LOGIN, payload).then(() => {
+            console.log(response);
+            console.log(response.data);
+            console.log(response.data.detail);
 
-        return response.data
+            return response.data
+        })
     } catch (error) {
         console.log(response);
         console.log(response.data);

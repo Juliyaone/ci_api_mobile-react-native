@@ -7,7 +7,9 @@ import smsEntryReducer from "./reducers/sms_entry";
 
 const rootReducer = combineReducers(
     {
-        loginReducer
+        loginReducer,
+        userReducer,
+        smsEntryReducer
     }
 )
 

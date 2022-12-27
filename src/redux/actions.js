@@ -19,11 +19,14 @@ export const sendSmsCode = payload => dispatch => {
     })
 }
 
-export const loginUser = payload => dispatch => {
-    dispatch({
-        type: LOGIN_USER,
-        payload: payload
-    })
+export const loginUser = payload => (dispatch) => {
+    // TODO понять thunk`и
+    login(payload).then(
+        () => {
+            dispatch(setPhone(''))
+            dispatch(setPassword(''))
+        }
+    )
 }
 
 export const setPhone = payload => dispatch => {

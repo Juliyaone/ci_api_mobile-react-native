@@ -3,11 +3,11 @@ import {login} from "../../context/api_requests";
 
 const initialState = {
     id: null,
-    username: '',
-    last_name: '',
-    third_name: '',
-    email: '',
-    phone: '',
+    username: 'username',
+    last_name: 'last_name',
+    third_name: 'third_name',
+    email: 'email',
+    phone: 'phone',
     password: '',
     password2: '',
     gender: null
