@@ -1,10 +1,13 @@
-import {SET_PASSWORD, SET_PHONE} from "../actions";
+import {SET_PASSWORD, SET_PHONE} from "../actions/userActions";
 
 const initialState = {
     phone: '',
     password: ''
 }
 
+/**
+ * Меняет данные при вводе телефона и пароля
+ */
 function loginReducer(state = initialState, action) {
     switch (action.type) {
         case SET_PHONE:

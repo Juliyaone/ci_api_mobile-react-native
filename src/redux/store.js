@@ -1,15 +1,16 @@
 import {applyMiddleware, combineReducers, legacy_createStore} from 'redux'
 import thunk from 'redux-thunk'
-import userReducer from "./reducers/user_profile";
-import loginReducer from "./reducers/authorize"
-import smsEntryReducer from "./reducers/sms_entry";
-
+import userReducer from "./reducers/userReducer";
+import loginReducer from "./reducers/loginReducer"
+import smsEntryReducer from "./reducers/smsEntryReducer";
+import messagesReducer from "./reducers/messagesHandler";
 
 const rootReducer = combineReducers(
     {
         loginReducer,
         userReducer,
-        smsEntryReducer
+        smsEntryReducer,
+        messagesReducer
     }
 )
 

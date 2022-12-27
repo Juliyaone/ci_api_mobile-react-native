@@ -1,52 +1,54 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
-import {loginUser, setPassword, setPhone} from "../redux/actions"
+import {inputLoginPassword, inputLoginPhone} from "../redux/actions/userActions";
+import {getLoginUserData} from "../redux/thunks";
 
 
 function LoginScreen({navigation}) {
-    // const [phone, setphone] = useState(null);
-    // const [password, setPassword] = useState(null);
-
-    const { phone, password } = useSelector(store => store.loginReducer)
+    const messages = useSelector(store => store.messagesReducer)
+    const {phone, password} = useSelector(store => store.loginReducer)
     const dispatch = useDispatch()
-    // useEffect(() => {
-    //
-    // }, [])
-    // const {login} = useContext(AuchContext);
 
+    // Меняет поле телефона
+    const onChangePhone = (event) => {
+        dispatch(inputLoginPhone(event.target.value))
+    }
+
+    // Меняет поле пароля
+    const onChangePassword = (event) => {
+        dispatch(inputLoginPassword(event.target.value))
+    }
+
+    // Отправляет введенные данные для авторизации
+    const sendLoginData = () => {
+        dispatch(getLoginUserData({phone, password}));
+        navigation.navigate('Profile');
+    }
 
     return (
         <View style={styles.container}>
 
             <View style={styles.wrapper}>
-                {/* <Text>{val}</Text> */}
+                 <Text>{messages.message_type}{messages.message}</Text>
                 <TextInput
                     style={styles.input}
                     value={phone}
                     tel
                     autoFocus
-                    placeholder='+7(___)-__-__'
-                    onChangeText={(text) => {
-                        dispatch(setPhone(text))
-                    }}
+                    placeholder='+7(___)-__-__' // todo не уверен что он должен быть таким :) Будет путать наверное такой формат, при том, что мы ждем 1234567890
+                    onChangeText={onChangePhone}
                 />
                 <TextInput
                     style={styles.input}
                     value={password}
                     placeholder="Введите пароль"
                     secureTextEntry
-                    options={headerShow = false}
-                    onChangeText={(text) => {
-                        dispatch(setPassword(text))
-                    }}
+                    options={headerShow = false} // todo У меня IDE ругается на атрибут headerShow - говорит что unresolved
+                    onChangeText={onChangePassword}
                 />
                 <Button
-                    onPress={() => {
-                        dispatch(loginUser({phone, password}))
-                        // login(phone, password);
-                        navigation.navigate('Profile');
-                    }}
+                    onPress={sendLoginData}
                     style={styles.button}
                     title="Войти"
                     accessibilityLabel="Войти"
