@@ -30,7 +30,7 @@ function LoginScreen({navigation}) {
         <View style={styles.container}>
 
             <View style={styles.wrapper}>
-                 <Text>{messages.message_type}{messages.message}</Text>
+                 <Text>{messages.messageType}{messages.message}</Text>
                 <TextInput
                     style={styles.input}
                     value={phone}
