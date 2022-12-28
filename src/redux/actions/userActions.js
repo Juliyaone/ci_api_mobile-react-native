@@ -22,6 +22,7 @@ export const SET_SMS_CODE = 'SET_SMS_CODE'
 
 /**
  * Обновляет данные юзера после авторизации
+ * @param payload - { userdata from server }
  * */
 export const updateLoggedUser = payload => (dispatch) => {
     dispatch({
