@@ -2,13 +2,14 @@ import React from 'react';
 import {Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {inputLoginPassword, inputLoginPhone} from "../redux/actions/userActions";
-import {getLoginUserData} from "../redux/thunks";
+import {getLoginUserData} from "../redux/thunks/authThunks";
 
 
 function LoginScreen({navigation}) {
     const messages = useSelector(store => store.messagesReducer)
     const {phone, password} = useSelector(store => store.loginReducer)
     const dispatch = useDispatch()
+    const user = useSelector(store => store.userReducer)
 
     // Меняет поле телефона
     const onChangePhone = (event) => {
@@ -30,7 +31,9 @@ function LoginScreen({navigation}) {
         <View style={styles.container}>
 
             <View style={styles.wrapper}>
-                 <Text>{messages.messageType}{messages.message}</Text>
+                <Text>User: email: [{user.email}] phone: [{user.phone}]</Text>
+
+                <Text>{messages.messageType}{messages.message}</Text>
                 <TextInput
                     style={styles.input}
                     value={phone}
