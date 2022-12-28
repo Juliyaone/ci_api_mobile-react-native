@@ -1,5 +1,6 @@
 const SUCCESS_TYPE = 'success'
 export const LOGIN_OK = 'Вы удачно зашли в аккаунт'
+export const SMS_APPROVE_OK = 'Смс-код подтвержден'
 export const SUBSCRIBE_OK = 'Вы удачно оформили подписку'
 
 
@@ -7,6 +8,7 @@ const ERROR_TYPE = 'error'
 export const UNDEFINED_ERROR = 'Ошибка не распознана'
 export const INVALID_PHONE_NUMBER = 'Неверный номер телефона'
 export const INVALID_USER_OR_PASSWORD = 'Неверный логин или пароль'
+export const INVALID_SMS_CODE = 'Неверный смс-код'
 
 
 const initialState = {
@@ -23,7 +25,11 @@ function messagesReducer(state = initialState, action) {
             return {...state, ...action.payload}
         case INVALID_USER_OR_PASSWORD:
             return {...state, ...action.payload}
+        case INVALID_SMS_CODE:
+            return {...state, ...action.payload}
         case LOGIN_OK:
+            return {...state, ...action.payload}
+        case SMS_APPROVE_OK:
             return {...state, ...action.payload}
         case UNDEFINED_ERROR:
             return {...state, ...action.payload}
@@ -43,6 +49,9 @@ export const setErrorMessage = payload => dispatch => {
             break
         case 'Invalid user or password':
             text = INVALID_USER_OR_PASSWORD
+            break
+        case 'Invalid sms code':
+            text = INVALID_SMS_CODE
             break
         default:
             text = UNDEFINED_ERROR

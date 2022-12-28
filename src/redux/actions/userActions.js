@@ -3,6 +3,7 @@ export const SEND_SMS_CODE = 'SEND_SMS_CODE'
 export const LOGIN_USER = 'LOGIN_USER'
 export const SET_PASSWORD = 'SET_PASSWORD'
 export const SET_PHONE = 'SET_PHONE'
+export const SET_SMS_CODE = 'SET_SMS_CODE'
 
 
 // export const createUser = payload => dispatch => {
@@ -45,6 +46,17 @@ export const inputLoginPhone = payload => dispatch => {
 export const inputLoginPassword = payload => dispatch => {
     dispatch({
         type: SET_PASSWORD,
+        payload: payload
+    })
+}
+
+
+/**
+ * Меняет поле code для подтверждения смс-кода (SmsEntry.jsx)
+ * */
+export const inputLoginSmsCode = payload => dispatch => {
+    dispatch({
+        type: SET_SMS_CODE,
         payload: payload
     })
 }
