@@ -12,13 +12,13 @@ function LoginScreen({navigation}) {
     const user = useSelector(store => store.userReducer)
 
     // Меняет поле телефона
-    const onChangePhone = (event) => {
-        dispatch(inputLoginPhone(event.target.value))
+    const onChangePhone = (text) => {
+        dispatch(inputLoginPhone(text))
     }
 
     // Меняет поле пароля
-    const onChangePassword = (event) => {
-        dispatch(inputLoginPassword(event.target.value))
+    const onChangePassword = (text) => {
+        dispatch(inputLoginPassword(text))
     }
 
     // Отправляет введенные данные для авторизации

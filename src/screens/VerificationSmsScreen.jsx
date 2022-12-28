@@ -18,13 +18,13 @@ function VerificationScreen({navigation}) {
     const dispatch = useDispatch()
 
     // Меняет поле телефона
-    const onChangePhone = (event) => {
-        dispatch(inputLoginPhone(event.target.value))
+    const onChangePhone = (text) => {
+        dispatch(inputLoginPhone(text))
     }
 
     // Меняет поле code
-    const onChangeCode = (event) => {
-        dispatch(inputLoginSmsCode(event.target.value))
+    const onChangeCode = (text) => {
+        dispatch(inputLoginSmsCode(text))
     }
 
     // Отправляет введенные данные для подтверждения кода
