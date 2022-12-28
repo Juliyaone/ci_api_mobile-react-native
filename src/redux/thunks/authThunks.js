@@ -1,6 +1,12 @@
-import {login, verification} from "../api/registerAndAuthorization";
-import {LOGIN_OK, setErrorMessage, setSuccessMessage, SMS_APPROVE_OK} from "../reducers/messagesHandler";
+import {
+    LOGIN_OK,
+    setErrorMessage,
+    setSuccessMessage,
+    SMS_APPROVE_OK
+} from "../reducers/messagesHandler";
 import {updateLoggedUser} from "../actions/userActions";
+import axios from "axios";
+import * as urls from "../api/urls";
 
 /**
  * Принимает phone и password, отправляет запрос для получения токена,
@@ -11,7 +17,7 @@ import {updateLoggedUser} from "../actions/userActions";
 export const getLoginUserData = payload => {
     return dispatch => {
         console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        login(payload)
+        axios.post(urls.LOGIN, payload)
             .then((response) => {
                 console.log('Крутилка загрузки ВыКЛЮЧЕНА')
                 dispatch(updateLoggedUser(response.data.user))
@@ -34,7 +40,7 @@ export const getLoginUserData = payload => {
 export const sendSmsCode = payload => {
     return dispatch => {
         console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        verification(payload)
+        axios.post(urls.VERIFICATION_SMS_CODE, payload)
             .then((response) => {
                 console.log('Крутилка загрузки ВыКЛЮЧЕНА')
                 dispatch(updateLoggedUser(response.data.user))
