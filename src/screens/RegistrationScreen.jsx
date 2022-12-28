@@ -1,6 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Button, View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { AuchContext } from '../context/AuchContext';
+import {useSelector, useDispatch} from "react-redux";
+import {createUser} from "../redux/actions"
+
 
 function RegistrationScreen({navigation}) {
 

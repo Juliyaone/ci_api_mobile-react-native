@@ -1,23 +1,13 @@
-
-
 import Navigation from './src/components/Navigation';
-import { AuchProvider } from './src/context/AuchContext';
-
+import {Provider} from "react-redux";
+import {Store} from "./src/redux/store";
 
 function App() {
-  return (
-    <AuchProvider>
-      <Navigation/>
-    </AuchProvider>
-  )
+    return (
+        <Provider store={Store}>
+            <Navigation/>
+        </Provider>
+    )
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
 export default App;

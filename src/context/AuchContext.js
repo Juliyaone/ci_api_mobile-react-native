@@ -3,7 +3,6 @@ import React, {createContext, useState} from "react";
 import {useSafeAreaFrame} from "react-native-safe-area-context";
 import Navigation from "../components/Navigation";
 import * as urls from "./urls";
-import {CHECK_FIRST_ENTRY, DELETE_USER, SET_COMPLEX_VIEWED, SET_MOOD} from "./urls";
 
 export const AuchContext = createContext();
 
@@ -142,18 +141,18 @@ export const AuchProvider = ({children}) => {
             const response = await axios.put(urls.SET_COMPLEX_VIEWED, payload)
             console.log(response.data);
         } catch (error) {
-            console.log(`getComplexesState ${error}`);
+            console.log(`setComplexViewed ${error}`);
         }
     }
 
     // videos
 
-    const getVideosForComplex = async (complex_id) => {
+    const getVideosByComplexID = async (complex_id) => {
         try {
             const response = await axios.get(urls.ALL_VIDEOS_FOR_COMPLEX + '/' + complex_id)
             console.log(response.data);
         } catch (error) {
-            console.log(`getVideosForComplex ${error}`);
+            console.log(`getVideosByComplexID ${error}`);
         }
     }
 
