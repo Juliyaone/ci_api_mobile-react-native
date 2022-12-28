@@ -9,6 +9,9 @@ export const UNDEFINED_ERROR = 'Ошибка не распознана'
 export const INVALID_PHONE_NUMBER = 'Неверный номер телефона'
 export const INVALID_USER_OR_PASSWORD = 'Неверный логин или пароль'
 export const INVALID_SMS_CODE = 'Неверный смс-код'
+export const EMAIL_EXISTS = 'Пользователь с таким email уже существует'
+export const PHONE_EXISTS = 'Пользователь с таким телефоном уже существует'
+export const NEED_VERIFICATION = 'Необходимо верифицировать телефон'
 
 
 const initialState = {
@@ -31,6 +34,10 @@ function messagesReducer(state = initialState, action) {
             return {...state, ...action.payload}
         case SMS_APPROVE_OK:
             return {...state, ...action.payload}
+        case NEED_VERIFICATION:
+            return {...state, ...action.payload}
+        case PHONE_EXISTS:
+            return {...state, ...action.payload}
         case UNDEFINED_ERROR:
             return {...state, ...action.payload}
         default:
@@ -52,6 +59,15 @@ export const setErrorMessage = payload => dispatch => {
             break
         case 'Invalid sms code':
             text = INVALID_SMS_CODE
+            break
+        case 'Sms service error':
+            text = INVALID_PHONE_NUMBER
+            break
+        case 'Email exists':
+            text = EMAIL_EXISTS
+            break
+        case 'Phone exists':
+            text = PHONE_EXISTS
             break
         default:
             text = UNDEFINED_ERROR
