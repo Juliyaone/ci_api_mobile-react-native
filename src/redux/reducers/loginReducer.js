@@ -1,8 +1,8 @@
 import {SET_PASSWORD, SET_PHONE} from "../actions/userActions";
 
 const initialState = {
-    phone: '',
-    password: ''
+    phone: '1234567890',
+    password: 'asd',
 }
 
 /**

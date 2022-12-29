@@ -21,6 +21,7 @@ const initialState = {
     is_email_verified: false,
     current_complex: 1,
     expired_at: '',
+    isLogged: false
 }
 
 /**
