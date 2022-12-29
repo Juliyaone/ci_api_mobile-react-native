@@ -52,18 +52,18 @@ export const AuchProvider = ({children}) => {
         }
     }
 
-    const login = async (phone, password) => {
-        const payload = {
-            "phone": phone,
-            "password": password
-        }
-        try {
-            const response = await axios.post(urls.LOGIN, payload)
-            console.log(response.data);
-        } catch (error) {
-            console.log(`Ввели неверный логин или пароль ${error}`);
-        }
-    }
+    // const login = async (phone, password) => {
+    //     const payload = {
+    //         "phone": phone,
+    //         "password": password
+    //     }
+    //     try {
+    //         const response = await axios.post(urls.LOGIN, payload)
+    //         console.log(response.data);
+    //     } catch (error) {
+    //         console.log(`Ввели неверный логин или пароль ${error}`);
+    //     }
+    // }
 
 
     // users
@@ -157,6 +157,6 @@ export const AuchProvider = ({children}) => {
     }
 
     return (
-        <AuchContext.Provider value={{registration, verification, login}}>{children}</AuchContext.Provider>
+        <AuchContext.Provider value={{registration, verification}}>{children}</AuchContext.Provider>
     )
 }

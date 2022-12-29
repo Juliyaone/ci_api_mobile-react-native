@@ -12,19 +12,19 @@ function LoginScreen({navigation}) {
     const user = useSelector(store => store.userReducer)
 
     // Меняет поле телефона
-    const onChangePhone = (event) => {
-        dispatch(inputLoginPhone(event.target.value))
+    const onChangePhone = (text) => {
+        dispatch(inputLoginPhone(text))
     }
 
     // Меняет поле пароля
-    const onChangePassword = (event) => {
-        dispatch(inputLoginPassword(event.target.value))
+    const onChangePassword = (text) => {
+        dispatch(inputLoginPassword(text))
     }
 
     // Отправляет введенные данные для авторизации
     const sendLoginData = () => {
         dispatch(getLoginUserData({phone, password}));
-        navigation.navigate('Profile');
+        // navigation.navigate('Profile');
     }
 
     return (
@@ -61,6 +61,7 @@ function LoginScreen({navigation}) {
             <View>
                 <Text>У вас еще нет аккаунта?</Text>
                 <TouchableOpacity onPress={() => {
+
                     navigation.navigate('Registration')
                 }}>
                     <Text style={styles.link}>Зарегистрироваться</Text>
