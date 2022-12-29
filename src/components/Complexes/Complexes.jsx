@@ -1,13 +1,17 @@
 import React, {useEffect} from 'react';
 import * as styles from "./stylesComplexes";
 import {useDispatch, useSelector} from "react-redux";
-import {getComplexes} from "../redux/thunks/authThunks";
+import {getComplexes} from "../../redux/thunks/complexThunks";
 import Complex from "./Complex/Complex";
 
 // TODO добавить в навигацию
 function Complexes(props) {
     const messages = useSelector(store => store.messagesReducer)
-    const {viewed_complexes, not_viewed_complexes, today_complex} = useSelector(store => store.complexesReducer)
+    const {
+        viewed_complexes,
+        not_viewed_complexes,
+        today_complex
+    } = useSelector(store => store.complexesReducer)
     const dispatch = useDispatch()
 
     useEffect(() => {

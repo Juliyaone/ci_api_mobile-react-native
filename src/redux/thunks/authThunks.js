@@ -1,8 +1,9 @@
 import {messagesValues, setErrorMessage, setSuccessMessage} from "../reducers/messagesHandler";
 import {updateUserFromServerData} from "../actions/userActions";
 import axios from "axios";
-import * as urls from "./urls";
-import {updateComplexes} from "../reducers/complexesReducer";
+import * as urls from "../urls";
+import {saveToken} from "../../auth/tokenStorage";
+import {setUserIsLogged} from "../actions/registerActions";
 
 /**
  * Регистрирует нового пользователя
@@ -17,13 +18,15 @@ export const sendRegisterUserData = payload => {
         console.log('Крутилка загрузки ВКЛЮЧЕНА')
         axios.post(urls.REGISTRATION, payload)
             .then((response) => {
+                dispatch(setUserIsLogged(false))
                 console.log('Переходим на страницу /sms-entry (VerificationScreen)')
                 dispatch(setSuccessMessage(messagesValues.NEED_VERIFICATION))
-                // dispatch(updateUserFromServerData(response.data.user))
             }, (error) => {
                 console.log('Request error:')
                 console.log(error.response.data)
                 console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
+                console.log('Переходим на страницу / (VerificationScreen)')
+                dispatch(setUserIsLogged(false))
                 dispatch(setErrorMessage(error.response.data.detail))
             })
     }
@@ -42,13 +45,16 @@ export const sendSmsCode = payload => {
             .then((response) => {
                 console.log('Крутилка загрузки ВыКЛЮЧЕНА')
                 dispatch(updateUserFromServerData(response.data.user))
-                console.log('Сохраняем токен в токенохранилище')
+                saveToken(response.data.token)
+                dispatch(setUserIsLogged(true))
                 dispatch(setSuccessMessage(messagesValues.SMS_APPROVE_OK))
-                // dispatch(saveToken(response.data.token)) - TODO реализовать
+                console.log('Переходим на страницу /profile (VerificationScreen)')
             }, (error) => {
                 console.log('Request error:')
                 console.log(error.response.data)
                 console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
+                console.log('Переходим на страницу /sms-entry (VerificationScreen)')
+                dispatch(setUserIsLogged(false))
                 dispatch(setErrorMessage(error.response.data.detail))
             })
     }
@@ -66,47 +72,24 @@ export const getLoginUserData = payload => {
         axios.post(urls.LOGIN, payload)
             .then((response) => {
                 const user = response.data.user
-                console.log(user)
                 console.log('Крутилка загрузки ВыКЛЮЧЕНА')
-                dispatch(updateUserFromServerData(response.data.user))
-                console.log('Сохраняем токен в токенохранилище')
-                // dispatch(saveToken(response.data.token)) - TODO реализовать
+                dispatch(updateUserFromServerData(user))
+                saveToken(response.data.token)
                 if (user.is_verified) {
                     console.log('Переходим на страницу /profile')
+                    dispatch(setUserIsLogged(true))
                     dispatch(setSuccessMessage(messagesValues.LOGIN_OK))
                 } else {
                     console.log('Переходим на страницу /sms-entry (VerificationScreen)')
+                    dispatch(setUserIsLogged(true))
                     dispatch(setSuccessMessage(messagesValues.NEED_VERIFICATION))
                 }
             }, (error) => {
                 console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
                 console.log(error.response.data)
+                dispatch(setUserIsLogged(false))
                 dispatch(setErrorMessage(error.response.data.detail))
             })
     }
 }
 
-export const getComplexes = () => {
-    return dispatch => {
-        console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        // TODO заглушка
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzIyNzkwODksImlhdCI6MTY3MjI1MDI4OSwic3ViIjoxfQ.r7v1HMLq6MfLqA9oDL68LrmnRiF306NJbeTNCiru1oU'
-        const headers = {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-        axios.get(
-            urls.COMPLEXES_STATE,
-            {headers}
-        )
-            .then((response) => {
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА')
-                // TODO плохой формат возвращаемых данных
-                dispatch(updateComplexes(response.data))
-            }, (error) => {
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
-                console.log(error.response.data)
-                dispatch(setErrorMessage(error.response.data.detail))
-            })
-    }
-}

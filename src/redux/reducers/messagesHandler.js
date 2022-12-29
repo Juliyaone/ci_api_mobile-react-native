@@ -26,11 +26,12 @@ const initialState = {
  * Меняет состояние сообщения (message)
  */
 function messagesReducer(state = initialState, action) {
-    for (const item of Object.entries(messagesValues)) {
-        if (action.type === item[1])
-            return {...state, ...action.payload}
+    const {type, payload} = action
+    if (Object.values(messagesValues).includes(type)) {
+        return {...state, ...payload}
+    } else {
+        return initialState
     }
-    return initialState
 }
 
 /**
@@ -63,7 +64,6 @@ export const setErrorMessage = payload => dispatch => {
         default:
             text = messagesValues.UNDEFINED_ERROR
     }
-    console.log('setErrorMessage: ' + text)
     dispatch({
         type: text,
         payload: {message: text, messageType: ERROR_TYPE}

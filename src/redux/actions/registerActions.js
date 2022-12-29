@@ -6,6 +6,17 @@ export const SET_PHONE = 'SET_PHONE'
 export const SET_PASSWORD = 'SET_PASSWORD'
 export const SET_PASSWORD2 = 'SET_PASSWORD2'
 export const SET_GENDER = 'SET_GENDER'
+export const SET_IS_LOGGED = 'SET_IS_LOGGED'
+
+/**
+ * Меняет поле username для регистрации (Registration.jsx)
+ * */
+export const setUserIsLogged = payload => dispatch => {
+    dispatch({
+        type: SET_IS_LOGGED,
+        payload: payload
+    })
+}
 
 /**
  * Меняет поле username для регистрации (Registration.jsx)
