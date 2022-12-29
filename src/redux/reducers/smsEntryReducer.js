@@ -1,4 +1,4 @@
-import {SEND_SMS_CODE, SET_PHONE, SET_SMS_CODE} from "../actions/userActions";
+import {SET_PHONE, SET_SMS_CODE} from "../actions/userActions";
 
 const initialState = {
     phone: '',
@@ -14,8 +14,6 @@ function smsEntryReducer(state = initialState, action) {
             return {...state, phone: action.payload}
         case SET_SMS_CODE:
             return {...state, code: action.payload}
-        case SEND_SMS_CODE:
-            return {...state, ...action.payload}
         default:
             return state
     }
