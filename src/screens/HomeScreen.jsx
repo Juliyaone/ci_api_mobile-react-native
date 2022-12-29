@@ -1,39 +1,43 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-import Logo from "../assets/img/icons/logo.svg";
+import {
+	StyleSheet,
+	Text,
+	View,
+	TouchableOpacity,
+	SafeAreaView,
+} from "react-native";
+
+import Logo from "../img/icons/logo.svg";
 
 function HomeScreen({ navigation }) {
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<Text>
 				<Logo style={styles.logo} width={120} height={120} />;
 			</Text>
+			<Text style={styles.header}>Добро пожаловать!</Text>
 			<TouchableOpacity
-				style={styles.btn}
+				style={styles.btnRose}
 				onPress={() => {
 					navigation.navigate("Registration");
 				}}
 			>
-				<Text style={styles.link}>Зарегистрироваться</Text>
+				<Text style={styles.linkRed}>Зарегистрироваться</Text>
 			</TouchableOpacity>
 			<TouchableOpacity
-				style={styles.btn}
+				style={styles.btnRed}
 				onPress={() => {
 					navigation.navigate("Login");
 				}}
 			>
-				<Text style={styles.link}>Войти</Text>
+				<Text style={styles.linkWhite}>Войти</Text>
 			</TouchableOpacity>
-		</View>
+		</SafeAreaView>
 	);
 }
 
 const styles = StyleSheet.create({
-	link: {
-		textAlign: "center",
-		color: "#ffffff",
-	},
 	container: {
 		flex: 1,
 		justifyContent: "center",
@@ -43,11 +47,44 @@ const styles = StyleSheet.create({
 		width: "100px",
 		height: "100px",
 	},
-	btn: {
-		width: "100%",
-		height: 70,
-		backgroundColor: "#d73428",
+	header: {
+		fontFamily: "Evolventa",
+		fontSize: 20,
+		fontWeight: "700",
 		marginBottom: 20,
+		color: "#D32A1E",
+	},
+	btnRed: {
+		width: "90%",
+		height: 55,
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: "#D32A1E",
+		borderRadius: 40,
+		marginBottom: 10,
+	},
+	btnRose: {
+		width: "90%",
+		height: 55,
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: "#f7cdcb",
+		borderRadius: 40,
+		marginBottom: 10,
+	},
+	linkWhite: {
+		textAlign: "center",
+		color: "#ffffff",
+		fontFamily: "Evolventa",
+		fontWeight: "600",
+		fontSize: 16,
+	},
+	linkRed: {
+		textAlign: "center",
+		fontFamily: "Evolventa",
+		color: "#EB5E54",
+		fontWeight: "600",
+		fontSize: 16,
 	},
 });
 
