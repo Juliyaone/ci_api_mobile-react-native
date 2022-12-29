@@ -1,17 +1,20 @@
 const SUCCESS_TYPE = 'success'
-export const LOGIN_OK = 'Вы удачно зашли в аккаунт'
-export const SMS_APPROVE_OK = 'Смс-код подтвержден'
-export const SUBSCRIBE_OK = 'Вы удачно оформили подписку'
-
-
 const ERROR_TYPE = 'error'
-export const UNDEFINED_ERROR = 'Ошибка не распознана'
-export const INVALID_PHONE_NUMBER = 'Неверный номер телефона'
-export const INVALID_USER_OR_PASSWORD = 'Неверный логин или пароль'
-export const INVALID_SMS_CODE = 'Неверный смс-код'
-export const EMAIL_EXISTS = 'Пользователь с таким email уже существует'
-export const PHONE_EXISTS = 'Пользователь с таким телефоном уже существует'
-export const NEED_VERIFICATION = 'Необходимо верифицировать телефон'
+
+
+export const messagesValues = {
+    UNDEFINED_ERROR: 'Ошибка не распознана',
+    INVALID_PHONE_NUMBER: 'Неверный номер телефона',
+    INVALID_USER_OR_PASSWORD: 'Неверный логин или пароль',
+    INVALID_SMS_CODE: 'Неверный смс-код',
+    EMAIL_EXISTS: 'Пользователь с таким email уже существует',
+    PHONE_EXISTS: 'Пользователь с таким телефоном уже существует',
+    NEED_VERIFICATION: 'Необходимо верифицировать телефон',
+    NOT_AUTHENTICATED: 'Необходима авторизация',
+    LOGIN_OK: 'Вы удачно зашли в аккаунт',
+    SMS_APPROVE_OK: 'Смс-код подтвержден',
+    SUBSCRIBE_OK: 'Вы удачно оформили подписку',
+}
 
 
 const initialState = {
@@ -23,26 +26,11 @@ const initialState = {
  * Меняет состояние сообщения (message)
  */
 function messagesReducer(state = initialState, action) {
-    switch (action.type) {
-        case INVALID_PHONE_NUMBER:
+    for (const item of Object.entries(messagesValues)) {
+        if (action.type === item[1])
             return {...state, ...action.payload}
-        case INVALID_USER_OR_PASSWORD:
-            return {...state, ...action.payload}
-        case INVALID_SMS_CODE:
-            return {...state, ...action.payload}
-        case LOGIN_OK:
-            return {...state, ...action.payload}
-        case SMS_APPROVE_OK:
-            return {...state, ...action.payload}
-        case NEED_VERIFICATION:
-            return {...state, ...action.payload}
-        case PHONE_EXISTS:
-            return {...state, ...action.payload}
-        case UNDEFINED_ERROR:
-            return {...state, ...action.payload}
-        default:
-            return state
     }
+    return initialState
 }
 
 /**
@@ -52,25 +40,28 @@ export const setErrorMessage = payload => dispatch => {
     let text
     switch (payload) {
         case 'Invalid phone number':
-            text = INVALID_PHONE_NUMBER
+            text = messagesValues.INVALID_PHONE_NUMBER
             break
         case 'Invalid user or password':
-            text = INVALID_USER_OR_PASSWORD
+            text = messagesValues.INVALID_USER_OR_PASSWORD
             break
         case 'Invalid sms code':
-            text = INVALID_SMS_CODE
+            text = messagesValues.INVALID_SMS_CODE
             break
         case 'Sms service error':
-            text = INVALID_PHONE_NUMBER
+            text = messagesValues.INVALID_PHONE_NUMBER
             break
         case 'Email exists':
-            text = EMAIL_EXISTS
+            text = messagesValues.EMAIL_EXISTS
             break
         case 'Phone exists':
-            text = PHONE_EXISTS
+            text = messagesValues.PHONE_EXISTS
+            break
+        case 'Not authenticated':
+            text = messagesValues.NOT_AUTHENTICATED
             break
         default:
-            text = UNDEFINED_ERROR
+            text = messagesValues.UNDEFINED_ERROR
     }
     console.log('setErrorMessage: ' + text)
     dispatch({

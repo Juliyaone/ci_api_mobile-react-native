@@ -1,12 +1,8 @@
-import {
-    LOGIN_OK, NEED_VERIFICATION,
-    setErrorMessage,
-    setSuccessMessage,
-    SMS_APPROVE_OK
-} from "../reducers/messagesHandler";
+import {messagesValues, setErrorMessage, setSuccessMessage} from "../reducers/messagesHandler";
 import {updateUserFromServerData} from "../actions/userActions";
 import axios from "axios";
 import * as urls from "./urls";
+import {updateComplexes} from "../reducers/complexesReducer";
 
 /**
  * Регистрирует нового пользователя
@@ -22,7 +18,7 @@ export const sendRegisterUserData = payload => {
         axios.post(urls.REGISTRATION, payload)
             .then((response) => {
                 console.log('Переходим на страницу /sms-entry (VerificationScreen)')
-                dispatch(setSuccessMessage(NEED_VERIFICATION))
+                dispatch(setSuccessMessage(messagesValues.NEED_VERIFICATION))
                 // dispatch(updateUserFromServerData(response.data.user))
             }, (error) => {
                 console.log('Request error:')
@@ -47,7 +43,7 @@ export const sendSmsCode = payload => {
                 console.log('Крутилка загрузки ВыКЛЮЧЕНА')
                 dispatch(updateUserFromServerData(response.data.user))
                 console.log('Сохраняем токен в токенохранилище')
-                dispatch(setSuccessMessage(SMS_APPROVE_OK))
+                dispatch(setSuccessMessage(messagesValues.SMS_APPROVE_OK))
                 // dispatch(saveToken(response.data.token)) - TODO реализовать
             }, (error) => {
                 console.log('Request error:')
@@ -77,11 +73,36 @@ export const getLoginUserData = payload => {
                 // dispatch(saveToken(response.data.token)) - TODO реализовать
                 if (user.is_verified) {
                     console.log('Переходим на страницу /profile')
-                    dispatch(setSuccessMessage(LOGIN_OK))
+                    dispatch(setSuccessMessage(messagesValues.LOGIN_OK))
                 } else {
                     console.log('Переходим на страницу /sms-entry (VerificationScreen)')
-                    dispatch(setSuccessMessage(NEED_VERIFICATION))
+                    dispatch(setSuccessMessage(messagesValues.NEED_VERIFICATION))
                 }
+            }, (error) => {
+                console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
+                console.log(error.response.data)
+                dispatch(setErrorMessage(error.response.data.detail))
+            })
+    }
+}
+
+export const getComplexes = () => {
+    return dispatch => {
+        console.log('Крутилка загрузки ВКЛЮЧЕНА')
+        // TODO заглушка
+        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzIyNzkwODksImlhdCI6MTY3MjI1MDI4OSwic3ViIjoxfQ.r7v1HMLq6MfLqA9oDL68LrmnRiF306NJbeTNCiru1oU'
+        const headers = {
+            'accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        axios.get(
+            urls.COMPLEXES_STATE,
+            {headers}
+        )
+            .then((response) => {
+                console.log('Крутилка загрузки ВыКЛЮЧЕНА')
+                // TODO плохой формат возвращаемых данных
+                dispatch(updateComplexes(response.data))
             }, (error) => {
                 console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
                 console.log(error.response.data)
