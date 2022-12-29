@@ -1,0 +1,22 @@
+.content {
+    padding: 20px;
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+}
+
+.header {
+    text-align: center;
+    font-size: 30px;
+    font-style: italic;
+}
+
+.complexes {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+}
+
+.complex {
+    text-align: center;
+    color: red;
+    padding: 10px;
+}
