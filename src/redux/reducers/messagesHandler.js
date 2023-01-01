@@ -24,18 +24,20 @@ const initialState = {
 
 /**
  * Меняет состояние сообщения (message)
+ * @param action.payload - string
  */
 function messagesReducer(state = initialState, action) {
     const {type, payload} = action
     if (Object.values(messagesValues).includes(type)) {
         return {...state, ...payload}
     } else {
-        return initialState
+        return state
     }
 }
 
 /**
  * Принимает текст ошибки (например при ответе со статусом не 200 - error.response.data.detail)
+ * @param payload - string
  */
 export const setErrorMessage = payload => dispatch => {
     let text
@@ -72,6 +74,7 @@ export const setErrorMessage = payload => dispatch => {
 
 /**
  * Принимает в качестве аргумента позитивный (не ошибочный) тип экшна: LOGIN_OK, SUBSCRIBE_OK etc
+ * @param payload - string
  */
 export const setSuccessMessage = payload => dispatch => {
     dispatch({

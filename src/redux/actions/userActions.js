@@ -1,7 +1,4 @@
-export const LOGIN_USER = 'LOGIN_USER'
-export const SET_PASSWORD = 'SET_PASSWORD'
-export const SET_PHONE = 'SET_PHONE'
-export const SET_SMS_CODE = 'SET_SMS_CODE'
+import user from "../constants";
 
 /**
  * Обновляет данные юзера после авторизации
@@ -9,27 +6,29 @@ export const SET_SMS_CODE = 'SET_SMS_CODE'
  * */
 export const updateUserFromServerData = payload => (dispatch) => {
     dispatch({
-        type: LOGIN_USER,
+        type: user.LOGIN_USER,
         payload: payload
     })
 }
 
 /**
  * Меняет поле phone для авторизации (Login.jsx)
+ * @param payload - string
  * */
 export const inputLoginPhone = payload => dispatch => {
     dispatch({
-        type: SET_PHONE,
+        type: user.SET_PHONE,
         payload: payload
     })
 }
 
 /**
  * Меняет поле password для авторизации (Login.jsx)
+ * @param payload - string
  * */
 export const inputLoginPassword = payload => dispatch => {
     dispatch({
-        type: SET_PASSWORD,
+        type: user.SET_PASSWORD,
         payload: payload
     })
 }
@@ -37,10 +36,11 @@ export const inputLoginPassword = payload => dispatch => {
 
 /**
  * Меняет поле code для подтверждения смс-кода (SmsEntry.jsx)
+ * @param payload - string
  * */
 export const inputLoginSmsCode = payload => dispatch => {
     dispatch({
-        type: SET_SMS_CODE,
+        type: user.SET_SMS_CODE,
         payload: payload
     })
 }

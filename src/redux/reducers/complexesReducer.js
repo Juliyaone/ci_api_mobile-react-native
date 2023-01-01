@@ -22,6 +22,7 @@ function complexesReducer(state = initialState, action) {
 }
 
 export default complexesReducer;
+
 /**
  * Апдейтит списки комлексов
  * @param payload - {
