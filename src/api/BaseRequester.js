@@ -4,18 +4,37 @@ import {setErrorMessage} from "../redux/reducers/messagesHandler";
 
 /**
  * Базовый класс для запросов к АПИ
+ * @param dispatch - callback function useDispatch
  */
 export class BaseRequester {
     constructor(dispatch) {
+        /**
+         * @private
+         */
         this._dispatch = dispatch
     }
 
+    /**
+     * Отправляет детали ошибки в обработчик setErrorMessage
+     * @param data.detail - string - Строка для обработки в setErrorMessage
+     * @private
+     */
     _errorHandler = (data) => {
         console.log('Request error:')
         console.log(data)
         this._dispatch(setErrorMessage(data.detail))
     }
 
+    /**
+     * Отправляет запрос и обрабатывает ответ.
+     * Возвращает data если статус-код 200-299, иначе возвращает null.
+     * Диспатчик сообщение об ошибке в setErrorMessage
+     * @param method - Метод запроса ('GET', 'POST', etc)
+     * @param url - URL запроса
+     * @param payload - Данные для отправки
+     * @returns {Promise<*|null>}
+     * @private
+     */
     _asyncRequestAPI = async (method, url, payload) => {
         console.log('Крутилка загрузки ВКЛЮЧЕНА')
 
