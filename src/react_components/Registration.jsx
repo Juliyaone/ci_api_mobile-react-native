@@ -8,11 +8,20 @@ import {
     inputRegisterUsername
 } from "../redux/actions/registerActions";
 import {sendRegisterUserData} from "../redux/thunks/authThunks";
+import {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
 
 function Registration() {
     const user = useSelector(store => store.userReducer)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (user.isCreated) {
+            navigate('/sms-entry')
+        }
+    })
 
     const onChangeUsername = (event) => {
         dispatch(inputRegisterUsername(event.target.value))

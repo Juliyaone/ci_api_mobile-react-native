@@ -1,26 +1,22 @@
 import {messagesValues, setSuccessMessage} from "../reducers/messagesHandler";
 import {updateUserFromServerData} from "../actions/userActions";
-import * as urls from "../urls";
-import {setUserIsLogged} from "../actions/registerActions";
-import {errorHandler} from "./errorHandler";
+import {setUserIsCreated, setUserIsLogged} from "../actions/registerActions";
 import {saveTokenToStorage} from "../../auth/tokenStorage";
-import {requestAPI} from "../../api/requestAPI";
+import {AuthRequester} from "../../api/AuthRequester";
 
 /**
  *
  * @param dispatch
- * @param data - response data
+ * @param user - { user state data }
  * @param message - success message will be showed
- * @param redirectToURL - URL to which need to redirect
  * @private
  */
-export const loginSuccess = (dispatch, data, message, redirectToURL) => {
-    console.log('Крутилка загрузки ВыКЛЮЧЕНА')
-    dispatch(updateUserFromServerData(data.user))
-    saveTokenToStorage(data.token)
+export const loginSuccess = (dispatch, user, message) => {
+    dispatch(updateUserFromServerData(user))
     dispatch(setUserIsLogged(true))
     dispatch(setSuccessMessage(message))
-    console.log(`Переходим на страницу ${redirectToURL}`)
+    dispatch(setUserIsCreated(false))
+
 }
 
 /**
@@ -28,18 +24,15 @@ export const loginSuccess = (dispatch, data, message, redirectToURL) => {
  @param payload - { user data }
  */
 export const sendRegisterUserData = payload => {
-    return dispatch => {
+    return async (dispatch) => {
         payload.test = true // TODO убрать после тестов!!!
         dispatch(setUserIsLogged(false))
 
-        console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        requestAPI('POST', urls.REGISTRATION, payload)
-            .then((response) => {
-                dispatch(setSuccessMessage(messagesValues.NEED_VERIFICATION))
-                console.log('Переходим на страницу /sms-entry (VerificationScreen)')
-            }, (error) => {
-                errorHandler(dispatch, error.response.data, '/')
-            })
+        const data = await new AuthRequester(dispatch).registerNewUser(payload)
+        if (data) {
+            dispatch(setSuccessMessage(messagesValues.NEED_VERIFICATION))
+            dispatch(setUserIsCreated(true))
+        }
     }
 }
 
@@ -50,15 +43,12 @@ export const sendRegisterUserData = payload => {
  <br>phone, <br>code <br>}
  */
 export const sendSmsCode = payload => {
-    return dispatch => {
-        console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        requestAPI('POST', urls.VERIFICATION_SMS_CODE, payload)
-            .then((response) => {
-                saveTokenToStorage(response.data.token)
-                loginSuccess(dispatch, response.data, messagesValues.SMS_APPROVE_OK)
-            }, (error) => {
-                errorHandler(dispatch, error.response.data, '/sms-entry')
-            })
+    return async dispatch => {
+        const data = await new AuthRequester(dispatch).approveVerificationCode(payload)
+        if (data) {
+            saveTokenToStorage(data.token)
+            loginSuccess(dispatch, data.user, messagesValues.SMS_APPROVE_OK)
+        }
     }
 }
 
@@ -69,19 +59,15 @@ export const sendSmsCode = payload => {
  <br>phone, <br>password <br>}
  */
 export const getLoginUserData = payload => {
-    return dispatch => {
-        console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        requestAPI('POST', urls.LOGIN, payload)
-            .then((response) => {
-                saveTokenToStorage(response.data.token)
-                if (response.data.user.is_verified) {
-                    loginSuccess(dispatch, response.data, messagesValues.LOGIN_OK, '/profile')
-                } else {
-                    loginSuccess(dispatch, response.data, messagesValues.NEED_VERIFICATION, '/sms-entry')
-                }
-            }, (error) => {
-                errorHandler(dispatch, error.response.data, '/login')
-                dispatch(setUserIsLogged(false))
-            })
+    return async dispatch => {
+        const data = await new AuthRequester(dispatch).loginUser(payload)
+        if (data) {
+            saveTokenToStorage(data.token)
+            if (data.user.is_verified) {
+                loginSuccess(dispatch, data.user, messagesValues.LOGIN_OK)
+            } else {
+                loginSuccess(dispatch, data.user, messagesValues.NEED_VERIFICATION)
+            }
+        }
     }
 }

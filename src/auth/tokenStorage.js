@@ -1,4 +1,4 @@
-import {setUserIsLoggedOut} from "../redux/actions/registerActions";
+import {setUserIsCreated, setUserIsLoggedOut} from "../redux/actions/registerActions";
 
 export const saveTokenToStorage = (token) => {
     localStorage.setItem("userToken", token)
@@ -19,4 +19,5 @@ export const refreshToken = () => {
 export const deleteTokenFromStorage = (dispatch) => {
     localStorage.setItem("userToken", null)
     dispatch(setUserIsLoggedOut(false))
+    dispatch(setUserIsCreated(false))
 }
