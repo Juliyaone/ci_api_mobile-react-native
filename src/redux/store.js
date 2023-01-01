@@ -4,7 +4,6 @@ import userReducer from "./reducers/userReducer";
 import loginReducer from "./reducers/loginReducer"
 import smsEntryReducer from "./reducers/smsEntryReducer";
 import messagesReducer from "./reducers/messagesHandler";
-import {menubarReducer} from "./reducers/menubarReducer";
 import complexesReducer from "./reducers/complexesReducer";
 import videosReducer from "./reducers/videosReducer";
 
@@ -14,7 +13,6 @@ const rootReducer = combineReducers(
         userReducer,
         smsEntryReducer,
         messagesReducer,
-        menubarReducer,
         complexesReducer,
         videosReducer
     }

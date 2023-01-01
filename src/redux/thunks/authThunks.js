@@ -1,9 +1,27 @@
-import {messagesValues, setErrorMessage, setSuccessMessage} from "../reducers/messagesHandler";
+import {messagesValues, setSuccessMessage} from "../reducers/messagesHandler";
 import {updateUserFromServerData} from "../actions/userActions";
-import axios from "axios";
 import * as urls from "../urls";
-import {saveToken} from "../../auth/tokenStorage";
 import {setUserIsLogged} from "../actions/registerActions";
+import {errorHandler} from "./errorHandler";
+import {saveTokenToStorage} from "../../auth/tokenStorage";
+import {requestAPI} from "../../api/requestAPI";
+
+/**
+ *
+ * @param dispatch
+ * @param data - response data
+ * @param message - success message will be showed
+ * @param redirectToURL - URL to which need to redirect
+ * @private
+ */
+export const loginSuccess = (dispatch, data, message, redirectToURL) => {
+    console.log('Крутилка загрузки ВыКЛЮЧЕНА')
+    dispatch(updateUserFromServerData(data.user))
+    saveTokenToStorage(data.token)
+    dispatch(setUserIsLogged(true))
+    dispatch(setSuccessMessage(message))
+    console.log(`Переходим на страницу ${redirectToURL}`)
+}
 
 /**
  * Регистрирует нового пользователя
@@ -11,23 +29,16 @@ import {setUserIsLogged} from "../actions/registerActions";
  */
 export const sendRegisterUserData = payload => {
     return dispatch => {
-        payload = {
-            ...payload,
-            test: true  // TODO убрать после тестов
-        }
+        payload.test = true // TODO убрать после тестов!!!
+        dispatch(setUserIsLogged(false))
+
         console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        axios.post(urls.REGISTRATION, payload)
+        requestAPI('POST', urls.REGISTRATION, payload)
             .then((response) => {
-                dispatch(setUserIsLogged(false))
-                console.log('Переходим на страницу /sms-entry (VerificationScreen)')
                 dispatch(setSuccessMessage(messagesValues.NEED_VERIFICATION))
+                console.log('Переходим на страницу /sms-entry (VerificationScreen)')
             }, (error) => {
-                console.log('Request error:')
-                console.log(error.response.data)
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
-                console.log('Переходим на страницу / (VerificationScreen)')
-                dispatch(setUserIsLogged(false))
-                dispatch(setErrorMessage(error.response.data.detail))
+                errorHandler(dispatch, error.response.data, '/')
             })
     }
 }
@@ -41,21 +52,12 @@ export const sendRegisterUserData = payload => {
 export const sendSmsCode = payload => {
     return dispatch => {
         console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        axios.post(urls.VERIFICATION_SMS_CODE, payload)
+        requestAPI('POST', urls.VERIFICATION_SMS_CODE, payload)
             .then((response) => {
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА')
-                dispatch(updateUserFromServerData(response.data.user))
-                saveToken(response.data.token)
-                dispatch(setUserIsLogged(true))
-                dispatch(setSuccessMessage(messagesValues.SMS_APPROVE_OK))
-                console.log('Переходим на страницу /profile (VerificationScreen)')
+                saveTokenToStorage(response.data.token)
+                loginSuccess(dispatch, response.data, messagesValues.SMS_APPROVE_OK)
             }, (error) => {
-                console.log('Request error:')
-                console.log(error.response.data)
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
-                console.log('Переходим на страницу /sms-entry (VerificationScreen)')
-                dispatch(setUserIsLogged(false))
-                dispatch(setErrorMessage(error.response.data.detail))
+                errorHandler(dispatch, error.response.data, '/sms-entry')
             })
     }
 }
@@ -69,27 +71,17 @@ export const sendSmsCode = payload => {
 export const getLoginUserData = payload => {
     return dispatch => {
         console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        axios.post(urls.LOGIN, payload)
+        requestAPI('POST', urls.LOGIN, payload)
             .then((response) => {
-                const user = response.data.user
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА')
-                dispatch(updateUserFromServerData(user))
-                saveToken(response.data.token)
-                if (user.is_verified) {
-                    console.log('Переходим на страницу /profile')
-                    dispatch(setUserIsLogged(true))
-                    dispatch(setSuccessMessage(messagesValues.LOGIN_OK))
+                saveTokenToStorage(response.data.token)
+                if (response.data.user.is_verified) {
+                    loginSuccess(dispatch, response.data, messagesValues.LOGIN_OK, '/profile')
                 } else {
-                    console.log('Переходим на страницу /sms-entry (VerificationScreen)')
-                    dispatch(setUserIsLogged(true))
-                    dispatch(setSuccessMessage(messagesValues.NEED_VERIFICATION))
+                    loginSuccess(dispatch, response.data, messagesValues.NEED_VERIFICATION, '/sms-entry')
                 }
             }, (error) => {
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
-                console.log(error.response.data)
+                errorHandler(dispatch, error.response.data, '/login')
                 dispatch(setUserIsLogged(false))
-                dispatch(setErrorMessage(error.response.data.detail))
             })
     }
 }
-

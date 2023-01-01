@@ -1,4 +1,4 @@
-import {SET_PHONE, SET_SMS_CODE} from "../actions/userActions";
+import user from "../constants";
 
 const initialState = {
     phone: '',
@@ -10,9 +10,9 @@ const initialState = {
  */
 function smsEntryReducer(state = initialState, action) {
     switch (action.type) {
-        case SET_PHONE:
+        case user.SET_PHONE:
             return {...state, phone: action.payload}
-        case SET_SMS_CODE:
+        case user.SET_SMS_CODE:
             return {...state, code: action.payload}
         default:
             return state

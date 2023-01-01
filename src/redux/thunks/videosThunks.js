@@ -1,7 +1,7 @@
-import axios from "axios";
 import * as urls from "../urls";
-import {setErrorMessage} from "../reducers/messagesHandler";
 import {updateVideos} from "../reducers/videosReducer";
+import {errorHandler} from "./errorHandler";
+import {requestAPI} from "../../api/requestAPI";
 
 /**
  * Запрашивает на сервере список видео для комплекса
@@ -10,14 +10,12 @@ import {updateVideos} from "../reducers/videosReducer";
 export const getVideos = complexID => {
     return dispatch => {
         console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        axios.get(urls.ALL_VIDEOS_FOR_COMPLEX + '/' + complexID)
+        requestAPI('GET',urls.ALL_VIDEOS_FOR_COMPLEX + '/' + complexID)
             .then((response) => {
                 console.log('Крутилка загрузки ВыКЛЮЧЕНА')
                 dispatch(updateVideos(response.data))
             }, (error) => {
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
-                console.log(error.response.data)
-                dispatch(setErrorMessage(error.response.data.detail))
+                errorHandler(dispatch, error.response.data, '/login')
             })
     }
 }

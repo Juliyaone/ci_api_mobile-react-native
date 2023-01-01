@@ -3,8 +3,9 @@ import cl from './Videos.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {getVideos} from "../../redux/thunks/videosThunks";
 import Video from "./Video/Video";
+import uuid from "react-uuid";
 
-
+// TODO добавить в навигацию
 function Videos(props) {
 
     const {videos} = useSelector(store => store.videosReducer)
@@ -20,7 +21,7 @@ function Videos(props) {
     const mapVideos = videos?.map((video) => {
         return (
             <div className={cl.complex}>
-                <Video {...video}/>
+                <Video {...video} key={uuid()}/>
             </div>)
     })
 

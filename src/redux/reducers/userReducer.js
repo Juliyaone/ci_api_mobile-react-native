@@ -1,12 +1,10 @@
-import {LOGIN_USER} from "../actions/userActions";
-import * as reg from "../actions/registerActions";
+import user from "../constants";
 
 /**
  * Данные пользователя
  */
 const initialState = {
     id: null,
-    max_level: 10,
     username: '',
     last_name: '',
     third_name: '',
@@ -15,12 +13,13 @@ const initialState = {
     password: '',
     password2: '',
     gender: true,
-    level: 1,
     is_verified: false,
     is_active: false,
     is_email_verified: false,
-    current_complex: 1,
     expired_at: '',
+    current_complex: 1,
+    level: 1,
+    max_level: 10,
     isLogged: false
 }
 
@@ -47,24 +46,28 @@ const initialState = {
  * */
 function userReducer(state = initialState, action) {
     switch (action.type) {
-        case LOGIN_USER:
+        case user.LOGIN_USER:
             return {...state, ...action.payload}
-        case reg.SET_USERNAME:
+        case user.SET_USERNAME:
             return {...state, username: action.payload}
-        case reg.SET_LASTNAME:
+        case user.SET_LASTNAME:
             return {...state, last_name: action.payload}
-        case reg.SET_THIRDNAME:
+        case user.SET_THIRDNAME:
             return {...state, third_name: action.payload}
-        case reg.SET_EMAIL:
+        case user.SET_EMAIL:
             return {...state, email: action.payload}
-        case reg.SET_PHONE:
+        case user.SET_PHONE:
             return {...state, phone: action.payload}
-        case reg.SET_PASSWORD:
+        case user.SET_PASSWORD:
             return {...state, password: action.payload}
-        case reg.SET_PASSWORD2:
+        case user.SET_PASSWORD2:
             return {...state, password2: action.payload}
-        case reg.SET_GENDER:
+        case user.SET_GENDER:
             return {...state, gender: action.payload}
+        case user.SET_IS_LOGGED:
+            return {...state, isLogged: action.payload}
+        case user.SET_IS_LOGGED_OUT:
+            return initialState
         default:
             return state
     }
