@@ -14,19 +14,19 @@ const initialState = {
     phone: '',
     password: '',
     password2: '',
-    gender: true,
+    gender: false,
     level: 1,
     is_verified: false,
     is_active: false,
     is_email_verified: false,
     current_complex: 1,
     expired_at: '',
-    isLogged: false
+    isLogged: false,
 }
 
 /**
  * Меняет данные пользователя
- * @param state: {
+ *state: {
  <br>* id: null,
  <br>* username: '',
  <br>* last_name: '',

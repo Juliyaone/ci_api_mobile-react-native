@@ -1,9 +1,9 @@
 import React from "react";
+const globalStyles = require("./globalStyles");
 
 import {
 	StyleSheet,
 	Text,
-	View,
 	TouchableOpacity,
 	SafeAreaView,
 } from "react-native";
@@ -12,37 +12,32 @@ import Logo from "../img/icons/logo.svg";
 
 function HomeScreen({ navigation }) {
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView style={globalStyles.container}>
 			<Text>
-				<Logo style={styles.logo} width={120} height={120} />;
+				<Logo style={styles.logo} width={120} height={120} />
 			</Text>
 			<Text style={styles.header}>Добро пожаловать!</Text>
 			<TouchableOpacity
-				style={styles.btnRose}
+				style={globalStyles.btnRose}
 				onPress={() => {
 					navigation.navigate("Registration");
 				}}
 			>
-				<Text style={styles.linkRed}>Зарегистрироваться</Text>
+				<Text style={globalStyles.textRed}>Зарегистрироваться</Text>
 			</TouchableOpacity>
 			<TouchableOpacity
-				style={styles.btnRed}
+				style={globalStyles.btnRed}
 				onPress={() => {
 					navigation.navigate("Login");
 				}}
 			>
-				<Text style={styles.linkWhite}>Войти</Text>
+				<Text style={globalStyles.textWhite}>Войти</Text>
 			</TouchableOpacity>
 		</SafeAreaView>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-	},
 	logo: {
 		width: "100px",
 		height: "100px",
@@ -53,38 +48,6 @@ const styles = StyleSheet.create({
 		fontWeight: "700",
 		marginBottom: 20,
 		color: "#D32A1E",
-	},
-	btnRed: {
-		width: "90%",
-		height: 55,
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "#D32A1E",
-		borderRadius: 40,
-		marginBottom: 10,
-	},
-	btnRose: {
-		width: "90%",
-		height: 55,
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "#f7cdcb",
-		borderRadius: 40,
-		marginBottom: 10,
-	},
-	linkWhite: {
-		textAlign: "center",
-		color: "#ffffff",
-		fontFamily: "Evolventa",
-		fontWeight: "600",
-		fontSize: 16,
-	},
-	linkRed: {
-		textAlign: "center",
-		fontFamily: "Evolventa",
-		color: "#EB5E54",
-		fontWeight: "600",
-		fontSize: 16,
 	},
 });
 

@@ -24,7 +24,7 @@ function LoginScreen({navigation}) {
     // Отправляет введенные данные для авторизации
     const sendLoginData = () => {
         dispatch(getLoginUserData({phone, password}));
-        // navigation.navigate('Profile');
+        navigation.navigate('Profile');
     }
 
     return (
@@ -73,33 +73,33 @@ function LoginScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    wrapper: {
-        width: '50%'
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 40,
-        borderColor: '#bbb',
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-        marginBottom: 10
-    },
-    button: {
-        borderWidth: '1px',
-        borderRadius: 40,
-        color: '#ffffff',
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-        marginBottom: 10
-    },
-    link: {
-        color: '#d63225'
-    }
+    // container: {
+    //     flex: 1,
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    // },
+    // wrapper: {
+    //     width: '50%'
+    // },
+    // input: {
+    //     borderWidth: 1,
+    //     borderRadius: 40,
+    //     borderColor: '#bbb',
+    //     paddingHorizontal: 15,
+    //     paddingVertical: 10,
+    //     marginBottom: 10
+    // },
+    // button: {
+    //     borderWidth: '1px',
+    //     borderRadius: 40,
+    //     color: '#ffffff',
+    //     paddingHorizontal: 15,
+    //     paddingVertical: 10,
+    //     marginBottom: 10
+    // },
+    // link: {
+    //     color: '#d63225'
+    // }
 
 })
 

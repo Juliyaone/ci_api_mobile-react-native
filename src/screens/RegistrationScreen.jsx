@@ -1,167 +1,416 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useId } from "react";
 import {
 	StyleSheet,
-	Button,
 	View,
 	TextInput,
 	Text,
 	TouchableOpacity,
+	ScrollView,
 } from "react-native";
-import { AuchContext } from "../context/AuchContext";
-// import { useSelector, useDispatch } from "react-redux";
-// import {createUser} from "../redux/actions"
+
+import LogoIcon from "../img/icons/logo.svg";
+import ProfileIcon from "../img/icons/profile.svg";
+import PhoneIcon from "../img/icons/phone.svg";
+import EmailIcon from "../img/icons/email.svg";
+import LockIcon from "../img/icons/lock.svg";
+import EyeIcon from "../img/icons/eye.svg";
+import OkIcon from "../img/icons/ok.svg";
+import CloseEyeIcon from "../img/icons/closeEye.svg";
+const globalStyles = require("./globalStyles");
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+	inputRegisterUsername,
+	inputRegisterLastname,
+	inputRegisterThirdName,
+	inputRegisterEmail,
+	inputRegisterPhone,
+	inputRegisterPassword,
+	inputRegisterPassword2,
+	inputRegisterGender,
+} from "../redux/actions/registerActions";
+import { sendRegisterUserData } from "../redux/thunks/authThunks";
+
+import { MaskedTextInput } from "react-native-mask-text";
+
 
 function RegistrationScreen({ navigation }) {
-	const [username, setUsername] = useState(null);
-	const [last_name, setLast_name] = useState(null);
-	const [third_name, setThird_name] = useState(null);
-	const [email, setEmail] = useState(null);
-	const [phone, setPhone] = useState(null);
-	const [password, setPassword] = useState(null);
-	const [password2, setPassword2] = useState(null);
-	const [gender, setGender] = useState(false);
+	const keyId = useId();
+	const messages = useSelector((store) => store.messagesReducer);
 
-	const { registration } = useContext(AuchContext);
+	const {
+		username,
+		last_name,
+		third_name,
+		email,
+		phone,
+		password,
+		password2,
+		gender,
+	} = useSelector((store) => store.userReducer);
+
+	const dispatch = useDispatch();
+
+	const user = useSelector((store) => store.userReducer);
+
+	const onChangeUsername = (text) => {
+		dispatch(inputRegisterUsername(text));
+	};
+
+	const onChangeLastname = (text) => {
+		dispatch(inputRegisterLastname(text));
+	};
+
+	const onChangeThirdName = (text) => {
+		dispatch(inputRegisterThirdName(text));
+	};
+
+	const onChangeEmail = (text) => {
+		dispatch(inputRegisterEmail(text));
+	};
+
+	const onChangePhone = (text) => {
+		dispatch(inputRegisterPhone(text));
+	};
+
+	const onChangePassword = (text) => {
+		dispatch(inputRegisterPassword(text));
+	};
+
+	const onChangePassword2 = (text) => {
+		dispatch(inputRegisterPassword2(text));
+	};
+
+	const [secure, setSecure] = useState(true);
+	const [checked, setChecked] = useState(0);
+	const genderArr = ["Ж", "M"];
+	let genderVal = genderArr[checked];
+
+	const onChangeGender = (genderVal) => {
+		const gender = (genderVal === "Ж") ? false : true;
+		dispatch(inputRegisterGender(gender));
+	};
+
+	const sendRegisterData = () => {
+		dispatch(
+			sendRegisterUserData({
+				username,
+				last_name,
+				third_name,
+				email,
+				phone,
+				password,
+				password2,
+				gender,
+			})
+		);
+		// navigation.navigate("Verification");
+	};
+
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.wrapper}>
-				<Text>{registration}</Text>
-				<TextInput
-					style={styles.input}
-					value={username}
-					autoFocus
-					placeholder="Имя"
-					onChangeText={(text) => {
-						setUsername(text);
-					}}
-				/>
-				<TextInput
-					style={styles.input}
-					value={last_name}
-					placeholder="Отчество"
-					onChangeText={(text) => {
-						setLast_name(text);
-					}}
-				/>
-				<TextInput
-					style={styles.input}
-					value={third_name}
-					placeholder="Фамилия"
-					onChangeText={(text) => {
-						setThird_name(text);
-					}}
-				/>
-				<TextInput
-					style={styles.input}
-					value={email}
-					email
-					placeholder="Email"
-					onChangeText={(text) => {
-						setEmail(text);
-					}}
-				/>
-				<TextInput
-					style={styles.input}
-					value={phone}
-					placeholder="+7(___)-__-__"
-					onChangeText={(text) => {
-						setPhone(text);
-					}}
-				/>
-				<TextInput
-					style={styles.input}
-					value={password}
-					placeholder="Пароль"
-					secureTextEntry
-					options={(headerShow = false)}
-					onChangeText={(text) => {
-						setPassword(text);
-					}}
-				/>
-				<TextInput
-					style={styles.input}
-					value={password2}
-					placeholder="Повторите пароль"
-					secureTextEntry
-					options={(headerShow = false)}
-					onChangeText={(text) => {
-						setPassword2(text);
-					}}
-				/>
 
-				<TextInput
-					style={styles.input}
-					value={gender}
-					placeholder="Выберите пол"
-					options={(headerShow = false)}
-					onChangeText={(text) => {
-						setGender(text);
-					}}
-				/>
+		<ScrollView style={styles.scrollView}>
+			
+			<View style={globalStyles.container}>
+				
+				<Text key={keyId}>
+					<LogoIcon width={120} height={120} />
+				</Text>
 
-				<Button
-					onPress={() => {
-						registration(
-							username,
-							last_name,
-							third_name,
-							email,
-							phone,
-							password,
-							password2,
-							gender
-						);
-						navigation.navigate("Verification");
-					}}
-					style={styles.button}
-					title="Зарегистрироваться"
-					accessibilityLabel="Зарегистрироваться"
-				/>
-			</View>
 
-			<View>
-				<Text>Вы уже зарегистрированы?</Text>
-				<TouchableOpacity
-					onPress={() => {
-						navigation.navigate("Login");
-					}}
+				<Text key={keyId}>
+					{messages.messageType}
+				</Text>
+
+				<Text key={keyId}>
+					{messages.message}
+				</Text>
+
+				<Text>
+					username: [{user.username}] last_name: [{user.last_name}]
+					third_name: [{user.third_name}] email: [{user.email}] phone:
+					[{user.phone}] password: [{user.password}] password2: [
+					{user.password2}] gender: [{user.gender.toString()}]
+				</Text>
+				
+
+				<View style={globalStyles.boxInput}>
+
+					<Text key={keyId}>
+
+						<ProfileIcon key={keyId}
+							style={globalStyles.inputIcon}
+							width={20}
+							height={20}
+						/>
+
+					</Text>
+					<TextInput key={keyId}
+						style={globalStyles.inputBorder}
+						value={username}
+						autoFocus
+						placeholder="Имя"
+						onChangeText={onChangeUsername}
+					/>
+				</View>
+				<View style={globalStyles.boxInput}>
+					{/* <Text key={keyId}> */}
+						<ProfileIcon key={keyId}
+							style={globalStyles.inputIcon}
+							width={20}
+							height={20}
+						/>
+					{/* </Text> */}
+					<TextInput key={keyId}
+						style={globalStyles.inputBorder}
+						value={last_name}
+						placeholder="Отчество"
+						onChangeText={onChangeLastname}
+					/>
+				</View>
+				<View style={globalStyles.boxInput}>
+					{/* <Text key={keyId}> */}
+						<ProfileIcon key={keyId}
+							style={globalStyles.inputIcon}
+							width={20}
+							height={20}
+						/>
+					{/* </Text> */}
+					<TextInput key={keyId}
+						style={globalStyles.inputBorder}
+						value={third_name}
+						placeholder="Фамилия"
+						onChangeText={onChangeThirdName}
+					/>
+				</View>
+				<View style={globalStyles.boxInput}>
+					{/* <Text key={keyId}> */}
+						<PhoneIcon key={keyId}
+							style={globalStyles.inputIcon}
+							width={20}
+							height={20}
+						/>
+					{/* </Text> */}
+					<MaskedTextInput key={keyId}
+						mask="+7(999)-999-99-99"
+						style={globalStyles.inputBorder}
+						value={phone}
+						placeholder="+7(___)-__-__"
+						onChangeText={onChangePhone}
+						keyboardType="numeric"
+					/>
+				</View>
+				<View style={globalStyles.boxInput}>
+					{/* <Text key={keyId}> */}
+						<EmailIcon key={keyId}
+							style={globalStyles.inputIcon}
+							width={20}
+							height={20}
+						/>
+					{/* </Text> */}
+					<TextInput key={keyId}
+						style={globalStyles.inputBorder}
+						value={email}
+						email
+						placeholder="Email"
+						onChangeText={onChangeEmail}
+					/>
+				</View>
+				<View style={globalStyles.boxInput}>
+					{/* <Text key={keyId}> */}
+						<LockIcon
+							key={keyId}
+							style={globalStyles.inputIcon}
+							width={20}
+							height={20}
+						/>
+					{/* </Text> */}
+					<TextInput
+						key={keyId}
+						style={globalStyles.inputBorder}
+						value={password}
+						placeholder="Пароль"
+						secureTextEntry={secure}
+						onChangeText={onChangePassword}
+					/>
+
+					<TouchableOpacity key={keyId}
+					style={globalStyles.inputIconRight}
+						onPress={() => {
+							setSecure(!secure)
+						}}
+					>		
+						{secure === true ? (
+							// <Text key={keyId}>
+								<EyeIcon
+									key={keyId}
+									width={20}
+									height={20}
+								/>
+							// </Text>
+						)	: (
+							// <Text key={keyId}>
+								<CloseEyeIcon
+									key={keyId}
+									width={20}
+									height={20}
+								/>
+							// </Text>
+						)}
+
+					</TouchableOpacity>
+				</View>
+				<View style={globalStyles.boxInput}>
+					{/* <Text key={keyId}> */}
+						<LockIcon
+							key={keyId}
+							style={globalStyles.inputIcon}
+							width={20}
+							height={20}
+						/>
+					{/* </Text> */}
+					<TextInput key={keyId}
+						style={globalStyles.inputBorder}
+						value={password2}
+						placeholder="Повторите пароль"
+						secureTextEntry={secure}
+						onChangeText={onChangePassword2}
+					/>
+					<TouchableOpacity key={keyId}
+						style={globalStyles.inputIconRight}
+						onPress={() => {
+							setSecure(!secure)
+						}}
+					>					
+					{secure === true ?	(
+						// <Text key={keyId}>	
+							<EyeIcon
+								key={keyId}
+								width={20}
+								height={20}
+							/>
+						// </Text>
+					) : (
+						// <Text key={keyId}>
+							<CloseEyeIcon
+								key={keyId}
+								width={20}
+								height={20}
+							/>
+						// </Text>
+						)}
+					</TouchableOpacity>
+
+				</View>
+
+				<View key={keyId}>
+
+					<View key={keyId} style={styles.boxRow}>
+
+						<Text key={keyId} style={styles.btnRadioText}>Пол</Text>
+
+						{genderArr.map((gender, index) => {
+							return (
+								<View key={keyId}>
+									{checked == index ? (
+										<View style={styles.btnBox}>
+											<Text style={styles.btnRadioText}>{gender}</Text>
+
+											<TouchableOpacity key={keyId} style={styles.btnRadio}
+												onPress={() => {
+													setChecked(index);
+													onChangeGender(gender);
+												}}
+												>
+												{/* <Text key={keyId}> */}
+													<OkIcon/>
+												{/* </Text> */}
+											</TouchableOpacity>
+										</View>
+									) : (
+										<View style={styles.btnBox}>
+											<Text style={styles.btnRadioText}>{gender}</Text>
+
+											<TouchableOpacity
+												style={styles.btnRadio}
+												onPress={() => {
+													setChecked(index);
+													onChangeGender(gender);
+												}}
+											>
+											</TouchableOpacity>
+										</View>
+									)}
+								</View>
+							);
+						})}
+					</View>
+				</View>
+
+				<TouchableOpacity key={keyId}
+					onPress={sendRegisterData}
+					style={globalStyles.btnRed}
 				>
-					<Text style={styles.link}>Войти</Text>
+					<Text key={keyId} style={globalStyles.textWhite}>
+						Зарегистрироваться
+					</Text>
 				</TouchableOpacity>
+
+				<View  key={keyId} style={globalStyles.box}>
+
+					<Text key={keyId}>Вы уже зарегистрированы?</Text>
+
+					<TouchableOpacity key={keyId}
+						onPress={() => {
+							navigation.navigate("Login");
+						}}
+					>
+						<Text key={keyId} style={styles.link}>Войти</Text>
+
+					</TouchableOpacity>
+				</View>
 			</View>
-		</View>
+		</ScrollView>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: "center",
+	boxRow: {
+		width: "100%",
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "flexStart",
+		marginBottom: 30,
+	},
+	btnBox: {
+		flexDirection: "row",
 		alignItems: "center",
 	},
-	wrapper: {
-		width: "50%",
-	},
-	input: {
+	btnRadio: {
+		justifyContent: "center",
+		alignItems: "center",
+		height: 40,
+		width: 40,
 		borderWidth: 1,
-		borderRadius: 40,
-		borderColor: "#bbb",
-		paddingHorizontal: 15,
-		paddingVertical: 10,
-		marginBottom: 10,
+		borderColor: "#D32A1E",
+		borderRadius: 50,
+		flexDirection: "row",
+		alignItems: "center",
+		marginRight: 20,
 	},
-	button: {
-		borderWidth: "1px",
-		borderRadius: 40,
-		color: "#ffffff",
-		paddingHorizontal: 15,
-		paddingVertical: 10,
-		marginBottom: 10,
+	btnRadioText: {
+		textAlign: "center",
+		fontFamily: "Evolventa",
+		color: "#111111",
+		fontWeight: "600",
+		fontSize: 16,
+		marginRight: 10
 	},
-	link: {
-		color: "#d63225",
-	},
+	inputIconBtn: {
+		width: '30%',
+		height: '100%'
+	}
 });
 
 export default RegistrationScreen;

@@ -1,37 +1,23 @@
-import { useCallback } from "react";
-
 import Navigation from "./src/components/Navigation";
 import { Provider } from "react-redux";
 import { Store } from "./src/redux/store";
-import { AuchProvider } from "./src/context/AuchContext";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 function App() {
-  const [fontsLoaded] = useFonts({
-		"Inter-Black": require("./assets/fonts/Evolventa-Regular.otf"),
-  });
+	const [fontsLoaded] = useFonts({
+		Evolventa: require("./assets/fonts/Evolventa-Regular.otf"),
+	});
 
-  const onLayoutRootView = useCallback(async () => {
-		if (fontsLoaded) {
-			await SplashScreen.hideAsync();
-		}
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-		return null;
-  }
-
-	return (
+	if (fontsLoaded) {
+		return (
 			<Provider store={Store}>
-				<AuchProvider>
-					<text style={{ fontFamily: "Evolventa", fontSize: 30 }}>nhfnfnf</text>
-					<Navigation/>
-				</AuchProvider>
+					<Navigation />
 			</Provider>
-	);
+		);
+	};
 }
 
 export default App;

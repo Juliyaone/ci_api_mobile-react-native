@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
-import {AuchContext} from '../context/AuchContext';
 import {sendSmsCode} from "../redux/thunks/authThunks";
 import {useDispatch, useSelector} from "react-redux";
 import {inputLoginPhone, inputLoginSmsCode} from "../redux/actions/userActions";

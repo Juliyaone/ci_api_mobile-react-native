@@ -10,6 +10,7 @@ import {setUserIsLogged} from "../actions/registerActions";
  @param payload - { user data }
  */
 export const sendRegisterUserData = payload => {
+    console.log(payload);
     return dispatch => {
         payload = {
             ...payload,
