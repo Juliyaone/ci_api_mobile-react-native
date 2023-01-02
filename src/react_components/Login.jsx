@@ -1,20 +1,11 @@
 import {useDispatch, useSelector} from "react-redux";
 import {inputLoginPassword, inputLoginPhone} from "../redux/actions/userActions"
 import {getLoginUserData} from "../redux/thunks/authThunks";
-import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
 
 
 function Login() {
     const {phone, password} = useSelector(store => store.loginReducer)
     const user = useSelector(store => store.userReducer)
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (user.isLogged) {
-            navigate('/profile')
-        }
-    }, [navigate, user.isLogged])
     const dispatch = useDispatch()
 
     const onChangePhone = (event) => {

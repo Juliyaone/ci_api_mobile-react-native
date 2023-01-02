@@ -2,6 +2,17 @@ import user from "../constants";
 
 
 /**
+ * Меняет поле isCreated
+ * @param payload - boolean
+ * */
+export const setUserIsCreated = payload => dispatch => {
+    dispatch({
+        type: user.SET_IS_CREATED,
+        payload: payload
+    })
+}
+
+/**
  * Меняет поле isLogged и сбрасывает user state до initialState
  * @param payload - boolean
  * */

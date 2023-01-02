@@ -6,7 +6,8 @@ import {NavLink} from "react-router-dom";
 function Complex(props) {
 
     return (
-        <div className={cl.item}>
+        props.complex
+            ? <div className={cl.item}>
             <NavLink to={`/videos/${props.complex.id}`}>
                 {props.complex.id}
                 {props.complex.name}
@@ -15,6 +16,7 @@ function Complex(props) {
                 {props.complex.duration}
             </NavLink>
         </div>
+            : null
     );
 }
 

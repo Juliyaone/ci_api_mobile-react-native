@@ -14,6 +14,7 @@ export const SET_MOOD = `${BASE_URL}${USERS}/set_user_mood`
 export const CHECK_FIRST_ENTRY = `${BASE_URL}${USERS}/check_first_entry`
 export const UPLOAD_AVATAR_FILE = `${BASE_URL}${USERS}/upload_avatar_file`
 export const DELETE_USER = `${BASE_URL}${USERS}`
+export const GET_ME = `${BASE_URL}${USERS}/me`
 
 
 const COMPLEX = '/complex'

@@ -20,7 +20,10 @@ const initialState = {
     current_complex: 1,
     level: 1,
     max_level: 10,
-    isLogged: false
+    mood: null,
+    avatar: null,
+    isLogged: false,
+    isCreated: false,
 }
 
 /**
@@ -66,6 +69,8 @@ function userReducer(state = initialState, action) {
             return {...state, gender: action.payload}
         case user.SET_IS_LOGGED:
             return {...state, isLogged: action.payload}
+        case user.SET_IS_CREATED:
+            return {...state, isCreated: action.payload}
         case user.SET_IS_LOGGED_OUT:
             return initialState
         default:
