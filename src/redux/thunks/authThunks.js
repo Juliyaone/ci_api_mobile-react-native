@@ -1,4 +1,4 @@
-import {messagesValues, setSuccessMessage} from "../reducers/messagesHandler";
+import {messagesValues, setSuccessMessage} from "../reducers/messagesReducer";
 import {updateUserFromServerData} from "../actions/userActions";
 import {setUserIsCreated, setUserIsLogged} from "../actions/registerActions";
 import {saveTokenToStorage} from "../../auth/tokenStorage";

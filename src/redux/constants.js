@@ -12,6 +12,8 @@ const userConstants = {
     SET_IS_LOGGED_OUT: 'SET_IS_LOGGED_OUT',
     SET_IS_CREATED: 'SET_IS_CREATED',
     SET_SMS_CODE: 'SET_SMS_CODE',
+    SET_RATE_DATA: 'SET_RATE_DATA',
+    SET_AVATAR_DATA: 'SET_AVATAR_DATA',
 }
 
 export default userConstants;

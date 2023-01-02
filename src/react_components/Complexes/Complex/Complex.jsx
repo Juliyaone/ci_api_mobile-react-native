@@ -9,11 +9,11 @@ function Complex(props) {
         props.complex
             ? <div className={cl.item}>
             <NavLink to={`/videos/${props.complex.id}`}>
-                {props.complex.id}
-                {props.complex.name}
-                {props.complex.number}
-                {props.complex.description}
-                {props.complex.duration}
+                <p>ID: {props.complex.id}</p>
+                <p>NAME: {props.complex.name}</p>
+                <p>NUMBER: {props.complex.number}</p>
+                <p>DESCRIPTION: {props.complex.description}</p>
+                <p>DURATION: {props.complex.duration} minutes</p>
             </NavLink>
         </div>
             : null

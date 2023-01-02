@@ -18,17 +18,18 @@ function Complexes(props) {
     }, [dispatch])
 
     let key_id = useId()
+
     const getViewedComplexes = viewed_complexes?.map((complex) => {
         return (
             <styles.ComplexItem>
-                <Complex complex={complex} key={key_id + complex.id}/>
+                <Complex complex={complex} key={complex.id + key_id}/>
             </styles.ComplexItem>)
     })
 
     const getNotViewedComplexes = not_viewed_complexes.map((complex) => {
         return (
             <styles.ComplexItem>
-                <Complex complex={complex} key={key_id + complex.id}/>
+                <Complex complex={complex} key={complex.id + key_id}/>
             </styles.ComplexItem>)
     })
 

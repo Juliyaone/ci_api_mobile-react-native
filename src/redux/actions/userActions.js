@@ -45,3 +45,36 @@ export const inputLoginSmsCode = payload => dispatch => {
     })
 }
 
+
+/**
+ * Обновляет информацию о тарифе пользователя
+ * @param payload - {
+    id: integer,
+    name: string,
+    duration: integer,
+    price: integer
+  }
+ * */
+export const updateUserRate = payload => dispatch => {
+    dispatch({
+        type: user.SET_RATE_DATA,
+        payload: payload
+    })
+}
+
+
+
+/**
+ * Обновляет информацию об аватаре пользователя
+ * @param payload - {
+    id: integer,
+    file_name: string
+  }
+ * */
+export const updateUserAvatar = payload => dispatch => {
+    dispatch({
+        type: user.SET_AVATAR_DATA,
+        payload: payload
+    })
+}
+
