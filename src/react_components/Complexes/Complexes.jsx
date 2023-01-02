@@ -1,12 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useId} from 'react';
+import Complex from "./Complex/Complex";
 import * as styles from "./stylesComplexes";
 import {useDispatch, useSelector} from "react-redux";
 import {getComplexes} from "../../redux/thunks/complexThunks";
-import Complex from "./Complex/Complex";
 
-// TODO добавить в навигацию
+
 function Complexes(props) {
-    const messages = useSelector(store => store.messagesReducer)
     const {
         viewed_complexes,
         not_viewed_complexes,
@@ -18,17 +17,18 @@ function Complexes(props) {
         dispatch(getComplexes())
     }, [dispatch])
 
+    let key_id = useId()
     const getViewedComplexes = viewed_complexes?.map((complex) => {
         return (
             <styles.ComplexItem>
-                <Complex complex={complex} key={complex.id}/>
+                <Complex complex={complex} key={key_id + complex.id}/>
             </styles.ComplexItem>)
     })
 
     const getNotViewedComplexes = not_viewed_complexes.map((complex) => {
         return (
             <styles.ComplexItem>
-                <Complex complex={complex} key={complex.id}/>
+                <Complex complex={complex} key={key_id + complex.id}/>
             </styles.ComplexItem>)
     })
 
@@ -37,21 +37,20 @@ function Complexes(props) {
             <styles.Header>
                 {props.header}
             </styles.Header>
-            <View>MESSAGE: type: [{messages.messageType}] text: [{messages.message}]</View>
 
-            <View>Просмотренные: {viewed_complexes.length}</View>
+            <div>Просмотренные: {viewed_complexes.length}</div>
             <styles.Complexes>
                 {getViewedComplexes}
             </styles.Complexes>
 
-            <View>Посмотреть сегодня:</View>
+            <div>Посмотреть сегодня:</div>
             <styles.Complexes>
                 <styles.ComplexItem>
                     <Complex complex={today_complex}/>
                 </styles.ComplexItem>
             </styles.Complexes>
 
-            <View>Не просмотренные: {not_viewed_complexes.length}</View>
+            <div>Не просмотренные: {not_viewed_complexes.length}</div>
             <styles.Complexes>
                 {getNotViewedComplexes}
             </styles.Complexes>

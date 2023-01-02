@@ -1,4 +1,5 @@
-import {SET_PASSWORD, SET_PHONE} from "../actions/userActions";
+import user from "../constants";
+
 
 const initialState = {
     phone: '1234567890',
@@ -10,9 +11,9 @@ const initialState = {
  */
 function loginReducer(state = initialState, action) {
     switch (action.type) {
-        case SET_PHONE:
+        case user.SET_PHONE:
             return {...state, phone: action.payload}
-        case SET_PASSWORD:
+        case user.SET_PASSWORD:
             return {...state, password: action.payload}
         default:
             return state

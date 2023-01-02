@@ -1,35 +1,38 @@
-import {messagesValues, setErrorMessage, setSuccessMessage} from "../reducers/messagesHandler";
+import {messagesValues, setSuccessMessage} from "../reducers/messagesHandler";
 import {updateUserFromServerData} from "../actions/userActions";
-import axios from "axios";
-import * as urls from "../urls";
-import {saveToken} from "../../auth/tokenStorage";
-import {setUserIsLogged} from "../actions/registerActions";
+import {setUserIsCreated, setUserIsLogged} from "../actions/registerActions";
+import {saveTokenToStorage} from "../../auth/tokenStorage";
+import {AuthRequester} from "../../api/AuthRequester";
+
+/**
+ *
+ * @param dispatch
+ * @param user - { user state data }
+ * @param message - success message will be showed
+ * @private
+ */
+export const loginSuccess = (dispatch, user, message) => {
+    dispatch(updateUserFromServerData(user))
+    dispatch(setUserIsLogged(true))
+    dispatch(setSuccessMessage(message))
+    dispatch(setUserIsCreated(false))
+
+}
 
 /**
  * Регистрирует нового пользователя
  @param payload - { user data }
  */
 export const sendRegisterUserData = payload => {
-    console.log(payload);
-    return dispatch => {
-        payload = {
-            ...payload,
-            test: true  // TODO убрать после тестов
+    return async (dispatch) => {
+        payload.test = true // TODO убрать после тестов!!!
+        dispatch(setUserIsLogged(false))
+
+        const data = await new AuthRequester(dispatch).registerNewUser(payload)
+        if (data) {
+            dispatch(setSuccessMessage(messagesValues.NEED_VERIFICATION))
+            dispatch(setUserIsCreated(true))
         }
-        console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        axios.post(urls.REGISTRATION, payload)
-            .then((response) => {
-                dispatch(setUserIsLogged(false))
-                console.log('Переходим на страницу /sms-entry (VerificationScreen)')
-                dispatch(setSuccessMessage(messagesValues.NEED_VERIFICATION))
-            }, (error) => {
-                console.log('Request error:')
-                console.log(error.response.data)
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
-                console.log('Переходим на страницу / (VerificationScreen)')
-                dispatch(setUserIsLogged(false))
-                dispatch(setErrorMessage(error.response.data.detail))
-            })
     }
 }
 
@@ -40,24 +43,12 @@ export const sendRegisterUserData = payload => {
  <br>phone, <br>code <br>}
  */
 export const sendSmsCode = payload => {
-    return dispatch => {
-        console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        axios.post(urls.VERIFICATION_SMS_CODE, payload)
-            .then((response) => {
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА')
-                dispatch(updateUserFromServerData(response.data.user))
-                saveToken(response.data.token)
-                dispatch(setUserIsLogged(true))
-                dispatch(setSuccessMessage(messagesValues.SMS_APPROVE_OK))
-                console.log('Переходим на страницу /profile (VerificationScreen)')
-            }, (error) => {
-                console.log('Request error:')
-                console.log(error.response.data)
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
-                console.log('Переходим на страницу /sms-entry (VerificationScreen)')
-                dispatch(setUserIsLogged(false))
-                dispatch(setErrorMessage(error.response.data.detail))
-            })
+    return async dispatch => {
+        const data = await new AuthRequester(dispatch).approveVerificationCode(payload)
+        if (data) {
+            saveTokenToStorage(data.token)
+            loginSuccess(dispatch, data.user, messagesValues.SMS_APPROVE_OK)
+        }
     }
 }
 
@@ -68,29 +59,15 @@ export const sendSmsCode = payload => {
  <br>phone, <br>password <br>}
  */
 export const getLoginUserData = payload => {
-    return dispatch => {
-        console.log('Крутилка загрузки ВКЛЮЧЕНА')
-        axios.post(urls.LOGIN, payload)
-            .then((response) => {
-                const user = response.data.user
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА')
-                dispatch(updateUserFromServerData(user))
-                saveToken(response.data.token)
-                if (user.is_verified) {
-                    console.log('Переходим на страницу /profile')
-                    dispatch(setUserIsLogged(true))
-                    dispatch(setSuccessMessage(messagesValues.LOGIN_OK))
-                } else {
-                    console.log('Переходим на страницу /sms-entry (VerificationScreen)')
-                    dispatch(setUserIsLogged(true))
-                    dispatch(setSuccessMessage(messagesValues.NEED_VERIFICATION))
-                }
-            }, (error) => {
-                console.log('Крутилка загрузки ВыКЛЮЧЕНА! ОШИБКА!')
-                console.log(error.response.data)
-                dispatch(setUserIsLogged(false))
-                dispatch(setErrorMessage(error.response.data.detail))
-            })
+    return async dispatch => {
+        const data = await new AuthRequester(dispatch).loginUser(payload)
+        if (data) {
+            saveTokenToStorage(data.token)
+            if (data.user.is_verified) {
+                loginSuccess(dispatch, data.user, messagesValues.LOGIN_OK)
+            } else {
+                loginSuccess(dispatch, data.user, messagesValues.NEED_VERIFICATION)
+            }
+        }
     }
 }
-

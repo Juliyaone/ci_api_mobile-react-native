@@ -1,27 +1,29 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useId} from 'react';
 import cl from './Videos.module.css';
 import {useDispatch, useSelector} from "react-redux";
+import {useParams} from "react-router-dom";
 import {getVideos} from "../../redux/thunks/videosThunks";
 import Video from "./Video/Video";
 
 
-function Videos(props) {
+function Videos() {
 
     const {videos} = useSelector(store => store.videosReducer)
     const dispatch = useDispatch()
-    // TODO определить complexID из пути /videos/1
-    const complexID = 1
-    // TODO передать его сюда
+    const complexID = useParams()
 
     useEffect(() => {
-        dispatch(getVideos(complexID))
+        dispatch(getVideos(complexID.complexID))
     }, [dispatch, complexID])
-    // TODO uuid
+
+    let key_id = useId()
+
     const mapVideos = videos?.map((video) => {
         return (
             <div className={cl.complex}>
-                <Video {...video}/>
-            </div>)
+                <Video {...video} key={key_id}/>
+            </div>
+        )
     })
 
     return (

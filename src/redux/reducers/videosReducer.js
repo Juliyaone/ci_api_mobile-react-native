@@ -18,14 +18,10 @@ function videosReducer(state = initialState, action) {
 }
 
 export default videosReducer;
+
 /**
- * Апдейтит списки комлексов
- * @param payload - {
- *     user,
- *     viewed_complexes,
- *     not_viewed_complexes,
- *     today_complex
- * }
+ * Апдейтит список видео
+ * @param payload - [ videos ]
  * */
 export const updateVideos = payload => dispatch => {
     dispatch({type: UPDATE_VIDEOS, payload})
