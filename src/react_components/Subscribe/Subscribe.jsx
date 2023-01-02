@@ -15,6 +15,7 @@ function Subscribe() {
             dispatch(getRates())
         }
     }, [dispatch, items])
+
     const getRatesMap = () => {
         return (
             items?.map(

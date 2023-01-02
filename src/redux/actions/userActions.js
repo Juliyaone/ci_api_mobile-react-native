@@ -78,3 +78,18 @@ export const updateUserAvatar = payload => dispatch => {
     })
 }
 
+/**
+ * Обновляет информацию об настроении пользователя
+ * @param payload - {
+    id: integer,
+    name: string,
+    code: string
+  }
+ * */
+export const updateUserMood = payload => dispatch => {
+    dispatch({
+        type: user.SET_MOOD_DATA,
+        payload: payload
+    })
+}
+

@@ -7,6 +7,7 @@ import messagesReducer from "./reducers/messagesReducer";
 import complexesReducer from "./reducers/complexesReducer";
 import videosReducer from "./reducers/videosReducer";
 import ratesReducer from "./reducers/ratesReducer";
+import moodsReducer from "./reducers/moodsReducer";
 
 const rootReducer = combineReducers(
     {
@@ -17,6 +18,7 @@ const rootReducer = combineReducers(
         complexesReducer,
         videosReducer,
         ratesReducer,
+        moodsReducer,
     }
 )
 

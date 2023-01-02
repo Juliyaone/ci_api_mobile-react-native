@@ -29,3 +29,7 @@ export const GET_USER_RATE = `${BASE_URL}${RATES}/get_user_rate`
 
 const AVATARS = '/avatars'
 export const GET_USER_AVATAR = `${BASE_URL}${AVATARS}/get_user_avatar`
+
+const MOODS = '/moods'
+export const GET_ALL_MOODS = `${BASE_URL}${MOODS}`
+export const GET_USER_MOOD = `${BASE_URL}${MOODS}/get_user_mood`

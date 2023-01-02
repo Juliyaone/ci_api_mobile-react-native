@@ -12,10 +12,5 @@ export class RatesRequester extends BaseRequester {
     getAllRates = async () => {
         return await this._asyncRequestAPI('GET', urls.GET_ALL_RATES)
     }
-    /**
-     * Возвращает тариф пользователя
-     */
-    getUserRate = async () => {
-        return await this._asyncRequestAPI('GET', urls.GET_USER_RATE)
-    }
+
 }

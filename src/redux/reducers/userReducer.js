@@ -21,7 +21,11 @@ const initialState = {
     level: 1,
     max_level: 10,
     mood: null,
-    moodData: {},
+    moodData: {
+        id: null,
+        code: '',
+        name: ''
+    },
     avatar: null,
     avatarData: {
         id: null,
@@ -71,6 +75,8 @@ function userReducer(state = initialState, action) {
             return {...state, rateData: action.payload}
         case user.SET_AVATAR_DATA:
             return {...state, avatarData: action.payload}
+        case user.SET_MOOD_DATA:
+            return {...state, moodData: action.payload}
         case user.SET_IS_LOGGED_OUT:
             return initialState
         default:
