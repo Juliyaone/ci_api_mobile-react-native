@@ -1,5 +1,5 @@
-const SERVER_URL = 'http://localhost:8000'
-// const SERVER_URL = 'http://energy.qidoctor.ru:8000'
+// const SERVER_URL = 'http://localhost:8000'
+const SERVER_URL = 'http://energy.qidoctor.ru:8000'
 const BASE_URL = `${SERVER_URL}/api/v1`
 
 const AUTH = '/auth'
