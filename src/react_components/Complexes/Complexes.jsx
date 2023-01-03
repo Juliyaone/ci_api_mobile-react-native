@@ -14,8 +14,10 @@ function Complexes(props) {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getComplexes())
-    }, [dispatch])
+        if (not_viewed_complexes.length === 0) {
+            dispatch(getComplexes())
+        }
+    }, [dispatch, not_viewed_complexes])
 
     let key_id = useId()
 

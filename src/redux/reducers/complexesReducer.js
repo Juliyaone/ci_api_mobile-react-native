@@ -9,7 +9,6 @@ const initialState = {
 function complexesReducer(state = initialState, action) {
     switch (action.type) {
         case UPDATE_COMPLEXES:
-            console.log(action.payload)
             return {
                 ...state,
                 viewed_complexes: action.payload.viewed_complexes,
