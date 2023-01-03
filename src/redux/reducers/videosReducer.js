@@ -1,16 +1,15 @@
 export const UPDATE_VIDEOS = 'UPDATE_VIDEOS'
 
 const initialState = {
-    videos: []
+    items: []
 }
 
 function videosReducer(state = initialState, action) {
     switch (action.type) {
         case UPDATE_VIDEOS:
-            console.log(action.payload)
             return {
                 ...state,
-                videos: action.payload
+                items: action.payload
             }
         default:
             return state

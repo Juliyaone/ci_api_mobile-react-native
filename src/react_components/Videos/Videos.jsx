@@ -8,7 +8,7 @@ import Video from "./Video/Video";
 
 function Videos() {
 
-    const {videos} = useSelector(store => store.videosReducer)
+    const {items} = useSelector(store => store.videosReducer)
     const dispatch = useDispatch()
     const complexID = useParams()
 
@@ -18,10 +18,10 @@ function Videos() {
 
     let key_id = useId()
 
-    const mapVideos = videos?.map((video) => {
+    const mapVideos = items?.map((video) => {
         return (
             <div className={cl.complex}>
-                <Video {...video} key={key_id}/>
+                <Video {...video} key={video.id + key_id}/>
             </div>
         )
     })
