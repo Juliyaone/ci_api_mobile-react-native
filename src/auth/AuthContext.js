@@ -34,16 +34,16 @@ export const AuthContextProvider = ({children, needAuth}) => {
                         return children
                     } else {
                         console.log(`User not authorized with token: ${userToken}`)
-                        navigate('/login')
+                        // navigate('/login')
                     }
                 })
         } else {
             console.log('User is not logged')
-            navigate('/login')
+            // navigate('/login')
         }
     } else if (!is_verified) {
         console.log('User is not verified')
-        navigate('/sms-entry')
+        // navigate('/sms-entry')
     } else {
         return (
             <>

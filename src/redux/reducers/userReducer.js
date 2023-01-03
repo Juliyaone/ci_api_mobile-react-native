@@ -12,7 +12,7 @@ const initialState = {
     phone: '',
     password: '',
     password2: '',
-    gender: true,
+    gender: false,
     is_verified: false,
     is_active: false,
     is_email_verified: false,

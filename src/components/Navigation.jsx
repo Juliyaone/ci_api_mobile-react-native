@@ -7,21 +7,19 @@ import LoginScreen from "../screens/LoginScreen";
 import RegistrationScreen from '../screens/RegistrationScreen';
 import VerificationScreen from "../screens/VerificationSmsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import { AuthContextProvider } from "../auth/AuthContext"
 
 const Stack = createNativeStackNavigator();
 
-function Navigation(props) {
+function Navigation() {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator>
-				<Stack.Screen name="Home" component={HomeScreen} />
-				<Stack.Screen name="Login" component={LoginScreen} />
-				<Stack.Screen name="Registration" component={RegistrationScreen} />
-				<Stack.Screen
-					name="Verification"
-					component={VerificationScreen}
-				/>
-				<Stack.Screen name="Profile" component={ProfileScreen} />
+					<Stack.Screen name="Home" component={HomeScreen} />
+					<Stack.Screen name="Profile" component={ProfileScreen} />
+					<Stack.Screen name="Login" component={LoginScreen} />
+					<Stack.Screen name="Registration" component={RegistrationScreen} />
+					<Stack.Screen name="Verification" component={VerificationScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

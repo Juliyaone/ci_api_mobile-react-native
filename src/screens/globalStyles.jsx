@@ -28,6 +28,13 @@ module.exports = StyleSheet.create({
 		height: "100px",
 		textAlign: "center",
 	},
+	header: {
+		fontFamily: "Evolventa",
+		fontSize: 20,
+		fontWeight: "700",
+		marginBottom: 20,
+		color: "#D32A1E",
+	},
 	btnRed: {
 		width: "90%",
 		height: 55,
@@ -91,7 +98,6 @@ module.exports = StyleSheet.create({
 		fontWeight: "600",
 		fontSize: 16,
 	},
-
 	boxInput: {
 		flex: 1,
 		flexDirection: "row",

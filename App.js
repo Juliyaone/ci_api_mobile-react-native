@@ -14,6 +14,7 @@ function App() {
 	if (fontsLoaded) {
 		return (
 			<Provider store={Store}>
+					{/* <Message /> */}
 					<Navigation />
 			</Provider>
 		);

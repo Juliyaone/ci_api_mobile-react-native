@@ -1,15 +1,23 @@
-import React from 'react';
-import {Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import React, { useId } from "react";
+import {SafeAreaView, Text, ScrollView, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {inputLoginPassword, inputLoginPhone} from "../redux/actions/userActions";
 import {getLoginUserData} from "../redux/thunks/authThunks";
 
+import InputPhone from "../components/input/InputPhone";
+import InputPassword from "../components/input/InputPassword";
+import ButtonReg from "../components/button/ButtonReg";
+
+import LogoIcon from "../img/icons/logo.svg";
+
+const globalStyles = require("../screens/globalStyles");
 
 function LoginScreen({navigation}) {
     const messages = useSelector(store => store.messagesReducer)
     const {phone, password} = useSelector(store => store.loginReducer)
     const dispatch = useDispatch()
     const user = useSelector(store => store.userReducer)
+    const keyId = useId();
 
     // Меняет поле телефона
     const onChangePhone = (text) => {
@@ -24,84 +32,33 @@ function LoginScreen({navigation}) {
     // Отправляет введенные данные для авторизации
     const sendLoginData = () => {
         dispatch(getLoginUserData({phone, password}));
-        navigation.navigate('Profile');
+        // navigation.navigate('Profile');
     }
 
     return (
-        <View style={styles.container}>
+    <SafeAreaView style={globalStyles.container}>
+		<ScrollView>
+			<View style={globalStyles.container}>
+				
+				<LogoIcon width={120} height={120} />
 
-            <View style={styles.wrapper}>
-                <Text>User: email: [{user.email}] phone: [{user.phone}]</Text>
+				<Text>{messages.messageType}</Text>
 
-                <Text>{messages.messageType}{messages.message}</Text>
-                <TextInput
-                    style={styles.input}
-                    value={phone}
-                    tel
-                    autoFocus
-                    placeholder='+7(___)-__-__' // todo не уверен что он должен быть таким :) Будет путать наверное такой формат, при том, что мы ждем 1234567890
-                    onChangeText={onChangePhone}
-                />
-                <TextInput
-                    style={styles.input}
-                    value={password}
-                    placeholder="Введите пароль"
-                    secureTextEntry
-                    options={headerShow = false} // todo У меня IDE ругается на атрибут headerShow - говорит что unresolved
-                    onChangeText={onChangePassword}
-                />
-                <Button
-                    onPress={sendLoginData}
-                    style={styles.button}
-                    title="Войти"
-                    accessibilityLabel="Войти"
-                />
+				<Text>{messages.message}</Text>
+
+                <Text style={globalStyles.header}>Вход</Text>
+
+				<InputPhone namePlaceholder={"+7(___)-__-__"} keyId={keyId} phone={phone} onChangePhone={onChangePhone}/>
+
+                <InputPassword namePlaceholder={"Пароль"} keyId={keyId} password={password} onChangePassword={onChangePassword}/>
+                
+				<ButtonReg text="Вход" keyId={keyId} sendDataFunction={sendLoginData}/>
+
             </View>
-
-            <View>
-                <Text>У вас еще нет аккаунта?</Text>
-                <TouchableOpacity onPress={() => {
-
-                    navigation.navigate('Registration')
-                }}>
-                    <Text style={styles.link}>Зарегистрироваться</Text>
-                </TouchableOpacity>
-            </View>
-
-        </View>
+        </ScrollView>
+    </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    // container: {
-    //     flex: 1,
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    // },
-    // wrapper: {
-    //     width: '50%'
-    // },
-    // input: {
-    //     borderWidth: 1,
-    //     borderRadius: 40,
-    //     borderColor: '#bbb',
-    //     paddingHorizontal: 15,
-    //     paddingVertical: 10,
-    //     marginBottom: 10
-    // },
-    // button: {
-    //     borderWidth: '1px',
-    //     borderRadius: 40,
-    //     color: '#ffffff',
-    //     paddingHorizontal: 15,
-    //     paddingVertical: 10,
-    //     marginBottom: 10
-    // },
-    // link: {
-    //     color: '#d63225'
-    // }
-
-})
 
 
 export default LoginScreen;
