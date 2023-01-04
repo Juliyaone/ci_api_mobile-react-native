@@ -1,4 +1,3 @@
-import {applyMiddleware, combineReducers, legacy_createStore} from 'redux'
 import thunk from 'redux-thunk'
 import userReducer from "./reducers/userReducer";
 import messagesReducer from "./reducers/messagesReducer";
@@ -6,17 +5,25 @@ import complexesReducer from "./reducers/complexesReducer";
 import videosReducer from "./reducers/videosReducer";
 import ratesReducer from "./reducers/ratesReducer";
 import moodsReducer from "./reducers/moodsReducer";
-
-const rootReducer = combineReducers(
-    {
-        userReducer,
-        messagesReducer,
-        complexesReducer,
-        videosReducer,
-        ratesReducer,
-        moodsReducer,
-    }
-)
+import {configureStore} from "@reduxjs/toolkit";
+import logger from 'redux-logger'
 
 
-export const Store = legacy_createStore(rootReducer, applyMiddleware(thunk))
+const reducer = {
+    userReducer,
+    messagesReducer,
+    complexesReducer,
+    videosReducer,
+    ratesReducer,
+    moodsReducer,
+}
+
+const middleware = [
+    thunk,
+    logger
+]
+
+export const Store = configureStore({
+    middleware,
+    reducer
+})
