@@ -13,10 +13,9 @@ import LogoIcon from "../img/icons/logo.svg";
 const globalStyles = require("../screens/globalStyles");
 
 function LoginScreen({navigation}) {
-    const messages = useSelector(store => store.messagesReducer)
+    // const messages = useSelector(store => store.messagesReducer)
     const {phone, password} = useSelector(store => store.loginReducer)
     const dispatch = useDispatch()
-    const user = useSelector(store => store.userReducer)
     const keyId = useId();
 
     // Меняет поле телефона
@@ -41,10 +40,10 @@ function LoginScreen({navigation}) {
 			<View style={globalStyles.container}>
 				
 				<LogoIcon width={120} height={120} />
-
+                {/*
 				<Text>{messages.messageType}</Text>
 
-				<Text>{messages.message}</Text>
+				<Text>{messages.message}</Text> */}
 
                 <Text style={globalStyles.header}>Вход</Text>
 

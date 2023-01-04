@@ -9,6 +9,7 @@ function Message() {
     const userToken = useContext(AuthContext)
 
     return (
+        <></>
         // <View>
             
         //     {/* <Text>MESSAGE: type: [{messages.messageType}]</Text> */}

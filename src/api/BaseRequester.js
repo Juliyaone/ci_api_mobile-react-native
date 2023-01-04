@@ -1,6 +1,6 @@
 import {getTokenFromStorage} from "../auth/tokenStorage";
 import axios from "axios";
-import {setErrorMessage} from "../redux/reducers/messagesHandler";
+import {setErrorMessage} from "../redux/reducers/messagesReducer";
 
 /**
  * Базовый класс для запросов к АПИ

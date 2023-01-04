@@ -92,7 +92,7 @@ function RegistrationScreen({ navigation }) {
 				gender,
 			})
 		);
-		navigation.navigate("Verification");
+		// navigation.navigate("Verification");
 	};
 
 

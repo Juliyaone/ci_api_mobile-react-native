@@ -21,31 +21,31 @@ const initialState = {
     level: 1,
     max_level: 10,
     mood: null,
+    moodData: {
+        id: null,
+        code: '',
+        name: ''
+    },
     avatar: null,
+    avatarData: {
+        id: null,
+        file_name: ''
+    },
+    rate_id: null,
+    rateData: {
+        id: null,
+        name: '',
+        duration: null,
+        price: null
+    },
     isLogged: false,
     isCreated: false,
 }
 
 /**
  * Меняет данные пользователя
- *state: {
- <br>* id: null,
- <br>* username: '',
- <br>* last_name: '',
- <br>* third_name: '',
- <br>* email: '',
- <br>* phone: '',
- <br>* password: '',
- <br>* password2: '',
- <br>* gender: true,
- <br>* is_verified: false,
- <br>* is_active: false,
- <br>* is_email_verified: false,
- <br>* expired_at: ''
- <br>* current_complex: 1,
- <br>* level: 1,
- <br>* max_level: 10,
- <br>* }
+ * @param state: { user data }
+ * @param action: { type, payload }
  * */
 function userReducer(state = initialState, action) {
     switch (action.type) {
@@ -71,6 +71,12 @@ function userReducer(state = initialState, action) {
             return {...state, isLogged: action.payload}
         case user.SET_IS_CREATED:
             return {...state, isCreated: action.payload}
+        case user.SET_RATE_DATA:
+            return {...state, rateData: action.payload}
+        case user.SET_AVATAR_DATA:
+            return {...state, avatarData: action.payload}
+        case user.SET_MOOD_DATA:
+            return {...state, moodData: action.payload}
         case user.SET_IS_LOGGED_OUT:
             return initialState
         default:

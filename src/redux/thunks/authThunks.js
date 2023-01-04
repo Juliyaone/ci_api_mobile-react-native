@@ -1,4 +1,4 @@
-import {messagesValues, setSuccessMessage} from "../reducers/messagesHandler";
+import {messagesValues, setSuccessMessage} from "../reducers/messagesReducer";
 import {updateUserFromServerData} from "../actions/userActions";
 import {setUserIsCreated, setUserIsLogged} from "../actions/registerActions";
 import {saveTokenToStorage} from "../../auth/tokenStorage";
@@ -27,12 +27,14 @@ export const sendRegisterUserData = payload => {
     return async (dispatch) => {
         payload.test = true // TODO убрать после тестов!!!
         dispatch(setUserIsLogged(false))
-
+        
         const data = await new AuthRequester(dispatch).registerNewUser(payload)
+        console.log(data);
         if (data) {
             dispatch(setSuccessMessage(messagesValues.NEED_VERIFICATION))
             dispatch(setUserIsCreated(true))
         }
+
     }
 }
 
@@ -45,6 +47,7 @@ export const sendRegisterUserData = payload => {
 export const sendSmsCode = payload => {
     return async dispatch => {
         const data = await new AuthRequester(dispatch).approveVerificationCode(payload)
+        console.log(data);
         if (data) {
             saveTokenToStorage(data.token)
             loginSuccess(dispatch, data.user, messagesValues.SMS_APPROVE_OK)
@@ -62,7 +65,7 @@ export const getLoginUserData = payload => {
     return async dispatch => {
         const data = await new AuthRequester(dispatch).loginUser(payload)
         if (data) {
-            saveTokenToStorage(data.token)
+            saveTokenToStorage(data.token) 
             if (data.user.is_verified) {
                 loginSuccess(dispatch, data.user, messagesValues.LOGIN_OK)
             } else {

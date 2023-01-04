@@ -31,7 +31,7 @@ function VerificationScreen({navigation}) {
     // Отправляет введенные данные для подтверждения кода
     const sendApproveSmsCode = () => {
         dispatch(sendSmsCode({phone, code}));
-        navigation.navigate('Profile');
+        // navigation.navigate('Profile');
     }
 
     return (
