@@ -19,7 +19,6 @@ export const getCurrentUserMood = () => {
     return async dispatch => {
         const data = await new UserRequester(dispatch).getUserMood()
         if (data) {
-            console.log(data)
             dispatch(updateUserMood(data))
         }
     }

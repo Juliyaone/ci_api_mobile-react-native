@@ -28,10 +28,10 @@ export class BaseRequester {
     /**
      * Отправляет запрос и обрабатывает ответ.
      * Возвращает data если статус-код 200-299, иначе возвращает null.
-     * Диспатчик сообщение об ошибке в setErrorMessage
+     * Диспатчит сообщение об ошибке в setErrorMessage
      * @param method - Метод запроса ('GET', 'POST', etc)
      * @param url - URL запроса
-     * @param payload - Данные для отправки
+     * @param payload - Данные для отправки (для POST и PUT запросов)
      * @returns {Promise<*|null>}
      * @private
      */
@@ -40,8 +40,6 @@ export class BaseRequester {
 
         const token = getTokenFromStorage()
         const headers = {
-            'Access-Control-Allow-Origin': '*',
-            'Accept': 'application/json',
             'Authorization': `Bearer ${token}`,
         }
         let params = {
@@ -50,10 +48,9 @@ export class BaseRequester {
             headers,
             // withCredentials: true
         }
-        if (method !== 'GET') {
+        if (method === 'POST' || method === 'PUT' || method === 'PATCH') {
             params.data = payload
         }
-
         try {
             const response = await axios(params);
             if (200 <= response.status <= 299) {

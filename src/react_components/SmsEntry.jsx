@@ -1,17 +1,15 @@
 import {useDispatch, useSelector} from "react-redux";
-import {inputLoginPhone, inputLoginSmsCode} from "../redux/actions/userActions"
 import {sendSmsCode} from "../redux/thunks/authThunks";
 import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 
 function SmsEntry() {
-    const {phone, code} = useSelector(store => store.smsEntryReducer)
     const user = useSelector(store => store.userReducer)
-    const dispatch = useDispatch()
+    const [phone, setPhone] = useState(user.phone ? user.phone : '')
+    const [code, setCode] = useState('')
 
     const navigate = useNavigate()
-
     useEffect(() => {
         if (user.is_verified) {
             navigate('/profile')
@@ -19,13 +17,14 @@ function SmsEntry() {
     })
 
     const onChangePhone = (event) => {
-        dispatch(inputLoginPhone(event.target.value))
+        setPhone(event.target.value)
     }
 
     const onChangeCode = (event) => {
-        dispatch(inputLoginSmsCode(event.target.value))
+        setCode(event.target.value)
     }
 
+    const dispatch = useDispatch()
     const sendApproveSmsCode = () => {
         const payload = {phone, code}
         dispatch(sendSmsCode(payload))

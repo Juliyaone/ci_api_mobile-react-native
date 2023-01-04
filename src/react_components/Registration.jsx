@@ -1,11 +1,13 @@
 import {useDispatch, useSelector} from "react-redux";
 import {
-    inputRegisterEmail, inputRegisterGender,
+    inputRegisterEmail,
+    inputRegisterGender,
     inputRegisterLastname,
-    inputRegisterPassword, inputRegisterPassword2,
+    inputRegisterPassword,
+    inputRegisterPassword2,
     inputRegisterPhone,
     inputRegisterThirdName,
-    inputRegisterUsername
+    inputRegisterUsername,
 } from "../redux/actions/registerActions";
 import {sendRegisterUserData} from "../redux/thunks/authThunks";
 import {useEffect} from "react";

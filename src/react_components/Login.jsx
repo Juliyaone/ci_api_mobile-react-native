@@ -1,30 +1,27 @@
-import {useDispatch, useSelector} from "react-redux";
-import {inputLoginPassword, inputLoginPhone} from "../redux/actions/userActions"
+import {useDispatch} from "react-redux";
 import {getLoginUserData} from "../redux/thunks/authThunks";
+import {useState} from "react";
 
 
 function Login() {
-    const {phone, password} = useSelector(store => store.loginReducer)
-    const user = useSelector(store => store.userReducer)
+    const [phone, setPhone] = useState('1234567890')
+    const [password, setPassword] = useState('asd')
     const dispatch = useDispatch()
 
     const onChangePhone = (event) => {
-        dispatch(inputLoginPhone(event.target.value))
+        setPhone(event.target.value)
     }
 
     const onChangePassword = (event) => {
-        dispatch(inputLoginPassword(event.target.value))
+        setPassword(event.target.value)
     }
 
     const sendLoginData = () => {
         dispatch(getLoginUserData({phone, password}))
     }
 
-
     return (
         <div>
-            <div>User: email: [{user.email}] phone: [{user.phone}]</div>
-
             <textarea
                 value={phone}
                 placeholder='phone'
