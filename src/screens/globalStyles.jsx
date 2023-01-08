@@ -8,6 +8,8 @@ module.exports = StyleSheet.create({
 		alignItems: "center",
 		paddingTop: "5%",
 		paddingBottom: "10%",
+		marginLeft: 20,
+		marginRight: 20
 	},
 	scrollView: {
 		width: "100%",
@@ -72,8 +74,8 @@ module.exports = StyleSheet.create({
 		borderStyle: "solid",
 		paddingTop: 10,
 		paddingBottom: 10,
-		paddingRight: 20,
-		paddingLeft: 20,
+		paddingRight: 10,
+		paddingLeft: 10,
 		borderRadius: 40,
 		marginBottom: 20,
 	},

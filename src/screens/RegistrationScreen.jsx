@@ -1,7 +1,8 @@
 import React, { useId } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, SafeAreaView} from "react-native";
 
 import LogoIcon from "../img/icons/logo.svg";
+
 
 const globalStyles = require("../screens/globalStyles");
 
@@ -26,6 +27,7 @@ import {
 	inputRegisterGender,
 } from "../redux/actions/registerActions";
 import { sendRegisterUserData } from "../redux/thunks/authThunks";
+
 
 function RegistrationScreen({ navigation }) {
 	const keyId = useId();
@@ -92,47 +94,54 @@ function RegistrationScreen({ navigation }) {
 				gender,
 			})
 		);
-		// navigation.navigate("Verification");
+	navigation.navigate('Verification');
 	};
 
 
+
 	return (
-		<ScrollView>
-			<View style={globalStyles.container}>
-				<LogoIcon width={120} height={120} />
-				<Text>
-					{messages.messageType}
-				</Text>
-				<Text>
-					{messages.message}
-				</Text>
-				<Text>
-					username: [{user.username}] last_name: [{user.last_name}]
-					third_name: [{user.third_name}] email: [{user.email}] phone:
-					[{user.phone}] password: [{user.password}] password2: [
-					{user.password2}] gender: [{user.gender.toString()}]
-				</Text>
+		<SafeAreaView style={globalStyles.container}>
+			<ScrollView>
+				<View style={globalStyles.container}>
+					<TouchableOpacity onPress={()=> {
+									navigation.goBack();
+							}}>
+						<LogoIcon width={120} height={120} />
+					</TouchableOpacity>
+					<Text>
+						{messages.messageType}
+					</Text>
+					<Text>
+						{messages.message}
+					</Text>
+					<Text>
+						username: [{user.username}] last_name: [{user.last_name}]
+						third_name: [{user.third_name}] email: [{user.email}] phone:
+						[{user.phone}] password: [{user.password}] password2: [
+						{user.password2}] gender: [{user.gender.toString()}]
+					</Text>
 
-				<InputProfile namePlaceholder={"Имя"} keyId={keyId} name={username} onChangeUsername={onChangeUsername}/>
+					<InputProfile namePlaceholder={"Имя"} keyId={keyId} name={username} onChangeUsername={onChangeUsername}/>
 
-				<InputProfile namePlaceholder={"Отчество"} keyId={keyId} name={last_name} onChangeUsername={onChangeLastname}/>
+					<InputProfile namePlaceholder={"Отчество"} keyId={keyId} name={last_name} onChangeUsername={onChangeLastname}/>
 
-				<InputProfile namePlaceholder={"Фамилия"} keyId={keyId} name={third_name} onChangeUsername={onChangeThirdName}/>
+					<InputProfile namePlaceholder={"Фамилия"} keyId={keyId} name={third_name} onChangeUsername={onChangeThirdName}/>
 
-				<InputPhone namePlaceholder={"+7(___)-__-__"} keyId={keyId} phone={phone} onChangePhone={onChangePhone}/>
+					<InputPhone namePlaceholder={"+7(___)-__-__"} keyId={keyId} phone={phone} onChangePhone={onChangePhone}/>
 
-				<InputEmail namePlaceholder={"Email"} keyId={keyId} email={email} onChangeEmail={onChangeEmail}/>
+					<InputEmail namePlaceholder={"Email"} keyId={keyId} email={email} onChangeEmail={onChangeEmail}/>
 
-				<InputPassword namePlaceholder={"Пароль"} keyId={keyId} password={password} onChangePassword={onChangePassword}/>
+					<InputPassword namePlaceholder={"Пароль"} keyId={keyId} password={password} onChangePassword={onChangePassword}/>
 
-				<InputPassword namePlaceholder={"Повторите пароль"} keyId={keyId} password={password2} onChangePassword={onChangePassword2}/>
+					<InputPassword namePlaceholder={"Повторите пароль"} keyId={keyId} password={password2} onChangePassword={onChangePassword2}/>
 
-				<InputRadioGender keyId={keyId} onChangeGender={onChangeGender}/>
+					<InputRadioGender keyId={keyId} onChangeGender={onChangeGender}/>
 
-				<ButtonReg text="Зарегистрироваться" keyId={keyId} sendDataFunction={sendRegisterData}/>
-	
-			</View>
-		</ScrollView>
+					<ButtonReg text="Зарегистрироваться" keyId={keyId} sendDataFunction={sendRegisterData}/>
+		
+				</View>
+			</ScrollView>
+		</SafeAreaView>
 	);
 }
 

@@ -1,9 +1,13 @@
 import React, { useId } from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 
 import {useDispatch, useSelector} from "react-redux";
 import {sendSmsCode} from "../redux/thunks/authThunks";
 import {inputLoginPhone, inputLoginSmsCode} from "../redux/actions/userActions";
+
+import { AuthContext } from "../auth/AuthContext"
+
+import LogoIcon from "../img/icons/logo.svg";
 
 import InputPhone from "../components/input/InputPhone";
 import InputSms from "../components/input/InputSms";
@@ -18,6 +22,7 @@ function VerificationScreen({navigation}) {
     const dispatch = useDispatch()
     const keyId = useId();
 
+
     // Меняет поле телефона
     const onChangePhone = (text) => {
         dispatch(inputLoginPhone(text))
@@ -31,12 +36,20 @@ function VerificationScreen({navigation}) {
     // Отправляет введенные данные для подтверждения кода
     const sendApproveSmsCode = () => {
         dispatch(sendSmsCode({phone, code}));
-        // navigation.navigate('Profile');
+        	navigation.navigate('Profile');
     }
 
+
     return (
+        <SafeAreaView>
         <ScrollView>
 			<View style={globalStyles.container}>
+
+                <TouchableOpacity onPress={()=> {
+                    navigation.goBack();
+                }}>
+                    <LogoIcon width={120} height={120} />
+                </TouchableOpacity>
 
                 <Text style={globalStyles.header}>Подтверждение телефона</Text>
 
@@ -52,6 +65,7 @@ function VerificationScreen({navigation}) {
 
             </View>
         </ScrollView>
+        </SafeAreaView>
     );
 }
 

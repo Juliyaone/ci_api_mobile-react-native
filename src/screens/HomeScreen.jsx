@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 
 const globalStyles = require("../screens/globalStyles");
-
+import { AuthContext } from "../auth/AuthContext";
 
 import { StyleSheet, Text, TouchableOpacity, SafeAreaView } from "react-native";
 
@@ -10,7 +10,7 @@ import Logo from "../img/icons/logo.svg";
 function HomeScreen({ navigation }) {
 
 	return (
-		
+	
 		<SafeAreaView style={globalStyles.container}>
 			<Text>
 				<Logo style={styles.logo} width={120} height={120} />
@@ -30,7 +30,7 @@ function HomeScreen({ navigation }) {
 				onPress={() => {
 					navigation.navigate("Login");
 				}}
-			>
+				>
 				<Text style={globalStyles.textWhite}>Войти</Text>
 			</TouchableOpacity>
 		</SafeAreaView>
