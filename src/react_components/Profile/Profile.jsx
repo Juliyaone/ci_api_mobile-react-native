@@ -1,27 +1,21 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import cl from './Profile.module.css';
-import {useDispatch, useSelector} from "react-redux";
-import {getCurrentUserRate} from "../../redux/thunks/ratesThunks";
-import {getCurrentUserAvatar, getCurrentUserMood} from "../../redux/thunks/userThunks";
+import {useGetUserAvatarQuery, useGetUserMoodQuery, useGetUserRateQuery} from "../../redux/api";
+import {AuthContainer} from "../Containers/AuthContainer";
 
-
-
-function Profile() {
-    const user = useSelector(store => store.userReducer)
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        if (!user.rateData.id) {
-            dispatch(getCurrentUserRate())
-        }
-        if (!user.avatarData.id) {
-            dispatch(getCurrentUserAvatar())
-        }
-        if (!user.moodData.id) {
-            dispatch(getCurrentUserMood())
-        }
-    })
-
+function Profile({user}) {
+    const {data: rate, error: rateError} = useGetUserRateQuery()
+    const {data: mood, error: moodError} = useGetUserMoodQuery()
+    const {data: avatar, error: avatarError} = useGetUserAvatarQuery()
+    if (rateError){
+        console.log(rateError)
+    }
+    if (moodError){
+        console.log(moodError)
+    }
+    if (avatarError){
+        console.log(avatarError)
+    }
     return (
         <div className={cl.content}>
             <h1>PROFILE</h1>
@@ -29,13 +23,17 @@ function Profile() {
             <p>Email: {user.email}</p>
             <p>Phone: {user.phone}</p>
             <p>Level: {user.level} / {user.max_level}</p>
-            <p>Mood: {user.moodData.name} {user.moodData.code}</p>
-            <p>Rate: {user.rateData.name} {user.rateData.price}</p>
-            <p>Avatar: {user.avatarData.id} {user.avatarData.file_name}</p>
+            {mood ? <p>Mood: {mood.name} {mood.code}</p> : null}
+            {rate ? <p>Rate: {rate.name} {rate.price}</p> : null}
+            {avatar ? <p>Avatar: {avatar.id} {avatar.file_name}</p> : null}
             <p>Expired at: {user.expired_at}</p>
             <p>Gender: {user.gender ? 'Male' : 'Female'}</p>
         </div>
     );
 }
 
-export default Profile;
+const WrappedAuthContainer = () => {
+    return <AuthContainer Component={Profile}/>
+}
+
+export default WrappedAuthContainer;

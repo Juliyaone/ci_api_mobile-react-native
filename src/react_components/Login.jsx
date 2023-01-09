@@ -1,40 +1,43 @@
-import {useDispatch} from "react-redux";
-import {getLoginUserData} from "../redux/thunks/authThunks";
-import {useState} from "react";
+import React from "react";
+import {useNavigate} from "react-router-dom";
+import {FormContainer} from "./Forms/FormContainer";
+import {LoginForm} from "./Forms/LoginForm";
+import {useGetMetaInfoQuery, useLoginUserMutation} from "../redux/api";
+import {saveTokenToStorage} from "../auth/tokenStorage";
+import Message, {ERROR_TYPE} from "./Message/Message";
+import Loader from "./Loader";
 
 
 function Login() {
-    const [phone, setPhone] = useState('1234567890')
-    const [password, setPassword] = useState('asd')
-    const dispatch = useDispatch()
 
-    const onChangePhone = (event) => {
-        setPhone(event.target.value)
+    const [sendLoginUserDataMutation, {error, isLoading}] = useLoginUserMutation()
+    const navigate = useNavigate()
+    if (isLoading) {
+        return <Loader/>
     }
 
-    const onChangePassword = (event) => {
-        setPassword(event.target.value)
+    const sendLoginData = async values => {
+        const answer = await sendLoginUserDataMutation(values)
+        if (answer.data.token) {
+            const token = answer.data.token.toString()
+            await saveTokenToStorage(token)
+            navigate('/profile')
+        } else {
+            console.error('Token not received')
+        }
     }
 
-    const sendLoginData = () => {
-        dispatch(getLoginUserData({phone, password}))
-    }
+    // TODO тестовые данные, удалить в релизе:
+    const initialValues = {phone: '1234567890', password: 'asd'}
 
     return (
         <div>
-            <textarea
-                value={phone}
-                placeholder='phone'
-                onChange={onChangePhone}>
-                    </textarea>
-            <textarea
-                value={password}
-                placeholder='password'
-                onChange={onChangePassword}>
-                    </textarea>
-            <button onClick={sendLoginData}>
-                Войти
-            </button>
+            <Message type={ERROR_TYPE} text={error?.data?.detail}/>
+            <FormContainer
+                onSubmit={sendLoginData}
+                initialValues={initialValues}
+                Component={LoginForm}
+            />
         </div>
     )
 }

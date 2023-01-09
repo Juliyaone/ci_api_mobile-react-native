@@ -1,44 +1,38 @@
-import React, {useEffect, useId} from 'react';
+import React from 'react';
 import Complex from "./Complex/Complex";
 import * as styles from "./stylesComplexes";
-import {useDispatch, useSelector} from "react-redux";
-import {getComplexes} from "../../redux/thunks/complexThunks";
+import {nanoid} from "@reduxjs/toolkit";
+import {ApiHandler} from "../Containers/ApiHandler";
+import {useGetComplexesQuery} from "../../redux/api";
+import {AuthContainer} from "../Containers/AuthContainer";
 
 
-function Complexes(props) {
+function Complexes({data}) {
+    const header = 'Комплексы'
     const {
         viewed_complexes,
         not_viewed_complexes,
         today_complex
-    } = useSelector(store => store.complexesReducer)
-    const dispatch = useDispatch()
+    } = data
 
-    useEffect(() => {
-        if (not_viewed_complexes.length === 0) {
-            dispatch(getComplexes())
-        }
-    }, [dispatch, not_viewed_complexes])
-
-    let key_id = useId()
-
-    const getViewedComplexes = viewed_complexes?.map((complex) => {
+    const getViewedComplexes = viewed_complexes.map((complex) => {
         return (
             <styles.ComplexItem>
-                <Complex complex={complex} key={complex.id + key_id}/>
+                <Complex complex={complex} key={nanoid() + complex.id}/>
             </styles.ComplexItem>)
     })
 
     const getNotViewedComplexes = not_viewed_complexes.map((complex) => {
         return (
             <styles.ComplexItem>
-                <Complex complex={complex} key={complex.id + key_id}/>
+                <Complex complex={complex} key={nanoid() + complex.id}/>
             </styles.ComplexItem>)
     })
 
     return (
         <styles.Content>
             <styles.Header>
-                {props.header}
+                {header}
             </styles.Header>
 
             <div>Просмотренные: {viewed_complexes.length}</div>
@@ -60,5 +54,12 @@ function Complexes(props) {
 
         </styles.Content>);
 }
+const HandlerContainer = () => {
+    return <ApiHandler func={useGetComplexesQuery} Component={Complexes}/>
+}
 
-export default Complexes;
+const WrappedAuthContainer = () => {
+    return <AuthContainer Component={HandlerContainer}/>
+}
+
+export default WrappedAuthContainer;

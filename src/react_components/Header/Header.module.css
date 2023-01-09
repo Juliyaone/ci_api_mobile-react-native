@@ -1,0 +1,13 @@
+.header {
+  background-color: gray;
+  padding: 20px;
+}
+
+.header img {
+  width: 20px;
+  align-content: center;
+}
+
+.header h1, h2, h3 {
+  text-align: center;
+}

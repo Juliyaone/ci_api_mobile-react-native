@@ -1,27 +1,29 @@
-import React, {useEffect, useId} from 'react';
+import React from 'react';
 import cl from './Videos.module.css';
-import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import {getVideos} from "../../redux/thunks/videosThunks";
 import Video from "./Video/Video";
+import {useGetVideosQuery} from "../../redux/api";
+import {nanoid} from "@reduxjs/toolkit";
+import Loader from "../Loader";
+import Message, {ERROR_TYPE} from "../Message/Message";
+import {AuthContainer} from "../Containers/AuthContainer";
 
 
 function Videos() {
-
-    const {items} = useSelector(store => store.videosReducer)
-    const dispatch = useDispatch()
     const complexID = useParams()
+    const {data: videos, isLoading, error} = useGetVideosQuery(complexID.complexID)
 
-    useEffect(() => {
-        dispatch(getVideos(complexID.complexID))
-    }, [dispatch, complexID])
+    if (isLoading) {
+        return <Loader/>
+    }
+    if (error) {
+        return <Message type={ERROR_TYPE} text={error.data.detail}/>
+    }
 
-    let key_id = useId()
-
-    const mapVideos = items?.map((video) => {
+    const mapVideos = videos.map((video) => {
         return (
             <div className={cl.complex}>
-                <Video {...video} key={video.id + key_id}/>
+                <Video {...video} key={nanoid() + video.id}/>
             </div>
         )
     })
@@ -36,4 +38,8 @@ function Videos() {
     );
 }
 
-export default Videos;
+const WrappedAuthContainer = () => {
+    return <AuthContainer Component={Videos}/>
+}
+
+export default WrappedAuthContainer;

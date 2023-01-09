@@ -3,17 +3,17 @@ import cl from './Complex.module.css';
 import {NavLink} from "react-router-dom";
 
 
-function Complex(props) {
+function Complex({complex}) {
 
     return (
-        props.complex
+        complex
             ? <div className={cl.item}>
-            <NavLink to={`/videos/${props.complex.id}`}>
-                <p>ID: {props.complex.id}</p>
-                <p>NAME: {props.complex.name}</p>
-                <p>NUMBER: {props.complex.number}</p>
-                <p>DESCRIPTION: {props.complex.description}</p>
-                <p>DURATION: {props.complex.duration} minutes</p>
+            <NavLink to={`/videos/${complex.id}`}>
+                <p>ID: {complex.id}</p>
+                <p>NAME: {complex.name}</p>
+                <p>NUMBER: {complex.number}</p>
+                <p>DESCRIPTION: {complex.description}</p>
+                <p>DURATION: {complex.duration} minutes</p>
             </NavLink>
         </div>
             : null

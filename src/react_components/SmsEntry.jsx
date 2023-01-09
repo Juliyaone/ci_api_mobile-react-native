@@ -1,52 +1,34 @@
-import {useDispatch, useSelector} from "react-redux";
-import {sendSmsCode} from "../redux/thunks/authThunks";
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import React from "react";
+import {FormContainer} from "./Forms/FormContainer";
+import {SmsEntryForm} from "./Forms/SmsEntryForm";
+import {useSendSmsCodeMutation} from "../redux/api";
+import {saveTokenToStorage} from "../auth/tokenStorage";
+import Message, {ERROR_TYPE} from "./Message/Message";
 
 
-function SmsEntry() {
-    const user = useSelector(store => store.userReducer)
-    const [phone, setPhone] = useState(user.phone ? user.phone : '')
-    const [code, setCode] = useState('')
-
+function SmsEntry({phone}) {
+    const [sendSmsCode, {error}] = useSendSmsCodeMutation()
     const navigate = useNavigate()
-    useEffect(() => {
-        if (user.is_verified) {
+
+    const sendApproveSmsCode = async values => {
+        const answer = await sendSmsCode(values)
+        if (answer.data.token) {
+            await saveTokenToStorage(answer.data.token)
             navigate('/profile')
+        } else {
+            console.error('Token not received')
         }
-    })
-
-    const onChangePhone = (event) => {
-        setPhone(event.target.value)
     }
-
-    const onChangeCode = (event) => {
-        setCode(event.target.value)
-    }
-
-    const dispatch = useDispatch()
-    const sendApproveSmsCode = () => {
-        const payload = {phone, code}
-        dispatch(sendSmsCode(payload))
-    }
-
+    const initialValues = {phone: phone, code: ''}
     return (
         <div>
-            <div>User: email: [{user.email}] phone: [{user.phone}]</div>
-            <textarea
-                value={phone}
-                placeholder='phone'
-                onChange={onChangePhone}>
-            </textarea>
-            <textarea
-                value={code}
-                placeholder='code'
-                onChange={onChangeCode}>
-            </textarea>
-            <button onClick={sendApproveSmsCode}>
-                Подтвердить
-            </button>
-        </div>
+            <Message type={ERROR_TYPE} text={error?.data?.detail}/>
+            <FormContainer
+                onSubmit={sendApproveSmsCode}
+                initialValues={initialValues}
+                Component={SmsEntryForm}
+            /></div>
     )
 }
 

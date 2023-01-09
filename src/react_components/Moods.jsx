@@ -1,22 +1,15 @@
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useId} from "react";
-import {getMoods} from "../redux/thunks/moodsThunks";
+import React from "react";
+import {nanoid} from "@reduxjs/toolkit";
+import {ApiHandler} from "./Containers/ApiHandler";
+import {useGetMoodsQuery} from "../redux/api";
+import {AuthContainer} from "./Containers/AuthContainer";
 
 
-function Moods() {
-    const {items} = useSelector(store => store.moodsReducer)
-    const key_id = useId()
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        if (items.length === 0) {
-            dispatch(getMoods())
-        }
-    }, [dispatch, items])
+function Moods({data}) {
 
     const getAllMoods = () => {
-        return items?.map(
-            (mood) => <p key={mood.id + key_id}>{mood.name} {mood.code}</p>
+        return data.map(
+            (mood) => <p key={nanoid() + mood.id}>{mood.name} {mood.code}</p>
         )
     }
 
@@ -27,4 +20,12 @@ function Moods() {
     )
 }
 
-export default Moods;
+const HandlerContainer = () => {
+    return <ApiHandler func={useGetMoodsQuery} Component={Moods}/>
+}
+
+const WrappedAuthContainer = () => {
+    return <AuthContainer Component={HandlerContainer}/>
+}
+
+export default WrappedAuthContainer;

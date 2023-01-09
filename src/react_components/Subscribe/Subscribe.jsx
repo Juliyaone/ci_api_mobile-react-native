@@ -1,25 +1,17 @@
-import React, {useEffect, useId} from 'react';
+import React from 'react';
 import * as styles from "./stylesSubscibe";
-import {useDispatch, useSelector} from "react-redux";
-import {getRates} from "../../redux/thunks/ratesThunks";
+import {nanoid} from "@reduxjs/toolkit";
+import {ApiHandler} from "../Containers/ApiHandler";
+import {useGetRatesQuery} from "../../redux/api";
+import {AuthContainer} from "../Containers/AuthContainer";
 
 
-function Subscribe() {
-
-    const {items} = useSelector(store => store.ratesReducer)
-    const dispatch = useDispatch()
-    const key_id = useId()
-
-    useEffect(() => {
-        if (items.length === 0) {
-            dispatch(getRates())
-        }
-    }, [dispatch, items])
+function Subscribe({data}) {
 
     const getRatesMap = () => {
         return (
-            items?.map(
-                (rate) => <p key={rate.id + key_id}>{rate.name} {rate.price}</p>
+            data.map(
+                (rate) => <p key={nanoid() + rate.id}>{rate.name} {rate.price}</p>
             )
         )
     }
@@ -34,4 +26,12 @@ function Subscribe() {
     );
 }
 
-export default Subscribe;
+const HandlerContainer = () => {
+    return <ApiHandler func={useGetRatesQuery} Component={Subscribe}/>
+}
+
+const WrappedAuthContainer = () => {
+    return <AuthContainer Component={HandlerContainer}/>
+}
+
+export default WrappedAuthContainer;
