@@ -1,49 +1,55 @@
-import React, { useId, useContext } from "react";
+import React, { useId } from "react";
 import {SafeAreaView, Text, ScrollView, View, TouchableOpacity} from 'react-native';
-import {useDispatch, useSelector} from "react-redux";
-import {inputLoginPassword, inputLoginPhone} from "../redux/actions/userActions";
-import {getLoginUserData} from "../redux/thunks/authThunks";
+
+import {useLoginUserMutation} from "../redux/api";
+import {saveTokenToStorage} from "../auth/tokenStorage";
+import Message, {ERROR_TYPE} from "../message/Message";
 
 import InputPhone from "../components/input/InputPhone";
 import InputPassword from "../components/input/InputPassword";
 import ButtonReg from "../components/button/ButtonReg";
+import Loader from "../components/loader/Loader";
 
 import LogoIcon from "../img/icons/logo.svg";
-import { AuthContext } from "../auth/AuthContext"
 
 const globalStyles = require("../screens/globalStyles");
 
 
 function LoginScreen({navigation}) {
+    const keyId = useId(); 
 
-    const messages = useSelector(store => store.messagesReducer)
-    const {phone, password} = useSelector(store => store.loginReducer)
+    const [sendLoginUserDataMutation, {error, isLoading}] = useLoginUserMutation()
 
-    const dispatch = useDispatch()
-    const keyId = useId();
-
-    // Меняет поле телефона
-    const onChangePhone = (text) => {
-        dispatch(inputLoginPhone(text))
+    if (isLoading) {
+        return <Loader/>
     }
 
-    // Меняет поле пароля
-    const onChangePassword = (text) => {
-        dispatch(inputLoginPassword(text))
+    let messageText = error?.data?.detail;
+    let messageType = ERROR_TYPE;
+
+
+
+    const sendLoginData = async values => {
+        const answer = await sendLoginUserDataMutation(values)
+        if (answer.data.token) {
+            const token = answer.data.token.toString();
+            await saveTokenToStorage(token);
+            navigation.navigate('Profile');
+        } else {
+            messageText = 'Token not received';
+            console.error(messageText);
+        }
     }
+    let initialValues = {phone: '', password: ''}
 
-    // Отправляет введенные данные для авторизации
-    const sendLoginData = () => {
-        dispatch(getLoginUserData({phone, password}));
-        navigation.navigate('Profile');
-    }
-
-
+    // TODO тестовые данные, удалить в релизе:
+    initialValues = {phone: '1234567890', password: 'asd'}
 
 
     return (
     <SafeAreaView style={globalStyles.container}>
 		<ScrollView>
+            <Message type={messageType} text={messageText}/>
 
 			<View style={globalStyles.container}>
 			<TouchableOpacity onPress={()=> {
@@ -51,12 +57,6 @@ function LoginScreen({navigation}) {
             }}>
 				<LogoIcon width={120} height={120} />
             </TouchableOpacity>
-
-                {/*
-				<Text>{messages.messageType}</Text>
-
-				<Text>{messages.message}</Text> */}
-
 
                 <Text style={globalStyles.header}>Вход</Text>
 

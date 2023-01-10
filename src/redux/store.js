@@ -1,27 +1,16 @@
-import {applyMiddleware, combineReducers, legacy_createStore} from 'redux'
-import thunk from 'redux-thunk'
-import userReducer from "./reducers/userReducer";
-import loginReducer from "./reducers/loginReducer"
-import messagesReducer from "./reducers/messagesReducer";
-import complexesReducer from "./reducers/complexesReducer";
-import videosReducer from "./reducers/videosReducer";
-import ratesReducer from "./reducers/ratesReducer";
-import moodsReducer from "./reducers/moodsReducer";
-import smsEntryReducer from "./reducers/smsEntryReducer";
+import React from "react";
+import {configureStore} from "@reduxjs/toolkit";
+// import logger from 'redux-logger'
+import {userApi} from "./api";
 
 
-const rootReducer = combineReducers(
-    {
-        loginReducer,
-        userReducer,
-        messagesReducer,
-        complexesReducer,
-        videosReducer,
-        ratesReducer,
-        moodsReducer,
-        smsEntryReducer
+export const Store = configureStore({
+    middleware: getDefaultMiddleware => {
+        return getDefaultMiddleware()
+            .concat(userApi.middleware)
+            // .concat(logger)
+    },
+    reducer: {
+        [userApi.reducerPath]: userApi.reducer
     }
-)
-
-
-export const Store = legacy_createStore(rootReducer, applyMiddleware(thunk))
+})

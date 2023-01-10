@@ -1,5 +1,7 @@
 import React, { useId } from "react";
 import { View, Text, ScrollView, TouchableOpacity, SafeAreaView} from "react-native";
+import {useRegisterUserMutation} from "../redux/api";
+import Message, {ERROR_TYPE} from "../message/Message";
 
 import LogoIcon from "../img/icons/logo.svg";
 
@@ -13,107 +15,41 @@ import InputPassword from "../components/input/InputPassword";
 import InputRadioGender from "../components/input/InputRadioGender";
 import ButtonReg from "../components/button/ButtonReg";
 
+import Loader from "../components/loader/Loader";
 
-import { useDispatch, useSelector } from "react-redux";
 
-import {
-	inputRegisterUsername,
-	inputRegisterLastname,
-	inputRegisterThirdName,
-	inputRegisterEmail,
-	inputRegisterPhone,
-	inputRegisterPassword,
-	inputRegisterPassword2,
-	inputRegisterGender,
-} from "../redux/actions/registerActions";
-import { sendRegisterUserData } from "../redux/thunks/authThunks";
 
 
 function RegistrationScreen({ navigation }) {
-	const keyId = useId();
-	const messages = useSelector((store) => store.messagesReducer);
+    const [registerUser, {error, isLoading}] = useRegisterUserMutation()
 
-	const {
-		username,
-		last_name,
-		third_name,
-		email,
-		phone,
-		password,
-		password2,
-		gender,
-	} = useSelector((store) => store.userReducer);
+    if (isLoading) {
+       return <Loader/>
+    }
 
-	const dispatch = useDispatch();
+    let messageText = error?.data?.detail;
+    let messageType = ERROR_TYPE;
 
-	const user = useSelector((store) => store.userReducer);
-
-	const onChangeUsername = (text) => {
-		dispatch(inputRegisterUsername(text));
-	};
-
-	const onChangeLastname = (text) => {
-		dispatch(inputRegisterLastname(text));
-	};
-
-	const onChangeThirdName = (text) => {
-		dispatch(inputRegisterThirdName(text));
-	};
-
-	const onChangeEmail = (text) => {
-		dispatch(inputRegisterEmail(text));
-	};
-
-	const onChangePhone = (text) => {
-		dispatch(inputRegisterPhone(text));
-	};
-
-	const onChangePassword = (text) => {
-		dispatch(inputRegisterPassword(text));
-	};
-
-	const onChangePassword2 = (text) => {
-		dispatch(inputRegisterPassword2(text));
-	};
-
-	const onChangeGender = (gender) => {
-		const genderVal = (gender === "Ж") ? false : true;
-		dispatch(inputRegisterGender(genderVal));
-	};
-
-	const sendRegisterData = () => {
-		dispatch(
-			sendRegisterUserData({
-				username,
-				last_name,
-				third_name,
-				email,
-				phone,
-				password,
-				password2,
-				gender,
-			})
-		);
-	navigation.navigate('Verification');
-	};
-
+    const sendRegisterData = async values => {
+        const answer = await registerUser(values)
+        if (answer.status === 200) {
+            navigation.navigate('VerificationSms')
+        }
+    }
 
 
 	return (
 		<SafeAreaView style={globalStyles.container}>
 			<ScrollView>
+				<Message type={messageType} text={messageText}/>
+
 				<View style={globalStyles.container}>
 					<TouchableOpacity onPress={()=> {
 									navigation.goBack();
 							}}>
 						<LogoIcon width={120} height={120} />
 					</TouchableOpacity>
-					<Text>
-						{messages.messageType}
-					</Text>
-					<Text>
-						{messages.message}
-					</Text>
+
 					<Text>
 						username: [{user.username}] last_name: [{user.last_name}]
 						third_name: [{user.third_name}] email: [{user.email}] phone:

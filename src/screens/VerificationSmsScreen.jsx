@@ -1,48 +1,51 @@
 import React, { useId } from 'react';
 import {ScrollView, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 
-import {useDispatch, useSelector} from "react-redux";
-import {sendSmsCode} from "../redux/thunks/authThunks";
-import {inputLoginPhone, inputLoginSmsCode} from "../redux/actions/userActions";
+import {useSendSmsCodeMutation} from "../redux/api";
+import {saveTokenToStorage} from "../auth/tokenStorage";
+import Message, {ERROR_TYPE} from "../message/Message";
 
-import { AuthContext } from "../auth/AuthContext"
 
 import LogoIcon from "../img/icons/logo.svg";
 
 import InputPhone from "../components/input/InputPhone";
 import InputSms from "../components/input/InputSms";
 import ButtonReg from "../components/button/ButtonReg";
+import Loader from "../components/loader/Loader";
+
+
 
 const globalStyles = require("../screens/globalStyles");
 
 function VerificationScreen({navigation}) {
-    const messages = useSelector(store => store.messagesReducer)
-    const {phone, code} = useSelector(store => store.smsEntryReducer)
-    const user = useSelector(store => store.userReducer)
-    const dispatch = useDispatch()
-    const keyId = useId();
+  const [sendSmsCode, {error, isLoading}] = useSendSmsCodeMutation();
 
-
-    // Меняет поле телефона
-    const onChangePhone = (text) => {
-        dispatch(inputLoginPhone(text))
+    if (isLoading) {
+        return <Loader/>
     }
 
-    // Меняет поле code
-    const onChangeCode = (text) => {
-        dispatch(inputLoginSmsCode(text))
+    let messageText = error?.data?.detail;
+    let messageType = ERROR_TYPE;
+
+    const sendApproveSmsCode = async values => {
+        const answer = await sendSmsCode(values);
+        if (answer.data.token) {
+            await saveTokenToStorage(answer.data.token);
+            navigation.navigate('Profile');
+        } else {
+            messageText = 'Token not received';
+            console.error(messageText);
+        }
     }
 
-    // Отправляет введенные данные для подтверждения кода
-    const sendApproveSmsCode = () => {
-        dispatch(sendSmsCode({phone, code}));
-        	navigation.navigate('Profile');
-    }
+    const initialValues = {phone: phone, code: ''}
 
 
     return (
         <SafeAreaView>
         <ScrollView>
+            <Message type={messageType} text={messageText}/>
+
 			<View style={globalStyles.container}>
 
                 <TouchableOpacity onPress={()=> {
@@ -53,8 +56,6 @@ function VerificationScreen({navigation}) {
 
                 <Text style={globalStyles.header}>Подтверждение телефона</Text>
 
-                <Text>{messages.messageType}</Text>
-                <Text>{messages.message}</Text>
                 <Text>User: email: [{user.email}] phone: [{user.phone}]</Text>
 
 				<InputPhone namePlaceholder={"+7(___)-__-__"} keyId={keyId} phone={phone} onChangePhone={onChangePhone}/>
