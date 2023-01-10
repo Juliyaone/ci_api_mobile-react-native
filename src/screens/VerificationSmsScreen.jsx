@@ -42,7 +42,7 @@ function VerificationScreen({navigation}) {
 
     return (
         <SafeAreaView>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
 			<View style={globalStyles.container}>
 
                 <TouchableOpacity onPress={()=> {

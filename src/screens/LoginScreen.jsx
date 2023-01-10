@@ -38,12 +38,9 @@ function LoginScreen({navigation}) {
         navigation.navigate('Profile');
     }
 
-
-
-
     return (
     <SafeAreaView style={globalStyles.container}>
-		<ScrollView>
+		<ScrollView showsVerticalScrollIndicator={false}>
 
 			<View style={globalStyles.container}>
 			<TouchableOpacity onPress={()=> {
@@ -65,6 +62,11 @@ function LoginScreen({navigation}) {
                 <InputPassword namePlaceholder={"Пароль"} keyId={keyId} password={password} onChangePassword={onChangePassword}/>
                 
 				<ButtonReg text="Вход" keyId={keyId} sendDataFunction={sendLoginData}/>
+
+
+                <TouchableOpacity onPress={()=> {navigation.navigate('Forgot')}}>
+                    <Text style={globalStyles.textRed}>Забыли пароль?</Text>
+                </TouchableOpacity>
 
             </View>
         </ScrollView>

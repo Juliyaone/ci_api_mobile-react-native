@@ -1,7 +1,8 @@
 import React, { useId } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, ImageBackground } from 'react-native';
 import {useSelector, useDispatch} from "react-redux";
-import {deleteTokenFromStorage} from "../auth/tokenStorage";
+
+
 
 const globalStyles = require("../screens/globalStyles");
 
@@ -11,34 +12,24 @@ import PhotoIcon from "../img/icons/photo.svg";
 import Ellipse from "../img/icons/ellipse.svg";
 import CreditCard from "../img/icons/credit-card.svg";
 
-
+// import PrifileEdit from "../../screens/PrifileEditScreen";
 
 
 function ProfileScreen({navigation}) {
 
-    const user = useSelector(store => store.userReducer);
-    const dispatch = useDispatch()
-    const keyId = useId();
+  const user = useSelector(store => store.userReducer);
 
-    console.log(user);
-    const phone = user.phone;
-    const password = user.password;
-
-    // Отправляет что токен удален при выходе
-    const sendLogoutData = () => {
-        dispatch(deleteTokenFromStorage({phone,password}));
-        navigation.navigate('Home');
-    }
+  console.log(user);
 
   return (
     <SafeAreaView style={globalStyles.container}>
-			<ScrollView>
+			<ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.row}>
-            <MenuIcon />
+            <TouchableOpacity onPress={()=> navigation.openDrawer()}>
+              <MenuIcon />
+            </TouchableOpacity>
             <AvatarPreview/>
           </View>
-
-
 
           <View style={styles.boxWhite}>
             <View style={styles.rowBetfween}>
@@ -56,9 +47,10 @@ function ProfileScreen({navigation}) {
             </View>
 
             <View>
-              <TouchableOpacity onPress={()=> {
-                navigation.navigate('PrifileEdit');
-              }}style={globalStyles.btnRed}>
+              <TouchableOpacity style={globalStyles.btnRed} onPress={()=> {
+                navigation.navigate("ProfileEdit", { username: user.username, last_name: user.last_name, third_name: user.third_name, phone: user.phone, email: user.email })
+              }}
+              >
                 <Text style={globalStyles.textWhite}>Редектировать профиль</Text>
               </TouchableOpacity>
             </View>
@@ -82,7 +74,11 @@ function ProfileScreen({navigation}) {
                 </View>
                 <Text style={globalStyles.textWhite}>Подписка автоматически продлится: ВЫВЕСТИ ДАТУ</Text>
                 <TouchableOpacity style={globalStyles.btnBorder}>
-                  <Text style={globalStyles.textRed}>Подробнее</Text>
+                  <Text style={globalStyles.textRed}
+                  onPress={()=> {
+                navigation.navigate("Subscribe")
+              }}
+              >Подробнее</Text>
                 </TouchableOpacity>
             </View>
           </View>

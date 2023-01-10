@@ -101,7 +101,7 @@ function RegistrationScreen({ navigation }) {
 
 	return (
 		<SafeAreaView style={globalStyles.container}>
-			<ScrollView>
+			<ScrollView showsVerticalScrollIndicator={false}>
 				<View style={globalStyles.container}>
 					<TouchableOpacity onPress={()=> {
 									navigation.goBack();
@@ -138,7 +138,11 @@ function RegistrationScreen({ navigation }) {
 					<InputRadioGender keyId={keyId} onChangeGender={onChangeGender}/>
 
 					<ButtonReg text="Зарегистрироваться" keyId={keyId} sendDataFunction={sendRegisterData}/>
-		
+
+		 			<TouchableOpacity onPress={()=> {navigation.navigate('Login')}}>
+            <Text style={globalStyles.textRed}>Уже зарегистрированы?</Text>
+          </TouchableOpacity>
+
 				</View>
 			</ScrollView>
 		</SafeAreaView>

@@ -3,6 +3,8 @@ import {updateUserFromServerData} from "../actions/userActions";
 import {setUserIsCreated, setUserIsLogged} from "../actions/registerActions";
 import {saveTokenToStorage} from "../../auth/tokenStorage";
 import {AuthRequester} from "../../api/AuthRequester";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 /**
  *

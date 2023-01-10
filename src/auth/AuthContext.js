@@ -1,24 +1,26 @@
-import {createContext, useState} from "react";
+import React, { createContext, useState }from 'react';
+
 // import getTokenFromStorage from "../auth/tokenStorage"
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
-    const [isLoading, setIsLoading] = useState(false);
-     
-    // const getToken = () => {
-    //     getTokenFromStorage()
+    // const [isLoading, setIsLoading] = useState(true);
+    // const [userToken, setUserToken] = useState(null);
+
+    // const login = () => {
+    //     setUserToken('jdhjhfhjkfd');
+    //     setIsLoading(false);
     // }
 
-    // getToken()
-    //     .then((token) => {
-    //         let token = token
-    // })
 
+    // const logout = () => {
+    //     setUserToken(null);
+    //     setIsLoading(false);
+    // }
+    
     return (
-        <AuthContext.Provider value={{isLoading, setIsLoading, }}>
+        <AuthContext.Provider value={{}}>
             {children}
         </AuthContext.Provider>
     )
 }
-
-export default AuthContext;
