@@ -77,6 +77,14 @@ export const userApi = createApi({
             }),
             invalidatesTags: (_) => ['User']
         }),
+        editPassword: builder.mutation({
+            query: (body) => ({
+                url: urls.CHANGE_PASSWORD,
+                method: 'PUT',
+                body,
+            }),
+            invalidatesTags: (_) => ['User']
+        }),
         setUserMood: builder.mutation({
             query: (body) => ({
                 url: urls.SET_MOOD,
@@ -125,6 +133,7 @@ export const {
     useGetUserMoodQuery,
     useGetUserAvatarQuery,
     useEditProfileMutation,
+    useEditPasswordMutation,
     useLoginUserMutation,
     useRegisterUserMutation,
     useSendSmsCodeMutation,

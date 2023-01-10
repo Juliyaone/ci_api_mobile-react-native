@@ -54,6 +54,7 @@ function Complexes({data}) {
 
         </styles.Content>);
 }
+
 const HandlerContainer = () => {
     return <ApiHandler func={useGetComplexesQuery} Component={Complexes}/>
 }
