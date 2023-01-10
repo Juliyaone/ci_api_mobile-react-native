@@ -1,16 +1,18 @@
-import {Field} from "react-final-form";
+import {Field} from "formik";
 
 
 export const PasswordField = ({label, name, placeholder}) => {
+    if (!label) {
+        label = name
+    }
     return (
-        <div>
-            <label>{label}</label>
-            <Field
-                name={name}
-                component="input"
-                placeholder={placeholder}
-                type="password"
-            />
-        </div>
+        <Field
+            id={name}
+            name={name}
+            component="input"
+            placeholder={placeholder}
+            type="password"
+            label={label}
+        />
     )
 }

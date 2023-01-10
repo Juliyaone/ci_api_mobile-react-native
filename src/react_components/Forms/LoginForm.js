@@ -1,26 +1,16 @@
-import {Field} from "react-final-form";
 import React from "react";
+import {PhoneField} from "../Fields/PhoneField";
+import {Form} from "formik";
+import {PasswordField} from "../Fields/PasswordField";
+import {SubmitButton} from "../Fields/SubmitButton";
 
-export const LoginForm = ({handleSubmit}) => {
+
+export const LoginForm = () => {
     return (
-        <form onSubmit={handleSubmit}>
-
-            <div>
-                <label>phone</label>
-                <Field name="phone" component="input" placeholder="phone"/>
-            </div>
-
-            <div>
-                <label>password</label>
-                <Field name="password" component="input" placeholder="password"/>
-            </div>
-
-            <div>
-                <button type="submit">
-                    Войти
-                </button>
-            </div>
-
-        </form>
+        <Form>
+            <PhoneField name="phone" component="input" placeholder="phone"/>
+            <PasswordField name="password" component="password" placeholder="password"/>
+            <SubmitButton text="Войти"/>
+        </Form>
     )
 }

@@ -1,31 +1,20 @@
-import {Field} from "react-final-form";
+import {Form} from "formik";
+
 import React from "react";
+import {InputField} from "../Fields/InputField";
+import {PhoneField} from "../Fields/PhoneField";
+import {EmailField} from "../Fields/EmailField";
+import {SubmitButton} from "../Fields/SubmitButton";
 
-export const EditProfileForm = ({handleSubmit}) => {
+export const EditProfileForm = () => {
     return (
-        <form onSubmit={handleSubmit}>
-
-            <div>
-                <label>UserName</label>
-                <Field name="username" component="input" placeholder="UserName"/>
-            </div>
-
-            <div>
-                <label>phone</label>
-                <Field name="phone" component="input" placeholder="phone"/>
-            </div>
-
-            <div>
-                <label>email</label>
-                <Field name="email" component="input" placeholder="email"/>
-            </div>
-
-            <div>
-                <button type="submit">
-                    Изменить данные
-                </button>
-            </div>
-
-        </form>
+        <Form>
+            <InputField name="username" component="input" placeholder="username"/>
+            <InputField name="last_name" component="input" placeholder="last_name"/>
+            <InputField name="third_name" component="input" placeholder="third_name"/>
+            <PhoneField name="phone" component="input" placeholder="phone"/>
+            <EmailField name="email" component="input" placeholder="email"/>
+            <SubmitButton text="Изменить данные"/>
+        </Form>
     )
 }

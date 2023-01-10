@@ -1,15 +1,15 @@
-import {Form} from "react-final-form";
 import React from "react";
+import {Formik} from "formik";
 
 
-export const FormContainer = ({onSubmit, initialValues, Component}) => {
+export const FormContainer = ({onSubmit, initialValues, Component, enableReinitialize=false}) => {
+
     return (
-        <Form
-            onSubmit={onSubmit}
+        <Formik
+            enableReinitialize={enableReinitialize}
             initialValues={initialValues}
-            render={
-                ({handleSubmit}) => <Component handleSubmit={handleSubmit}/>
-            }
-        />
+            onSubmit={onSubmit}>
+            <Component/>
+        </Formik>
     )
 }
