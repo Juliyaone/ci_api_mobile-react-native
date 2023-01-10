@@ -8,14 +8,14 @@ import {AuthContainer} from "../Containers/AuthContainer";
 
 
 function EditProfile({user}) {
-    let messageType = ERROR_TYPE
     const [sendEditProfile, {error, isLoading}] = useEditProfileMutation()
-
-    let messageText = error?.data?.detail
 
     if (isLoading) {
         return <Loader/>
     }
+
+    let messageText = error?.data?.detail
+    let messageType = ERROR_TYPE
 
     const onSubmit = async values => {
         const answer = await sendEditProfile(values)

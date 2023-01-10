@@ -5,11 +5,19 @@ import {SmsEntryForm} from "./Forms/SmsEntryForm";
 import {useSendSmsCodeMutation} from "../redux/api";
 import {saveTokenToStorage} from "../auth/tokenStorage";
 import Message, {ERROR_TYPE} from "./Message/Message";
+import Loader from "./Loader";
 
 
 function SmsEntry({phone}) {
-    const [sendSmsCode, {error}] = useSendSmsCodeMutation()
+    const [sendSmsCode, {error, isLoading}] = useSendSmsCodeMutation()
     const navigate = useNavigate()
+
+    if (isLoading) {
+        return <Loader/>
+    }
+
+    let messageText = error?.data?.detail
+    let messageType = ERROR_TYPE
 
     const sendApproveSmsCode = async values => {
         const answer = await sendSmsCode(values)
@@ -17,13 +25,16 @@ function SmsEntry({phone}) {
             await saveTokenToStorage(answer.data.token)
             navigate('/profile')
         } else {
-            console.error('Token not received')
+            messageText = 'Token not received'
+            console.error(messageText)
         }
     }
+
     const initialValues = {phone: phone, code: ''}
+
     return (
         <div>
-            <Message type={ERROR_TYPE} text={error?.data?.detail}/>
+            <Message type={messageType} text={messageText}/>
             <FormContainer
                 onSubmit={sendApproveSmsCode}
                 initialValues={initialValues}

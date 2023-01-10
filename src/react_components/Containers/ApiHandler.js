@@ -2,7 +2,7 @@ import Loader from "../Loader";
 import {ErrorMessage} from "../Message/Message";
 import React from "react";
 
-export const ApiHandler = ({func, Component}) => {
+export const ApiHandler = ({func, Component, user}) => {
     const {
         data,
         isLoading,
@@ -21,5 +21,5 @@ export const ApiHandler = ({func, Component}) => {
         return <ErrorMessage text='No data received'/>
     }
 
-    return <Component data={data}/>
+    return <Component data={data} user={user}/>
 }

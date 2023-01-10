@@ -2,7 +2,7 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 import {FormContainer} from "./Forms/FormContainer";
 import {LoginForm} from "./Forms/LoginForm";
-import {useGetMetaInfoQuery, useLoginUserMutation} from "../redux/api";
+import {useLoginUserMutation} from "../redux/api";
 import {saveTokenToStorage} from "../auth/tokenStorage";
 import Message, {ERROR_TYPE} from "./Message/Message";
 import Loader from "./Loader";
@@ -12,9 +12,13 @@ function Login() {
 
     const [sendLoginUserDataMutation, {error, isLoading}] = useLoginUserMutation()
     const navigate = useNavigate()
+
     if (isLoading) {
         return <Loader/>
     }
+
+    let messageText = error?.data?.detail
+    let messageType = ERROR_TYPE
 
     const sendLoginData = async values => {
         const answer = await sendLoginUserDataMutation(values)
@@ -23,16 +27,18 @@ function Login() {
             await saveTokenToStorage(token)
             navigate('/profile')
         } else {
-            console.error('Token not received')
+            messageText = 'Token not received'
+            console.error(messageText)
         }
     }
+    let initialValues = {phone: '', password: ''}
 
     // TODO тестовые данные, удалить в релизе:
-    const initialValues = {phone: '1234567890', password: 'asd'}
+    initialValues = {phone: '1234567890', password: 'asd'}
 
     return (
         <div>
-            <Message type={ERROR_TYPE} text={error?.data?.detail}/>
+            <Message type={messageType} text={messageText}/>
             <FormContainer
                 onSubmit={sendLoginData}
                 initialValues={initialValues}

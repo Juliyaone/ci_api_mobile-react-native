@@ -1,19 +1,13 @@
 import React from "react";
 import {useGetMetaInfoQuery} from "../../redux/api";
-import Loader from "../Loader";
-import Message, {ERROR_TYPE} from "../Message/Message";
+import {ApiHandler} from "../Containers/ApiHandler";
 
 
-function Footer() {
-    const {data, isLoading, error} = useGetMetaInfoQuery()
+function Footer({data}) {
 
-    if (isLoading) {
-        return <Loader/>
-    }
     const message = `Company data: ${JSON.stringify(data)}`
     return (
         <div>
-            <Message type={ERROR_TYPE} text={error?.data?.detail}/>
             {
                 data
                     ? <div>{message}</div>
@@ -23,4 +17,8 @@ function Footer() {
     )
 }
 
-export default Footer;
+const HandlerContainer = ({user}) => {
+    return <ApiHandler func={useGetMetaInfoQuery} user={user} Component={Footer}/>
+}
+
+export default HandlerContainer;

@@ -10,8 +10,8 @@ import {AuthContainer} from "../Containers/AuthContainer";
 
 
 function Videos() {
-    const complexID = useParams()
-    const {data: videos, isLoading, error} = useGetVideosQuery(complexID.complexID)
+    const {complexID} = useParams()
+    const {data: videos, isLoading, error} = useGetVideosQuery(complexID)
 
     if (isLoading) {
         return <Loader/>

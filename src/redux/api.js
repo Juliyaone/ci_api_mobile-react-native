@@ -29,11 +29,7 @@ export const userApi = createApi({
         }),
         getUserRate: builder.query({
             query: () => urls.GET_USER_RATE,
-            // providesTags: (result, error, id) =>  result
-            //         ? [{type: 'Post', id}]
-            //         : error
-            //             ? ['NOT_FOUND']
-            //             : ['UNKNOWN_ERROR'],
+            providesTags: (_) => ['Rate']
         }),
         getUserMood: builder.query({
             query: () => urls.GET_USER_MOOD,
@@ -44,7 +40,7 @@ export const userApi = createApi({
             providesTags: (_) => ['Avatar']
         }),
         getVideos: builder.query({
-            query: (complexId) => urls.ALL_VIDEOS_FOR_COMPLEX + `/${complexId}`,
+            query: (complexId) => urls.ALL_VIDEOS_FOR_COMPLEX + complexId,
             providesTags: result => result
                 ? [
                     ...result.map(({id}) => ({type: 'Videos', id})),
@@ -58,9 +54,20 @@ export const userApi = createApi({
         }),
         getRates: builder.query({
             query: () => urls.GET_ALL_RATES,
+            providesTags: (_) => ['Rate']
         }),
         getMoods: builder.query({
             query: () => urls.GET_ALL_MOODS,
+        }),
+        getRateLink: builder.query({
+            query: (rateID) => urls.GET_RATE_LINK + rateID,
+        }),
+        unsubscribeUser: builder.mutation({
+            query: () => ({
+                url: urls.GET_ALL_RATES,
+                method: 'DELETE',
+            }),
+            invalidatesTags: (_) => ['Rate']
         }),
         editProfile: builder.mutation({
             query: (body) => ({
@@ -70,13 +77,13 @@ export const userApi = createApi({
             }),
             invalidatesTags: (_) => ['User']
         }),
-        setVideoViewed: builder.mutation({
+        setUserMood: builder.mutation({
             query: (body) => ({
-                url: urls.EDIT_PROFILE,
+                url: urls.SET_MOOD,
                 method: 'PUT',
                 body,
             }),
-            invalidatesTags: [{ type: 'Videos', id: 'LIST' }]
+            invalidatesTags: (_) => ['User', 'Mood']
         }),
         loginUser: builder.mutation({
             query: (body) => ({
@@ -84,7 +91,7 @@ export const userApi = createApi({
                 method: 'POST',
                 body,
             }),
-            invalidatesTags: ['User']
+            invalidatesTags: (_) => ['User']
         }),
         sendSmsCode: builder.mutation({
             query: (body) => ({
@@ -114,10 +121,13 @@ export const {
     useGetMoodsQuery,
     useGetMeQuery,
     useGetUserRateQuery,
+    useGetRateLinkQuery,
     useGetUserMoodQuery,
     useGetUserAvatarQuery,
     useEditProfileMutation,
     useLoginUserMutation,
     useRegisterUserMutation,
     useSendSmsCodeMutation,
+    useUnsubscribeUserMutation,
+    useSetUserMoodMutation,
 } = userApi
