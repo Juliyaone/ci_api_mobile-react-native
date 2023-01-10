@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, ImageBackground } from 'react-native';
 
-function subscribeScreen(props) {
+function SubscribeScreen(props) {
   return (
     <View>
       <Text>Страница подписки</Text>
@@ -9,4 +9,4 @@ function subscribeScreen(props) {
   );
 }
 
-export default subscribeScreen;
+export default SubscribeScreen;

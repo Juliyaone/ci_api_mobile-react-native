@@ -8,16 +8,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppStack from "./AppStack";
 function AppNav(props) {
 
-  const token = AsyncStorage.getItem("userToken", token)
-  console.log(token);
+  // const token = AsyncStorage.getItem("userToken", token)
+  // console.log(token);
 
   return (
     <NavigationContainer>
-      { (token === null) ?
+      {/* { (token === null) ? */}
       <AppStack />
-      :
-      <AuthStack />
-      }
+      {/* <AuthStack /> */}
+
     </NavigationContainer>
   );
 }
