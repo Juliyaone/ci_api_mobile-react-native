@@ -38,7 +38,7 @@ function AppStack() {
       },
     }}
     >
-      <Drawer.Screen name="ç" initialRouteName="Главная" component={TabNavigator} options={{
+      <Drawer.Screen name="Home" component={TabNavigator} options={{
         drawerIcon: ({color}) => (
           <HomeIcon style={{marginRight: 10, width:'24', height: '24', color:{color}}}/>
         )

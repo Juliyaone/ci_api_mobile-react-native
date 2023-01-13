@@ -1,5 +1,5 @@
 import React, { useState, useId } from "react";
-import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, TouchableOpacity} from 'react-native';
 
 import { Formik } from "formik"
 import * as Yup from 'yup';
@@ -157,7 +157,7 @@ function LoginScreen({navigation}) {
                             onPress={handleSubmit}
                             disabled={!isValid}
                             style={[
-                                globalStyles.btnRed,
+                                styles.btnSubmit,
                                 {backgroundColor: isValid ? '#D32A1E' : '#cccccc'}
                             ]}>
                             <Text style={globalStyles.textWhite}>Вход</Text>

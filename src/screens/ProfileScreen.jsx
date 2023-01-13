@@ -1,38 +1,47 @@
-import React from 'react';
-import {useGetUserAvatarQuery, useGetUserMoodQuery, useGetUserRateQuery, useGetMeQuery} from "../redux/api";
-import {AuthContainer} from "../components/container/AuthContainer";
-import Message, {ERROR_TYPE} from "../message/Message";
+import React, { useId, dispatch } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import {useGetUserAvatarQuery, useGetUserMoodQuery, useGetUserRateQuery} from "../redux/api";
+
+import { NavigationContainer } from '@react-navigation/native';
+
+
+const globalStyles = require("./globalStyles");
+
+import AvatarPreview from "../img/icons/avatar.svg";
+import PhotoIcon from "../img/icons/photo.svg";
+import Ellipse from "../img/icons/ellipse.svg";
+import CreditCard from "../img/icons/credit-card.svg";
+
+import Loader from "../components/loader/Loader";
+import Header from '../components/header/Header';
 
 
 
-function ProfileScreen({navigation}) {
-   console.log('юзер из контейнера', user);
+function ProfileScreen({user, navigation}) {
 
-    // const {data: user, error: userError, isLoading: userLoading} = useGetMeQuery()
+    //  console.log('юзер из контейнера', user);
 
-    const {data: rate, error: rateError, isLoading: rateLoading} = useGetUserRateQuery()
-    const {data: mood, error: moodError, isLoading: moodLoading} = useGetUserMoodQuery()
-    const {data: avatar, error: avatarError, isLoading: avatarLoading} = useGetUserAvatarQuery()
 
-    if (rateLoading || moodLoading || avatarLoading || userLoading) {
-        return <Loader/>
-    }
+    // const {data: rate, error: rateError, isLoading: rateLoading} = useGetUserRateQuery()
+    // const {data: mood, error: moodError, isLoading: moodLoading} = useGetUserMoodQuery()
+    // const {data: avatar, error: avatarError, isLoading: avatarLoading} = useGetUserAvatarQuery()
 
-    let messageText
-    // if (userError) {
-    //     messageText = userError.data.detail
+    // if (rateLoading || moodLoading) {
+    //     return <Loader/>
     // }
-    if (rateError) {
-        messageText = rateError.data.detail
-    }
-    if (moodError) {
-        messageText = moodError.data.detail
-    }
-    if (avatarError) {
-        messageText = avatarError.data.detail
-    }
 
-    return (
+    // let messageText
+
+    // if (rateError) {
+    //     messageText = rateError.data.detail
+    // }
+    // if (moodError) {
+    //     messageText = moodError.data.detail
+    // }
+
+
+
+  return (
     <SafeAreaView style={globalStyles.container}>
 			<ScrollView>
 
@@ -50,8 +59,8 @@ function ProfileScreen({navigation}) {
               </View>
 
               <View>
-                <Text>{user.username}{user.last_name}</Text>
-                <Text>{user.phone}</Text>
+                {/* <Text>{user.username}{user.last_name}</Text>
+                <Text>{user.phone}</Text> */}
               </View>
             </View>
 

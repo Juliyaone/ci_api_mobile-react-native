@@ -34,31 +34,31 @@ function TabNavigator(props) {
             height: 70,
           },
         }}
-        tabBarOptions={{
-            showLabel: false,
-            activeBackgroundColor: '#f7cdcb',
-            inactiveBackgroundColor: 'transparent',
-            tabStyle:{ 
-                height: 50,
-                width: 50,
-                borderRadius: 50,
-                // marginRight: '10%',
-                // marginLeft: '10%',
-            },
-            style:{
-                position:'absolute',
-                bottom:0,
-                right:0,
-                left:0,
-                elevation:0,
-                height: 50,
-                width: 50
-            },
-        }}
+        // tabBarOptions={{
+        //     showLabel: false,
+        //     activeBackgroundColor: '#f7cdcb',
+        //     inactiveBackgroundColor: 'transparent',
+        //     tabStyle:{ 
+        //         height: 50,
+        //         width: 50,
+        //         borderRadius: 50,
+        //         // marginRight: '10%',
+        //         // marginLeft: '10%',
+        //     },
+        //     style:{
+        //         position:'absolute',
+        //         bottom:0,
+        //         right:0,
+        //         left:0,
+        //         elevation:0,
+        //         height: 50,
+        //         width: 50
+        //     },
+        // }}
         
         
     >
-        <Tab.Screen name="Главная2" component={HomeScreen} options={{
+        <Tab.Screen name="Home" component={HomeScreen} options={{
           tabBarIcon: ({ color }) => (
             <HomeIcon style={{width:'24', height: '24', color:{color}}}/>
           )

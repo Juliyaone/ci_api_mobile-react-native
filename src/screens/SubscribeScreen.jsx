@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, ImageBackground } from 'react-native';
+import { View, Text } from 'react-native';
 
 import Header from '../components/header/Header';
 

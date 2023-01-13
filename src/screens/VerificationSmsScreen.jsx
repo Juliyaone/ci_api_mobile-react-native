@@ -15,7 +15,7 @@ import Loader from "../components/loader/Loader";
 
 
 
-const globalStyles = require("../screens/globalStyles");
+const globalStyles = require("./globalStyles");
 
 function VerificationScreen({navigation}) {
   const [sendSmsCode, {error, isLoading}] = useSendSmsCodeMutation();
