@@ -1,39 +1,29 @@
-import 'react-native-gesture-handler';
+import 'react-native-gesture-handler'; // для аниамции бокового меню
 
-import React, {useContext} from "react";
-import { AuthProvider, AuthContext } from "./src/auth/AuthContext"
+import React from "react";
+import {Provider} from "react-redux";
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { AuthProvider } from "./src/auth/AuthContext"
 
-import AuthStack from "./src/components/navigation/AuthStack";
-import AppStack from "./src/components/navigation/AppStack";
-
+import AppNav from "./src/components/navigation/AppNav";
 
 import { useFonts } from 'expo-font';
+
 import {Store} from "./src/redux/store";
-import {Provider} from "react-redux";
 
 
 
 function App() {
 
-	const { userToken } = useContext(AuthContext);
-
 	const [fontsLoaded] = useFonts({
 		Evolventa: require("./assets/fonts/Evolventa-Regular.otf"),
 	});
+
 	if (fontsLoaded) {
 		return (
 			<Provider store={Store}>
 				<AuthProvider>
-					<NavigationContainer>
-	 				{(userToken !== null) ?
-						<AppStack />
-						:
-						<AuthStack />
-					}
-					</NavigationContainer>
+					<AppNav/>
 				</AuthProvider >
 			</Provider>
 		);

@@ -93,6 +93,14 @@ module.exports = StyleSheet.create({
 		fontWeight: "600",
 		fontSize: 16,
 	},
+	textError: {
+		textAlign: "center",
+		fontFamily: "Evolventa",
+		color: "#EB5E54",
+		fontWeight: "600",
+		fontSize: 14,
+		marginBottom: 10
+	},
 	textBlack: {
 		textAlign: "center",
 		fontFamily: "Evolventa",

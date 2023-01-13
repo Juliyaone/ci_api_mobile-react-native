@@ -1,11 +1,16 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
+import Header from '../components/header/Header';
+
 
 function FeedbackScreen(props) {
   return (
-    <Text>
-      Обратная связь
-    </Text>
+    <View>
+      <Header/>
+      <Text>
+        Обратная связь
+      </Text>
+    </View>
   );
 }
 

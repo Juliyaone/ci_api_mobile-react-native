@@ -1,11 +1,16 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
+import Header from '../components/header/Header';
+
 
 function NotificationsScreen(props) {
   return (
-    <Text>
-       Уведомления
-    </Text>
+    <View>
+      <Header/>
+      <Text>
+        Уведомления
+      </Text>
+    </View>
   );
 }
 

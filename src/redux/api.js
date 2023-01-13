@@ -1,5 +1,4 @@
-import React from "react";
-import * as urls from "./urls";
+import * as urls from "../redux/urls";
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {getTokenFromStorage} from "../auth/tokenStorage";
 

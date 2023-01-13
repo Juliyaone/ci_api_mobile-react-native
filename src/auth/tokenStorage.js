@@ -1,19 +1,17 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 
 // import {setUserIsCreated, setUserIsLoggedOut} from "../redux/actions/registerActions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export const saveTokenToStorage = async (token) => {
-    //Если isLoading === true то показываем крутилку
-    await AsyncStorage.setItem("userToken", token);
+    await AsyncStorage.setItem('userToken', token)
 }
 
 
 export const getTokenFromStorage = async () => {
-   return await AsyncStorage.getItem("userToken", token);
+   return await AsyncStorage.getItem("userToken");
 }
-
 
 export const isTokenExpired = () => {
     return false

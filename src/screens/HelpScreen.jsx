@@ -1,11 +1,15 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View} from 'react-native';
+import Header from '../components/header/Header';
 
 function HelpScreen(props) {
   return (
-    <Text>
-      Помощь
-    </Text>
+    <View>
+      <Header/>
+      <Text>
+        Помощь
+      </Text>
+    </View>
   );
 }
 

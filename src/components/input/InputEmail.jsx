@@ -20,6 +20,7 @@ function InputEmail({namePlaceholder, keyId, email, onChangeEmail}) {
 						style={globalStyles.inputBorder}
 						value={email}
 						email
+						keyboardType='email-address'
 						placeholder={namePlaceholder}
 						onChangeText={onChangeEmail}
 					/>

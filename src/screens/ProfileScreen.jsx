@@ -1,59 +1,44 @@
-import React, { useId } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, ImageBackground } from 'react-native';
+import React from 'react';
 import {useGetUserAvatarQuery, useGetUserMoodQuery, useGetUserRateQuery, useGetMeQuery} from "../redux/api";
-
+import {AuthContainer} from "../components/container/AuthContainer";
 import Message, {ERROR_TYPE} from "../message/Message";
-
-
-const globalStyles = require("../screens/globalStyles");
-
-import AvatarPreview from "../img/icons/avatar.svg";
-import MenuIcon from "../img/icons/menu.svg";
-import PhotoIcon from "../img/icons/photo.svg";
-import Ellipse from "../img/icons/ellipse.svg";
-import CreditCard from "../img/icons/credit-card.svg";
-
-import Loader from "../components/loader/Loader";
 
 
 
 function ProfileScreen({navigation}) {
+   console.log('юзер из контейнера', user);
 
-    const {data: user, error, isLoading, isSuccess} = useGetMeQuery();
+    // const {data: user, error: userError, isLoading: userLoading} = useGetMeQuery()
 
-    const {data: rate, error: rateError, isLoading: rateLoading} = useGetUserRateQuery();
-    const {data: mood, error: moodError, isLoading: moodLoading} = useGetUserMoodQuery();
-    const {data: avatar, error: avatarError, isLoading: avatarLoading} = useGetUserAvatarQuery();
+    const {data: rate, error: rateError, isLoading: rateLoading} = useGetUserRateQuery()
+    const {data: mood, error: moodError, isLoading: moodLoading} = useGetUserMoodQuery()
+    const {data: avatar, error: avatarError, isLoading: avatarLoading} = useGetUserAvatarQuery()
 
-    if (rateLoading || moodLoading || avatarLoading) {
+    if (rateLoading || moodLoading || avatarLoading || userLoading) {
         return <Loader/>
     }
 
-
-    console.log(user);
-
-    let messageText = "космическое выведение ошибки";
-
-    // if (rateError) {
-    //     messageText = rateError.data.detail
+    let messageText
+    // if (userError) {
+    //     messageText = userError.data.detail
     // }
-    // if (moodError) {
-    //     messageText = moodError.data.detail
-    // }
-    // if (avatarError) {
-    //     messageText = avatarError.data.detail
-    // }
+    if (rateError) {
+        messageText = rateError.data.detail
+    }
+    if (moodError) {
+        messageText = moodError.data.detail
+    }
+    if (avatarError) {
+        messageText = avatarError.data.detail
+    }
 
-  return (
+    return (
     <SafeAreaView style={globalStyles.container}>
 			<ScrollView>
 
-        <Message type={ERROR_TYPE} text={messageText}/>
 
-          <View style={styles.row}>
-            <MenuIcon />
-            <AvatarPreview/>
-          </View>
+
+          <Header/>
 
           <View style={styles.boxWhite}>
             <View style={styles.rowBetfween}>
@@ -71,9 +56,11 @@ function ProfileScreen({navigation}) {
             </View>
 
             <View>
-              <TouchableOpacity onPress={()=> {
-                navigation.navigate('PrifileEdit');
-              }}style={globalStyles.btnRed}>
+              <TouchableOpacity style={globalStyles.btnRed} onPress={()=> {
+                // { username: user.username, last_name: user.last_name, third_name: user.third_name, phone: user.phone, email: user.email }
+                navigation.navigate("ProfileEdit")
+              }}
+              >
                 <Text style={globalStyles.textWhite}>Редектировать профиль</Text>
               </TouchableOpacity>
             </View>
@@ -86,7 +73,8 @@ function ProfileScreen({navigation}) {
               <Text style={globalStyles.textBlack}>Ваш прогресс</Text>
                 <Ellipse style={styles.ellipseAbsolute}/>
                 <View style={styles.levelAbsolute}>
-                  <Text>{user.level}/10</Text>
+                  {/* {user.level} */}
+                  <Text>/10</Text>
                 </View>
             </View>
 
@@ -97,7 +85,11 @@ function ProfileScreen({navigation}) {
                 </View>
                 <Text style={globalStyles.textWhite}>Подписка автоматически продлится: ВЫВЕСТИ ДАТУ</Text>
                 <TouchableOpacity style={globalStyles.btnBorder}>
-                  <Text style={globalStyles.textRed}>Подробнее</Text>
+                  <Text style={globalStyles.textRed}
+                  onPress={()=> {
+                navigation.navigate("Subscribe")
+              }}
+              >Подробнее</Text>
                 </TouchableOpacity>
             </View>
           </View>
@@ -163,22 +155,6 @@ const styles = StyleSheet.create({
   ellipseAbsolute: {
     top: '15%',
   }
-
-
-
-
 })
 
 export default ProfileScreen;
-
-
-// import React, { useId } from 'react';
-// import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, ImageBackground } from 'react-native';
-
-// function ProfileScreen({navigation}) {
-//   <View>
-//     <Text>Профиль</Text>
-//   </View>
-// }
-
-// export default ProfileScreen;

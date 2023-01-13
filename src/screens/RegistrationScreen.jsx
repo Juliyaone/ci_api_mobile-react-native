@@ -74,7 +74,11 @@ function RegistrationScreen({ navigation }) {
 					<InputRadioGender keyId={keyId} onChangeGender={onChangeGender}/>
 
 					<ButtonReg text="Зарегистрироваться" keyId={keyId} sendDataFunction={sendRegisterData}/>
-		
+
+		 			<TouchableOpacity onPress={()=> {navigation.navigate('Login')}}>
+            <Text style={globalStyles.textRed}>Уже зарегистрированы?</Text>
+          </TouchableOpacity>
+
 				</View>
 			</ScrollView>
 		</SafeAreaView>

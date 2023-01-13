@@ -1,21 +1,29 @@
-import {createContext, useState} from "react";
-// import getTokenFromStorage from "../auth/tokenStorage"
-const AuthContext = createContext();
-import getTokenFromStorage from "./tokenStorage"
+import React, { createContext, useState, useEffect }from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
-    const [isLoading, setIsLoading] = useState(false);
-        const [userToken, setUserToken] = useState(false);
 
-   setUserToken(getTokenFromStorage());
-     console.log(token);
+    const [userToken, setUserToken] = useState(null);
 
+   const getUserToken = async () => {
+    try {
+        const userToken = await AsyncStorage.getItem("userToken");
+        setUserToken(userToken);
+    } catch (err) {
+        console.log(`Токен не получен ${err}`);
+    }
+   }
 
+   useEffect(() => {
+    getUserToken();
+   },[]);
+
+    
     return (
-        <AuthContext.Provider value={{ userToken}}>
+        <AuthContext.Provider value={{userToken}}>
             {children}
         </AuthContext.Provider>
     )
 }
-
-export default AuthContext;
