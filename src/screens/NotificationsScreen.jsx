@@ -1,16 +1,19 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, SafeAreaView } from 'react-native';
 import Header from '../components/header/Header';
 
+const globalStyles = require("./globalStyles");
 
 function NotificationsScreen(props) {
   return (
-    <View>
-      <Header/>
+    <SafeAreaView style={globalStyles.container}>
+      <View>
+        <Header/>
       <Text>
         Уведомления
       </Text>
     </View>
+    </SafeAreaView>
   );
 }
 

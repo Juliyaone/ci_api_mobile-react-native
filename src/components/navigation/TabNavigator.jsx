@@ -25,7 +25,6 @@ function TabNavigator(props) {
   return (
       <Tab.Navigator screenOptions={{
           headerShown: false,
-          topBarShowLabel: false,
           tabBarStyle: {
             padding: 10,
             borderTopLeftRadius: 40,
@@ -58,7 +57,8 @@ function TabNavigator(props) {
         
         
     >
-        <Tab.Screen name="Home" component={HomeScreen} options={{
+        <Tab.Screen name="HomeTab" component={HomeScreen} options={{
+          tabBarShowLabel: false,
           tabBarIcon: ({ color }) => (
             <HomeIcon style={{width:'24', height: '24', color:{color}}}/>
           )
@@ -66,30 +66,40 @@ function TabNavigator(props) {
         />
 
         <Tab.Screen name="Будильник" component={AlarmScreen}  options={{
+          tabBarShowLabel: false,
           tabBarIcon: ({ color }) => (
             <AlarmIcon style={{ width:'24', height: '24', color:{color}}}/>
           )
         }}/>
-        <Tab.Screen name="Зарядка" component={СomplexScreen}  options={{
-          tabBarIcon: ({ color }) => (
+        <Tab.Screen 
+          name="Зарядка"
+          component={СomplexScreen}
+          options={{
+            tabBarShowLabel: false,
+            tabBarIcon: ({ color }) => (
             <FlashIcon style={{width:'24', height: '24', color:{color}}}/>
           )
         }}/>
         <Tab.Screen
-          name="Профиль"
+          name="ProfileTab"
           component={ProfileStack}
           options={({route}) => ({
-            tabBarStyle: {display: getTabBarVisibility(route), padding: 10,
-            borderTopLeftRadius: 40,
-            borderTopRightRadius: 40,
-            backgroundColor: '#ffffff',
-            height: 70},
+            tabBarShowLabel: false,
+            tabBarStyle: {
+              // display: getTabBarVisibility(route),
+              padding: 10,
+              borderTopLeftRadius: 40,
+              borderTopRightRadius: 40,
+              backgroundColor: '#ffffff',
+              height: 70
+            },
             tabBarIcon: ({ color }) => (
               <ProfileIcon style={{ width:'24', height: '24', color:{color}}} />
             )
           })}
         />
         <Tab.Screen name="Уведомления" component={NotificationsScreen}  options={{
+          tabBarShowLabel: false,
           tabBarIcon: ({ color }) => (
             <NotificationsIcon style={{ width:'24', height: '24', color:{color}}}/>
           )
@@ -98,14 +108,14 @@ function TabNavigator(props) {
   );
 }
 
-const getTabBarVisibility = (route) => {
-  console.log(route);
-  const routName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
-  console.log(routName);
-  if(routName === 'ProfileEdit') {
-    return 'none';
-  }
-return 'flex';
-}
+// const getTabBarVisibility = (route) => {
+//   console.log(route);
+//   const routName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+//   console.log(routName);
+//   if(routName === 'ProfileEdit') {
+//     return 'none';
+//   }
+// return 'flex';
+// }
 
 export default TabNavigator;

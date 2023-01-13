@@ -18,11 +18,10 @@ function AppNav(props) {
     <NavigationContainer>
       
       {userToken !== null ? 
-        <AppStack/>
-        :
-        <AuthStack />
+      <AppStack/>
+      :
+      <AuthStack/>
       }
-
 
 
 

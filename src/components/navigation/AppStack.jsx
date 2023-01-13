@@ -16,7 +16,6 @@ import CallbackIcon from "../../img/icons/callback.svg"
 import InfoIcon from "../../img/icons/info.svg"
 
 import ProfileStack from '../navigation/ProfileStack';
-import HomeScreen from '../../screens/HomeScreen';
 
 const globalStyles = require("../../screens/globalStyles");
 const Drawer = createDrawerNavigator();
@@ -38,34 +37,48 @@ function AppStack() {
       },
     }}
     >
-      <Drawer.Screen name="Home" component={TabNavigator} options={{
-        drawerIcon: ({color}) => (
-          <HomeIcon style={{marginRight: 10, width:'24', height: '24', color:{color}}}/>
-        )
-      }}/>
-
-      <Drawer.Screen name="Профиль" component={ProfileStack} options={{
-        drawerIcon: ({color}) => (
-          <ProfileIcon style={{marginRight: 10, width:'24', height: '24', color:{color}}}/>
-        )
-      }
+      <Drawer.Screen name="HomeDrawer" component={TabNavigator} 
+        options={{
+          title: 'Главная',
+          drawerIcon: ({color}) => (
+            <HomeIcon style={{marginRight: 10, width:'24', height: '24', color:{color}}}/>
+          )
+        }
       }/>
 
-      <Drawer.Screen name="Уведомления" component={NotificationsScreen} options={{
-        drawerIcon: ({color}) => (
-          <NotificationsIcon style={{marginRight: 10, width:'24', height: '24', color:{color}}}/>
-        )
-      }}/>
-      <Drawer.Screen name="Обратная связь" component={FeedbackScreen} options={{
-        drawerIcon: ({color}) => (
-          <CallbackIcon style={{marginRight: 10, width:'24', height: '24', color:{color}}}/>
-        )
-      }}/>
-      <Drawer.Screen name="Помощь" component={HelpScreen} options={{
-        drawerIcon: ({color}) => (
-          <InfoIcon style={{marginRight: 10, width:'24', height: '24', color:{color}}}/>
-        )
-      }}/>
+      <Drawer.Screen name="ProfileDrawer" component={ProfileStack}
+        options={{
+          title: 'Профиль',
+          drawerIcon: ({color}) => (
+            <ProfileIcon style={{marginRight: 10, width:'24', height: '24', color:{color}}}/>
+          )
+        }
+      }/>
+
+      <Drawer.Screen name="Notifications" component={NotificationsScreen}
+        options={{
+          title: 'Уведомления',
+          drawerIcon: ({color}) => (
+            <NotificationsIcon style={{marginRight: 10, width:'24', height: '24', color:{color}}}/>
+          )
+        }
+      }/>
+      <Drawer.Screen name="Feedback" component={FeedbackScreen}
+        options={{
+          title: 'Обратная связь',
+          drawerIcon: ({color}) => (
+            <CallbackIcon style={{marginRight: 10, width:'24', height: '24', color:{color}}}/>
+          )
+        }
+      }/>
+      <Drawer.Screen name="Help" component={HelpScreen}
+        options={{
+          title: 'Помощь',
+          drawerIcon: ({color}) => (
+            <InfoIcon style={{marginRight: 10, width:'24', height: '24', color:{color}}}/>
+          )
+        }
+      }/>
     </Drawer.Navigator>
   );
 }

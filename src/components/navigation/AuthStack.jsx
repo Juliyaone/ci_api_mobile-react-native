@@ -9,6 +9,7 @@ import AuchScreen from "../../screens/AuchScreen";
 import ForgotScreen from '../../screens/ForgotScreen';
 import HomeScreen from '../../screens/HomeScreen';
 
+import AppStack from "../navigation/AppStack"
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +22,7 @@ function AuchStack() {
       <Stack.Screen name="Registration" component={RegistrationScreen}/>
       <Stack.Screen name="Verification" component={VerificationScreen}/>
       <Stack.Screen name="Forgot" component={ForgotScreen}/>
-      <Stack.Screen name="Home" component={HomeScreen}/>
+      <Stack.Screen name="Home" component={AppStack}/>
 
     </Stack.Navigator>
   );

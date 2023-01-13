@@ -10,7 +10,6 @@ import EyeIcon from "../img/icons/eye.svg";
 import CloseEyeIcon from "../img/icons/closeEye.svg";
 import LogoIcon from "../img/icons/logo.svg";
 
-import ProfileStack from '../components/navigation/ProfileStack';
 
 import {useLoginUserMutation} from "../redux/api";
 import {saveTokenToStorage} from "../auth/tokenStorage";

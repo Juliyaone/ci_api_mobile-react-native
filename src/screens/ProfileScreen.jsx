@@ -17,10 +17,9 @@ import Header from '../components/header/Header';
 
 
 
-function ProfileScreen({user, navigation}) {
+function ProfileScreen({user}) {
 
     //  console.log('юзер из контейнера', user);
-
 
     // const {data: rate, error: rateError, isLoading: rateLoading} = useGetUserRateQuery()
     // const {data: mood, error: moodError, isLoading: moodLoading} = useGetUserMoodQuery()
@@ -35,17 +34,15 @@ function ProfileScreen({user, navigation}) {
     // if (rateError) {
     //     messageText = rateError.data.detail
     // }
+
     // if (moodError) {
     //     messageText = moodError.data.detail
     // }
 
 
-
   return (
     <SafeAreaView style={globalStyles.container}>
 			<ScrollView>
-
-
 
           <Header/>
 

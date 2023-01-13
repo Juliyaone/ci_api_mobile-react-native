@@ -1,11 +1,17 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, SafeAreaView} from 'react-native';
+import Header from '../components/header/Header';
+
+const globalStyles = require("./globalStyles");
 
 function ForgotScreen(props) {
   return (
-    <View>
+    <SafeAreaView style={globalStyles.container}>
+      <View>
+        <Header/>
       <Text>Страница восстановления пароля</Text>
     </View>
+    </SafeAreaView>
   );
 }
 
