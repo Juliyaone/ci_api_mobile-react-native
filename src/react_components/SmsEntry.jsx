@@ -8,7 +8,7 @@ import Message, {ERROR_TYPE} from "./Message/Message";
 import Loader from "./Loader";
 
 
-function SmsEntry({phone}) {
+function SmsEntry() {
     const [sendSmsCode, {error, isLoading}] = useSendSmsCodeMutation()
     const navigate = useNavigate()
 
@@ -29,9 +29,10 @@ function SmsEntry({phone}) {
             console.error(messageText)
         }
     }
-
-    const initialValues = {phone: phone, code: ''}
-
+    const initialValues = {
+        phone: '',
+        code: '',
+    }
     return (
         <div>
             <Message type={messageType} text={messageText}/>

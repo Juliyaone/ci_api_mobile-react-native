@@ -5,7 +5,7 @@ import {getTokenFromStorage} from "../auth/tokenStorage";
 
 export const userApi = createApi({
     reducerPath: 'userApi',
-    tagTypes: ['MetaInfo', 'Videos', 'Rate', 'User', 'Complexes', 'NOT_FOUND', 'UNKNOWN_ERROR'],
+    tagTypes: ['MetaInfo', 'Videos', 'Rate', 'User', 'Complexes', 'NOT_FOUND', 'UNKNOWN_ERROR', 'FirstEntryInfo'],
     baseQuery: fetchBaseQuery(
         {
             baseUrl: urls.BASE_URL,
@@ -61,6 +61,10 @@ export const userApi = createApi({
         }),
         getRateLink: builder.query({
             query: (rateID) => urls.GET_RATE_LINK + rateID,
+        }),
+        checkFirstEntry: builder.query({
+            query: () => urls.CHECK_FIRST_ENTRY,
+            providesTags: (_) => ['FirstEntryInfo']
         }),
         unsubscribeUser: builder.mutation({
             query: () => ({
@@ -132,6 +136,7 @@ export const {
     useGetRateLinkQuery,
     useGetUserMoodQuery,
     useGetUserAvatarQuery,
+    useCheckFirstEntryQuery,
     useEditProfileMutation,
     useEditPasswordMutation,
     useLoginUserMutation,

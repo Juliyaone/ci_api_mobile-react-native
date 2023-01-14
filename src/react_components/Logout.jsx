@@ -11,8 +11,8 @@ function Logout() {
     const logout = async () => {
         await deleteTokenFromStorage()
         // dispatch(userApi.util.resetApiState()) // Очищает весь стэйт
-        dispatch(userApi.util.invalidateTags(['User']))  // Очищает стэйт User
-        navigate('/login')
+        dispatch(userApi.util.invalidateTags(['User', 'FirstEntryInfo']))  // Очищает стэйт User
+        navigate('/home')
     }
 
     return (

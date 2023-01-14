@@ -4,10 +4,11 @@ import {AuthContainer} from "../Containers/AuthContainer";
 import Loader from "../Loader";
 import Message, {ERROR_TYPE} from "../Message/Message";
 import {Profile} from "./Profile";
+import {ModalsContainer} from "./Modals/ModalsContainer";
 
 
 const ProfileContainer = ({user}) => {
-        const {data: rate, error: rateError, isLoading: rateLoading} = useGetUserRateQuery()
+    const {data: rate, error: rateError, isLoading: rateLoading} = useGetUserRateQuery()
     const {data: mood, error: moodError, isLoading: moodLoading} = useGetUserMoodQuery()
     const {data: avatar, error: avatarError, isLoading: avatarLoading} = useGetUserAvatarQuery()
 
@@ -18,13 +19,13 @@ const ProfileContainer = ({user}) => {
     let messageText
 
     if (rateError) {
-        messageText = rateError.data.detail
+        messageText = rateError.data?.detail
     }
     if (moodError) {
-        messageText = moodError.data.detail
+        messageText = moodError.data?.detail
     }
     if (avatarError) {
-        messageText = avatarError.data.detail
+        messageText = avatarError.data?.detail
     }
 
     return (
@@ -40,8 +41,12 @@ const ProfileContainer = ({user}) => {
     )
 }
 
+const WrappedModalsContainer = ({user}) => {
+    return <ModalsContainer Component={ProfileContainer} user={user}/>
+}
+
 const WrappedAuthContainer = () => {
-    return <AuthContainer Component={ProfileContainer}/>
+    return <AuthContainer Component={WrappedModalsContainer}/>
 }
 
 export default WrappedAuthContainer;

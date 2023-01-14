@@ -16,7 +16,11 @@ export const EditProfile = ({user, editUserData, editPassword}) => {
             />
             <FormContainer
                 onSubmit={editPassword}
-                initialValues={{}}
+                initialValues={{
+                    old_password: '',
+                    password: '',
+                    password2: '',
+                }}
                 Component={EditPasswordForm}
             />
         </div>

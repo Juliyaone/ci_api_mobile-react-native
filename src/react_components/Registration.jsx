@@ -10,12 +10,14 @@ import Loader from "./Loader";
 function Registration() {
     const navigate = useNavigate()
 
-    const [registerUser, {error, isLoading}] = useRegisterUserMutation()
+    const [registerUser, {error, isLoading, isSuccess}] = useRegisterUserMutation()
 
-        if (isLoading) {
+    if (isLoading) {
         return <Loader/>
     }
-
+    if (isSuccess) {
+        navigate('/sms-entry')
+    }
     let messageText = error?.data?.detail
     let messageType = ERROR_TYPE
 
@@ -25,13 +27,23 @@ function Registration() {
             navigate('/sms-entry')
         }
     }
+    const initialValues = {
+        username: '',
+        last_name: '',
+        third_name: '',
+        phone: '',
+        email: '',
+        password: '',
+        password2: '',
+        gender: '',
 
+    }
     return (
         <div>
             <Message type={messageType} text={messageText}/>
             <FormContainer
                 onSubmit={sendRegisterData}
-                initialValues={{}}
+                initialValues={initialValues}
                 Component={RegisterForm}
             />
         </div>
