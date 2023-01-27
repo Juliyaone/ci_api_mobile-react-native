@@ -1,5 +1,6 @@
 import React, { useState, useId } from "react";
 import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, TouchableOpacity} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { Formik } from "formik"
 import * as Yup from 'yup';
@@ -17,20 +18,8 @@ import Message, {ERROR_TYPE} from "../message/Message";
 
 
 import Loader from "../components/loader/Loader";
-// import {FormContainer} from "../components/Forms/FormContainer";
-// import LoginForm from "../components/Forms/LoginForm";
 
-
-
-const globalStyles = require("../screens/globalStyles");
-
-function LoginScreen({navigation}) {
-
-    const [secure, setSecure] = useState(true);
-    const keyId = useId();
-    const [sendLoginUserDataMutation, {error, isLoading}] = useLoginUserMutation()
-
-    const SignupSchema = Yup.object().shape({
+const SignupSchema = Yup.object().shape({
     phone: Yup.string()
     .min(10, 'Вы ввели неполный телефон')
     .max(10, 'Вы ввели лишние цифры телефона телефона')
@@ -41,8 +30,17 @@ function LoginScreen({navigation}) {
     .min(3, 'Вы ввели короткий пароль')
     .max(10, 'Длина пароля не должна превышать 10 симоволов')
     .required('Пожалуйста, введите пароль')
-    });
-    
+});
+
+
+
+const globalStyles = require("../screens/globalStyles");
+
+function LoginScreen() {
+    const navigation = useNavigation();
+    const [secure, setSecure] = useState(true);
+    const keyId = useId();
+    const [sendLoginUserDataMutation, {error, isLoading}] = useLoginUserMutation()
 
     if (isLoading) {
         return <Loader/>
@@ -53,11 +51,17 @@ function LoginScreen({navigation}) {
 
 
     const sendLoginData = async (values) => {
+
         const answer = await sendLoginUserDataMutation(values)
         if (answer.data.token) {
             const token = answer.data.token.toString();
             await saveTokenToStorage(token);
-            navigation.navigate('Home');
+            
+            if (answer.data.user.is_verified === false) {
+                navigation.navigate('Verification');
+            } else {
+                navigation.navigate('Home');
+            }
         } else {
             messageText = 'Token not received';
             console.error(messageText);
@@ -68,7 +72,7 @@ function LoginScreen({navigation}) {
     return (
     <SafeAreaView style={globalStyles.container}>
 		<ScrollView>
-            <Message type={messageType} text={messageText}/>
+            <Text><Message type={messageType} text={messageText}/></Text>
 
 			<View style={globalStyles.container}>
                 <TouchableOpacity onPress={()=> {
@@ -108,7 +112,7 @@ function LoginScreen({navigation}) {
                             />
                 
                         </View>
-                                {touched.phone && errors.phone && (
+                            {touched.phone && errors.phone && (
                                 <Text style={globalStyles.textError}>{errors.phone}</Text>
                             )}
 
@@ -120,6 +124,7 @@ function LoginScreen({navigation}) {
                             />
                             <TextInput
                                 style={globalStyles.inputBorder}
+                                autoCapitalize='false'
                                 value={values.password}
                                 placeholder={'Пароль'}
                                 secureTextEntry={secure}

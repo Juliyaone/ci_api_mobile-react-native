@@ -4,11 +4,10 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import HomeScreen from '../../screens/HomeScreen';
 import AlarmScreen from '../../screens/AlarmScreen';
-import СomplexScreen from '../../screens/СomplexScreen';
 import NotificationsScreen from '../../screens/NotificationsScreen';
 import ProfileStack from '../navigation/ProfileStack';
-
-
+import СomplexScreen from '../../screens/complex/СomplexScreen';
+import VideosStack from '../navigation/VideosStack'
 import HomeIcon from '../../img/icons/home.svg'
 import ProfileIcon from "../../img/icons/profile.svg"
 import NotificationsIcon from "../../img/icons/notifications.svg";
@@ -21,7 +20,7 @@ import FlashIcon from '../../img/icons/flash-tab.svg'
 const Tab = createBottomTabNavigator();
 
 
-function TabNavigator(props) {
+function TabNavigator({props}) {
   return (
       <Tab.Navigator screenOptions={{
           headerShown: false,
@@ -72,8 +71,8 @@ function TabNavigator(props) {
           )
         }}/>
         <Tab.Screen 
-          name="Зарядка"
-          component={СomplexScreen}
+          name="VideosTab"
+          component={VideosStack}
           options={{
             tabBarShowLabel: false,
             tabBarIcon: ({ color }) => (
@@ -86,7 +85,7 @@ function TabNavigator(props) {
           options={({route}) => ({
             tabBarShowLabel: false,
             tabBarStyle: {
-              // display: getTabBarVisibility(route),
+              display: getTabBarVisibility(route),
               padding: 10,
               borderTopLeftRadius: 40,
               borderTopRightRadius: 40,
@@ -108,14 +107,14 @@ function TabNavigator(props) {
   );
 }
 
-// const getTabBarVisibility = (route) => {
-//   console.log(route);
-//   const routName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
-//   console.log(routName);
-//   if(routName === 'ProfileEdit') {
-//     return 'none';
-//   }
-// return 'flex';
-// }
+const getTabBarVisibility = (route) => {
+  // console.log(route);
+  const routName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+  // console.log(routName);
+  if(routName === 'СomplexScreen') {
+    return 'none';
+  }
+return 'flex';
+}
 
 export default TabNavigator;

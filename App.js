@@ -10,6 +10,9 @@ import AppNav from "./src/components/navigation/AppNav";
 import { useFonts } from 'expo-font';
 
 import {Store} from "./src/redux/store";
+import 'expo-dev-menu';
+// import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
+// import { userApi } from './src/redux/api';
 
 
 
@@ -23,7 +26,9 @@ function App() {
 		return (
 			<Provider store={Store}>
 				<AuthProvider>
-					<AppNav/>
+					{/* <ApiProvider userApi={userApi}> */}
+						<AppNav/>
+					{/* </ApiProvider> */}
 				</AuthProvider >
 			</Provider>
 		);

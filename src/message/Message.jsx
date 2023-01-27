@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Text } from 'react-native';
 
 export const SUCCESS_TYPE = 'success'
 export const ERROR_TYPE = 'error'
@@ -36,9 +36,9 @@ export const ErrorMessage = ({text}) => {
         message = errorMessages.UNDEFINED_ERROR
     }
     return (
-        <View>
+        <Text>
             Error: {message}
-        </View>
+        </Text>
     )
 }
 
@@ -47,9 +47,9 @@ export const SuccessMessage = ({text}) => {
         return <></>
     }
     return (
-        <View>
+        <Text>
             Success: {text}
-        </View>
+        </Text>
     )
 }
 
@@ -60,14 +60,14 @@ function Message({type = '', text = ''}) {
         return <></>
     }
     if (type === ERROR_TYPE) {
-        return <ErrorMessage text={text}/>
+        return <Text><ErrorMessage text={text}/></Text>
     } else if (type === SUCCESS_TYPE) {
-        return <SuccessMessage text={text}/>
+        return <Text><SuccessMessage text={text}/></Text>
     } else {
         return (
-            <View>
+            <Text>
                 Undefined error type {type} with message {text}
-            </View>
+            </Text>
         )
     }
 }

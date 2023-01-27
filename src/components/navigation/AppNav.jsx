@@ -4,29 +4,43 @@ import { NavigationContainer } from "@react-navigation/native";
 import AuthStack from "./AuthStack";
 import AppStack from "./AppStack";
 
-import {AuthContext} from "../../auth/AuthContext";
-import { useGetMeQuery } from '../../redux/api';
+// import {AuthContext} from "../../auth/AuthContext";
+import {useGetMeQuery} from "../../redux/api";
 
 
-function AppNav(props) {
-  useGetMeQuery(); 
-
-  const {userToken} = useContext(AuthContext);
+import Message, {ERROR_TYPE} from "../../message/Message";
+import Loader from "../../components/loader/Loader";
 
 
-  return (
-    <NavigationContainer>
-      
-      {userToken !== null ? 
-      <AppStack/>
-      :
-      <AuthStack/>
+const AppNav = (props) => {
+
+  const {data: user, error, isLoading, isSuccess} = useGetMeQuery();
+
+      if (isLoading) {
+        <Loader/>
+      }
+      let message;
+      if(error) {
+        message = error.data?.detail;
+        console.log(message);
       }
 
+    return (
+      <NavigationContainer>
 
+          {
+          (!user || error) 
+          ?
+            <AuthStack/>
+          :
+            <AppStack/>
+          }
 
-    </NavigationContainer>
-  );
+        </NavigationContainer>
+    )
+
+   
 }
 
 export default AppNav;
+

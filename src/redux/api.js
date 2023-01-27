@@ -3,17 +3,20 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {getTokenFromStorage} from "../auth/tokenStorage";
 
 
+
 export const userApi = createApi({
     reducerPath: 'userApi',
-    tagTypes: ['MetaInfo', 'Videos', 'Rate', 'User', 'Complexes', 'NOT_FOUND', 'UNKNOWN_ERROR'],
+    tagTypes: ['MetaInfo', 'Videos', 'Rate', 'User', 'Complexes', 'NOT_FOUND', 'UNKNOWN_ERROR', 'FirstEntryInfo', 'Mood', 'Avatar'],
     baseQuery: fetchBaseQuery(
         {
             baseUrl: urls.BASE_URL,
             prepareHeaders: async (headers) => {
                 const token = await getTokenFromStorage()
                 if (token) {
-                    headers.set('authorization', `Bearer ${token}`);
+                    headers.set('Authorization', `Bearer ${token}`);
                 }
+                headers.set('Content-Type', 'application/json')
+
                 return headers;
             },
         }),
@@ -21,7 +24,7 @@ export const userApi = createApi({
     endpoints: (builder) => ({
         getMetaInfo: builder.query({
             query: () => urls.META_INFO,
-            providesTags: (_) => ['MetaInfo']
+            providesTags: ['MetaInfo']
         }),
         getMe: builder.query({
             query: () => urls.GET_ME,
@@ -58,9 +61,15 @@ export const userApi = createApi({
         }),
         getMoods: builder.query({
             query: () => urls.GET_ALL_MOODS,
+            providesTags: (_) => ['Mood']
+
         }),
         getRateLink: builder.query({
             query: (rateID) => urls.GET_RATE_LINK + rateID,
+        }),
+        checkFirstEntry: builder.query({
+            query: () => urls.CHECK_FIRST_ENTRY,
+            providesTags: (_) => ['FirstEntryInfo']
         }),
         unsubscribeUser: builder.mutation({
             query: () => ({
@@ -132,6 +141,7 @@ export const {
     useGetRateLinkQuery,
     useGetUserMoodQuery,
     useGetUserAvatarQuery,
+    useCheckFirstEntryQuery,
     useEditProfileMutation,
     useEditPasswordMutation,
     useLoginUserMutation,
@@ -140,3 +150,5 @@ export const {
     useUnsubscribeUserMutation,
     useSetUserMoodMutation,
 } = userApi
+
+export default userApi;

@@ -21,8 +21,6 @@ export const refreshToken = () => {
     return null
 }
 
-export const deleteTokenFromStorage = async (dispatch) => {
+export const deleteTokenFromStorage = async () => {
     await AsyncStorage.removeItem('userToken');
-    // dispatch(setUserIsLoggedOut(false))
-    // dispatch(setUserIsCreated(false))
 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-function Loader(props) {
+function Loader() {
   return (
     <View>
-        <Text>Помощь</Text>
+        <Text>Крутилка</Text>
     </View>
   );
 }
