@@ -1,105 +1,196 @@
-import React from 'react';
-import {Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector} from "react-redux";
-import {inputLoginPassword, inputLoginPhone} from "../redux/actions/userActions";
-import {getLoginUserData} from "../redux/thunks/authThunks";
+import React, { useState, useId } from "react";
+import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, TouchableOpacity} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+import { Formik } from "formik"
+import * as Yup from 'yup';
+
+import PhoneIcon from "../img/icons/phone";
+import LockIcon from "../img/icons/lock.svg";
+import EyeIcon from "../img/icons/eye.svg";
+import CloseEyeIcon from "../img/icons/closeEye.svg";
+import LogoIcon from "../img/icons/logo.svg";
 
 
-function LoginScreen({navigation}) {
-    const messages = useSelector(store => store.messagesReducer)
-    const {phone, password} = useSelector(store => store.loginReducer)
-    const dispatch = useDispatch()
-    const user = useSelector(store => store.userReducer)
+import {useLoginUserMutation} from "../redux/api";
+import {saveTokenToStorage} from "../auth/tokenStorage";
+import Message, {ERROR_TYPE} from "../message/Message";
 
-    // Меняет поле телефона
-    const onChangePhone = (text) => {
-        dispatch(inputLoginPhone(text))
+
+import Loader from "../components/loader/Loader";
+
+const SignupSchema = Yup.object().shape({
+    phone: Yup.string()
+    .min(10, 'Вы ввели неполный телефон')
+    .max(10, 'Вы ввели лишние цифры телефона телефона')
+    .required('Пожалуйста, введите Ваш номер телефона')
+    .matches(/^[0-9]+$/, 'Введите цифры'),
+
+    password: Yup.string()
+    .min(3, 'Вы ввели короткий пароль')
+    .max(10, 'Длина пароля не должна превышать 10 симоволов')
+    .required('Пожалуйста, введите пароль')
+});
+
+
+
+const globalStyles = require("../screens/globalStyles");
+
+function LoginScreen() {
+    const navigation = useNavigation();
+    const [secure, setSecure] = useState(true);
+    const keyId = useId();
+    const [sendLoginUserDataMutation, {error, isLoading}] = useLoginUserMutation()
+
+    if (isLoading) {
+        return <Loader/>
     }
 
-    // Меняет поле пароля
-    const onChangePassword = (text) => {
-        dispatch(inputLoginPassword(text))
+    let messageText = error?.data?.detail;
+    let messageType = ERROR_TYPE;
+
+
+    const sendLoginData = async (values) => {
+
+        const answer = await sendLoginUserDataMutation(values)
+        if (answer.data.token) {
+            const token = answer.data.token.toString();
+            await saveTokenToStorage(token);
+            
+            if (answer.data.user.is_verified === false) {
+                navigation.navigate('Verification');
+            } else {
+                navigation.navigate('Home');
+            }
+        } else {
+            messageText = 'Token not received';
+            console.error(messageText);
+        }
     }
 
-    // Отправляет введенные данные для авторизации
-    const sendLoginData = () => {
-        dispatch(getLoginUserData({phone, password}));
-        navigation.navigate('Profile');
-    }
 
     return (
-        <View style={styles.container}>
+    <SafeAreaView style={globalStyles.container}>
+		<ScrollView>
+            <Text><Message type={messageType} text={messageText}/></Text>
 
-            <View style={styles.wrapper}>
-                <Text>User: email: [{user.email}] phone: [{user.phone}]</Text>
-
-                <Text>{messages.messageType}{messages.message}</Text>
-                <TextInput
-                    style={styles.input}
-                    value={phone}
-                    tel
-                    autoFocus
-                    placeholder='+7(___)-__-__' // todo не уверен что он должен быть таким :) Будет путать наверное такой формат, при том, что мы ждем 1234567890
-                    onChangeText={onChangePhone}
-                />
-                <TextInput
-                    style={styles.input}
-                    value={password}
-                    placeholder="Введите пароль"
-                    secureTextEntry
-                    options={headerShow = false} // todo У меня IDE ругается на атрибут headerShow - говорит что unresolved
-                    onChangeText={onChangePassword}
-                />
-                <Button
-                    onPress={sendLoginData}
-                    style={styles.button}
-                    title="Войти"
-                    accessibilityLabel="Войти"
-                />
-            </View>
-
-            <View>
-                <Text>У вас еще нет аккаунта?</Text>
-                <TouchableOpacity onPress={() => {
-                    navigation.navigate('Registration')
+			<View style={globalStyles.container}>
+                <TouchableOpacity onPress={()=> {
+                    navigation.goBack();
                 }}>
-                    <Text style={styles.link}>Зарегистрироваться</Text>
+                    <LogoIcon width={120} height={120} />
                 </TouchableOpacity>
-            </View>
 
-        </View>
+                <Text style={globalStyles.header}>Вход</Text>
+
+                <Formik 
+                
+                initialValues={{
+                    phone: "1234567890",
+                    password: "asd",
+                }}
+
+                validationSchema={SignupSchema}
+
+                onSubmit={sendLoginData}
+                >
+                    {({ values, isValid, errors, touched, handleChange, setFieldTouched, handleSubmit}) => (
+                    <View style={globalStyles.container}>
+                        <View style={globalStyles.boxInput}>
+                            <PhoneIcon
+                                style={globalStyles.inputIcon}
+                                width={20}
+                                height={20}
+                            />
+                            <TextInput key={keyId}
+                                style={globalStyles.inputBorder}
+                                value={values.phone}
+                                placeholder={'Телефон'}
+                                onChangeText={handleChange('phone')}
+                                keyboardType="phone-pad"
+                                onBlur={() => setFieldTouched('phone')}
+                            />
+                
+                        </View>
+                            {touched.phone && errors.phone && (
+                                <Text style={globalStyles.textError}>{errors.phone}</Text>
+                            )}
+
+                        <View style={globalStyles.boxInput}>                 
+                            <LockIcon
+                                style={globalStyles.inputIcon}
+                                width={20}
+                                height={20}
+                            />
+                            <TextInput
+                                style={globalStyles.inputBorder}
+                                autoCapitalize='false'
+                                value={values.password}
+                                placeholder={'Пароль'}
+                                secureTextEntry={secure}
+                                onChangeText={handleChange('password')}
+                                onBlur={() => setFieldTouched('password')}
+                            />
+
+                            <TouchableOpacity key={keyId}
+                            style={globalStyles.inputIconRight}
+                                onPress={() => {
+                                    setSecure(!secure)
+                                }}
+                            >		
+                                {secure === true ? (
+                                        <EyeIcon
+                                            width={20}
+                                            height={20}
+                                        />
+                                )	: (
+                                        <CloseEyeIcon
+                                            width={20}
+                                            height={20}
+                                        />
+                                )}
+                            </TouchableOpacity>
+                        </View>  
+                        {touched.password && errors.password && (
+                            <Text style={globalStyles.textError}>{errors.password}</Text>
+                        )} 
+
+
+                        <TouchableOpacity
+                            key={keyId}
+                            onPress={handleSubmit}
+                            disabled={!isValid}
+                            style={[
+                                styles.btnSubmit,
+                                {backgroundColor: isValid ? '#D32A1E' : '#cccccc'}
+                            ]}>
+                            <Text style={globalStyles.textWhite}>Вход</Text>
+                        </TouchableOpacity>
+                    </View>
+                    )}
+
+                </Formik>
+
+            </View>
+        </ScrollView>
+    </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    wrapper: {
-        width: '50%'
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 40,
-        borderColor: '#bbb',
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-        marginBottom: 10
-    },
-    button: {
-        borderWidth: '1px',
-        borderRadius: 40,
-        color: '#ffffff',
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-        marginBottom: 10
-    },
-    link: {
-        color: '#d63225'
-    }
-
+  btnSubmit : {
+    width: "90%",
+    height: 55,
+    justifyContent: "center",
+    alignItems: "center",
+    // backgroundColor: "#D32A1E",
+    borderRadius: 40,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 20,
+    paddingLeft: 20,
+    marginBottom: 20,
+  }
 })
 
 

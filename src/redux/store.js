@@ -1,29 +1,31 @@
-import thunk from 'redux-thunk'
-import userReducer from "./reducers/userReducer";
-import messagesReducer from "./reducers/messagesReducer";
-import complexesReducer from "./reducers/complexesReducer";
-import videosReducer from "./reducers/videosReducer";
-import ratesReducer from "./reducers/ratesReducer";
-import moodsReducer from "./reducers/moodsReducer";
-import {configureStore} from "@reduxjs/toolkit";
-import logger from 'redux-logger'
+import { api } from './apiRtk';
+import rootReducer from './rootStore'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { configureStore } from '@reduxjs/toolkit'
+import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, } from 'redux-persist'
 
 
-const reducer = {
-    userReducer,
-    messagesReducer,
-    complexesReducer,
-    videosReducer,
-    ratesReducer,
-    moodsReducer,
+console.log(persistStore);
+
+
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
 }
 
-const middleware = [
-    thunk,
-    logger
-]
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-export const Store = configureStore({
-    middleware,
-    reducer
+const store = configureStore({
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    serializableCheck: false,
+    }).concat(api.middleware),
+  reducer: persistedReducer,
 })
+
+export const persistor = persistStore(store)
+
+export default store;

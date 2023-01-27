@@ -1,12 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View, SafeAreaView } from 'react-native';
+import Header from '../components/header/Header';
 
+const globalStyles = require("../screens/globalStyles");
 
-function HomeScreen(props) {
+function HomeScreen({navigation}) {
   return (
-    <View>
-      <Text>Домашняя страница</Text>
-    </View>
+    <SafeAreaView style={globalStyles.container}>
+      <View>
+        <Header/>
+        <Text>
+          Главный экран с будильниками и рейтингом
+        </Text>
+      </View>
+    </SafeAreaView>
   );
 }
 

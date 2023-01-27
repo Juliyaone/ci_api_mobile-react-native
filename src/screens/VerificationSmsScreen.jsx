@@ -1,121 +1,202 @@
-import React, {useContext} from 'react';
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
-import {AuchContext} from '../context/AuchContext';
-import {sendSmsCode} from "../redux/thunks/authThunks";
-import {useDispatch, useSelector} from "react-redux";
-import {inputLoginPhone, inputLoginSmsCode} from "../redux/actions/userActions";
+import React, { useId, useContext } from 'react';
+import {StyleSheet, ScrollView, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 
-function VerificationScreen({navigation}) {
+// библиотеки
+import { Formik } from "formik"
+import * as Yup from 'yup';
 
-    // const [number1, setNumber1] = useState(null);
-    // const [number2, setNumber2] = useState(null);
-    // const [number3, setNumber3] = useState(null);
-    // const [number4, setNumber4] = useState(null);
-    const messages = useSelector(store => store.messagesReducer)
-    const {phone, code} = useSelector(store => store.smsEntryReducer)
-    const user = useSelector(store => store.userReducer)
-    const dispatch = useDispatch()
+import LogoIcon from "../img/icons/logo.svg";
 
-    // Меняет поле телефона
-    const onChangePhone = (text) => {
-        dispatch(inputLoginPhone(text))
+
+import { useSendSmsCodeMutation} from "../redux/api";
+import {saveTokenToStorage} from "../auth/tokenStorage";
+import Message, {ERROR_TYPE} from "../message/Message";
+
+import Loader from "../components/loader/Loader";
+
+const globalStyles = require("./globalStyles");
+
+const SignupSchema = Yup.object().shape({
+    phone: Yup.string()
+    .min(10, 'Номер телефона должен содержать не менее 10 цифр')
+    .max(10, 'Номер телефона должен содержать не более 10 цифр')
+    .required('Пожалуйста, введите номер телефона'),
+    code: Yup.string()
+    .min(4, 'Код смс должен содержать 4 цифры')
+    .max(4, 'Код смс должен содержать 4 цифры')
+    .required('Пожалуйста, введите код из смс')
+});
+
+function VerificationScreen({user}) {
+    const keyId = useId();
+
+    const [sendSmsCode, {error, isLoading}] = useSendSmsCodeMutation();
+    const navigation = useNavigation();
+
+
+    if (isLoading) {
+        return <Loader/>
     }
 
-    // Меняет поле code
-    const onChangeCode = (text) => {
-        dispatch(inputLoginSmsCode(text))
+    let messageText = error?.data?.detail;
+    let messageType = ERROR_TYPE;
+
+
+    const sendApproveSmsCode = async (values) => {
+
+        const answer = await sendSmsCode(values);
+        if (answer.data.token) {
+            await saveTokenToStorage(answer.data.token);
+            navigation.navigate('Home');
+        } else {
+            messageText = 'Token not received';
+            console.error(messageText);
+        }
     }
 
-    // Отправляет введенные данные для подтверждения кода
-    const sendApproveSmsCode = () => {
-        dispatch(sendSmsCode({phone, code}));
-        navigation.navigate('Profile');
-    }
 
-    // const {verification} = useContext(AuchContext);
+
 
     return (
-        <View style={styles.box}>
-            <Text>Верификация</Text>
-            {/*<Text>{verification}</Text>*/}
-            <Text>User: email: [{user.email}] phone: [{user.phone}]</Text>
-            <Text>{messages.messageType}{messages.message}</Text>
+        <SafeAreaView>
+        <ScrollView>
+			<Text><Message type={messageType} text={messageText}/></Text>
 
-            <TextInput
-                style={styles.input}
-                value={phone}
-                tel
-                autoFocus
-                placeholder='+7(___)-__-__' // TODO не уверен что он должен быть таким :) Будет путать наверное такой формат, при том, что мы ждем 1234567890
-                onChangeText={onChangePhone}
-            />
-            <TextInput  // # TODO Давай пока оставим его одной строкой, чтоб не мучиться с 4 значениями
-                style={styles.input}
-                value={code}
-                placeholder="code"
-                onChangeText={onChangeCode}
-            />
+			<View style={globalStyles.container}>
 
-            {/*<TextInput*/}
-            {/*    style={styles.input}*/}
-            {/*    value={number2}*/}
-            {/*    placeholder="2"*/}
-            {/*    onChangeText={(text) => {*/}
-            {/*        setNumber2(text)*/}
-            {/*    }}*/}
-            {/*/>*/}
+                <TouchableOpacity onPress={()=> {
+                    navigation.goBack();
+                }}>
+                    <LogoIcon width={120} height={120} />
+                </TouchableOpacity>
 
-            {/*<TextInput*/}
-            {/*    style={styles.input}*/}
-            {/*    value={number3}*/}
-            {/*    placeholder="3"*/}
-            {/*    onChangeText={(text) => {*/}
-            {/*        setNumber3(text)*/}
-            {/*    }}*/}
-            {/*/>*/}
+                <Formik 
 
-            {/*<TextInput*/}
-            {/*    style={styles.input}*/}
-            {/*    value={number4}*/}
-            {/*    placeholder="4"*/}
-            {/*    onChangeText={(text) => {*/}
-            {/*        setNumber4(text)*/}
-            {/*    }}*/}
-            {/*/>*/}
+					initialValues={{
+							phone: '',
+                            code: ''
+					}}
 
-            <Button
-                onPress={sendApproveSmsCode}
-                style={styles.button}
-                title="Войти"
-                accessibilityLabel="Войти"
-            />
-        </View>
+					validationSchema={SignupSchema}
+					onSubmit={sendApproveSmsCode}
+                >
+
+
+
+			        {({ values, isValid, errors, touched, handleChange, setFieldTouched, handleSubmit}) => (
+                        <View>
+                            
+                        <TextInput
+                            style={globalStyles.inputBorder}
+                            value={values.phone}
+                            placeholder='Телефон'
+                            onChangeText={handleChange('phone')}
+                            keyboardType={'phone-pad'}
+                            onBlur={() => setFieldTouched('phone')}
+
+                        />
+
+                        <TextInput
+                            style={styles.inputBorderNotIcon}
+                            value={values.code}
+                            placeholder='смс'
+                            onChangeText={handleChange('code')}
+                            keyboardType={'phone-pad'}
+                            onBlur={() => setFieldTouched('code')}
+
+                        />
+                        {touched.code && errors.code && (
+						    <Text style={globalStyles.textError}>{errors.code}</Text>
+						)}
+
+                        <TouchableOpacity
+                            key={keyId}
+                            onPress={handleSubmit}
+                            disabled={!isValid}
+                            style={[
+                                    styles.btnSubmit,
+                                    {backgroundColor: isValid ? '#D32A1E' : '#cccccc'}
+                            ]}>
+							<Text style={globalStyles.textWhite}>Войти</Text>
+						</TouchableOpacity>
+                    </View>
+                    )}
+                </Formik>
+
+            </View>
+        </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    box: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 50,
-        borderColor: '#bbb',
-        paddingHorizontal: 15,
-        paddingVertical: 15,
-        marginBottom: 10
-    },
-    button: {
-        borderWidth: '1px',
+	boxRow: {
+		width: "100%",
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "flexStart",
+		marginBottom: 30,
+	},
+	btnBox: {
+		flexDirection: "row",
+		alignItems: "center",
+	},
+	btnRadio: {
+		justifyContent: "center",
+		alignItems: "center",
+		height: 40,
+		width: 40,
+		borderWidth: 1,
+		borderColor: "#D32A1E",
+		borderRadius: 50,
+		flexDirection: "row",
+		alignItems: "center",
+		marginRight: 20,
+	},
+	btnRadioText: {
+		textAlign: "center",
+		fontFamily: "Evolventa",
+		color: "#111111",
+		fontWeight: "600",
+		fontSize: 16,
+		marginRight: 10
+	},
+	inputIconBtn: {
+		width: '30%',
+		height: '100%'
+	},
+	btnSubmit : {
+        width: "90%",
+        height: 55,
+        justifyContent: "center",
+        alignItems: "center",
+        // backgroundColor: "#D32A1E",
         borderRadius: 40,
-        color: '#ffffff',
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-        marginBottom: 10
-    }
-})
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingRight: 20,
+        paddingLeft: 20,
+        marginBottom: 20,
+  },
+  inputBorderNotIcon: {
+		width: "90%",
+		height: 55,
+		justifyContent: "center",
+		alignItems: "center",
+		fontSize: 16,
+		backgroundColor: "#ffffff",
+		borderWidth: 1,
+		borderColor: "#D32A1E",
+		borderStyle: "solid",
+		borderRadius: 40,
+		paddingTop: 10,
+		paddingBottom: 10,
+		paddingRight: 10,
+		paddingLeft: 10,
+		marginBottom: 10,
+  }
+});
 
 export default VerificationScreen;

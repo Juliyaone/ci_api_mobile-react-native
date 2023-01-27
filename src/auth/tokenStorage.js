@@ -1,11 +1,16 @@
-import {setUserIsCreated, setUserIsLoggedOut} from "../redux/actions/registerActions";
+import React from 'react';
 
-export const saveTokenToStorage = (token) => {
-    localStorage.setItem("userToken", token)
+// import {setUserIsCreated, setUserIsLoggedOut} from "../redux/actions/registerActions";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
+export const saveTokenToStorage = async (token) => {
+    await AsyncStorage.setItem('userToken', token)
 }
 
-export const getTokenFromStorage = () => {
-    return localStorage.getItem("userToken");
+
+export const getTokenFromStorage = async () => {
+   return await AsyncStorage.getItem("userToken");
 }
 
 export const isTokenExpired = () => {
@@ -16,8 +21,6 @@ export const refreshToken = () => {
     return null
 }
 
-export const deleteTokenFromStorage = (dispatch) => {
-    localStorage.setItem("userToken", null)
-    dispatch(setUserIsLoggedOut(false))
-    dispatch(setUserIsCreated(false))
+export const deleteTokenFromStorage = async () => {
+    await AsyncStorage.removeItem('userToken');
 }
