@@ -1,5 +1,5 @@
 import React, {useId, useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, View, SafeAreaView, Button, StatusBar, TouchableOpacity} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, View, SafeAreaView, Button, StatusBar, TouchableOpacity, ScrollView} from 'react-native';
 import { Video } from 'expo-av';
 
 const globalStyles = require("../globalStyles");
@@ -16,6 +16,7 @@ function NewUserModal({user, hello_video}) {
 
     return (
         <SafeAreaView>
+          <ScrollView>
             <View>
               <Modal
                   animationType="slide"
@@ -43,8 +44,16 @@ function NewUserModal({user, hello_video}) {
                               <StatusBar style="auto" />
                             </View>
                           </View>
+
+                      <TouchableOpacity
+                        key={keyId}
+                        onPress={()=>{setModalVisible(!modalVisible)}}
+                        style={globalStyles.btnRed}>
+                        <Text style={globalStyles.textWhite}>Закрыть</Text>
+                      </TouchableOpacity>
               </Modal>
           </View>
+          </ScrollView>
       </SafeAreaView>
     );
 }
@@ -60,7 +69,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,

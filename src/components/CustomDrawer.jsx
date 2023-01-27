@@ -4,7 +4,7 @@ import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawe
 import { useNavigation } from '@react-navigation/native';
 
 import {useDispatch} from "react-redux";
-import {userApi, useGetMeQuery} from '../redux/api';
+import {userApi, useGetMeQuery} from '../redux/usersApi';
 
 import AvatarPreview from "../img/icons/avatar.svg";
 import ExitSmall from '../img/icons/exit-small.svg';

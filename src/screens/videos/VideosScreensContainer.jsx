@@ -1,7 +1,7 @@
 import React, {useId} from 'react';
 import {StyleSheet, View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper'
-import {useGetVideosQuery} from "../../redux/api";
+import {useGetVideosQuery} from "../../redux/usersApi";
 import Loader from "../../components/loader/Loader";
 import Message, {ERROR_TYPE, SUCCESS_TYPE} from "../../message/Message";
 

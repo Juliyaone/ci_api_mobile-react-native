@@ -1,6 +1,6 @@
 import React, {useState, useId} from 'react';
 import {Alert, Modal, StyleSheet, Text, View, SafeAreaView, TouchableOpacity} from 'react-native';
-import {useSetUserMoodMutation} from "../../redux/api";
+import {useSetUserMoodMutation} from "../../redux/usersApi";
 
 const globalStyles = require("../globalStyles");
 

@@ -2,7 +2,7 @@ import React, { useId, useState} from "react";
 import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import {useRegisterUserMutation} from "../redux/api";
+import {useRegisterUserMutation} from "../redux/usersApi";
 import Message, {ERROR_TYPE} from "../message/Message";
 
 import Loader from "../components/loader/Loader";

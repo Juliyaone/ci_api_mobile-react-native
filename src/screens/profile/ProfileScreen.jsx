@@ -1,7 +1,7 @@
 import React, { useId, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, Image} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import {useGetMoodsQuery, useCheckFirstEntryQuery} from "../../redux/api";
+import {useGetMeQuery, useCheckFirstEntryQuery} from "../../redux/usersApi";
 import Loader from "../../components/loader/Loader";
 
 
@@ -24,7 +24,7 @@ import ChangeUserMoodModal from "../modal/ChangeUserMoodModal";
 function ProfileScreen({rate, mood, avatar}) {
     const navigation = useNavigation();
 
-  // console.log(user);
+    const {data: user, error: userError, isLoading: userLoading } = useGetMeQuery();
 
 
     const {
@@ -38,7 +38,8 @@ function ProfileScreen({rate, mood, avatar}) {
     }
 
 
-    const {user, emojies, hello_video, new_user, is_expired, today_first_entry} = data;
+    const {emojies, hello_video, new_user, is_expired, today_first_entry} = data;
+  console.log(user);
 
 
   return (
@@ -50,19 +51,19 @@ function ProfileScreen({rate, mood, avatar}) {
             {(user && new_user && hello_video) ?
              <NewUserModal user={user} hello_video={hello_video}/>
             :
-            ""
+            null
             }
 
             {(user && is_expired) ?
               <ExpiredUserModal user={user} is_expired={is_expired}/>
             :
-            ""
+            null
             }
 
             {(user && today_first_entry && emojies) ?
              <ChangeUserMoodModal user={user} emojies={emojies}/>
              :
-             ""}
+             null}
           <View style={styles.boxWhite}>
             <View style={styles.rowBetfween}>
               <View style={styles.boxRelaive}>

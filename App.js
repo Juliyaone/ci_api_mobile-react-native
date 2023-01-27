@@ -3,16 +3,15 @@ import 'react-native-gesture-handler'; // для аниамции боковог
 import React from "react";
 import {Provider} from "react-redux";
 
-import { AuthProvider } from "./src/auth/AuthContext"
-
+import { AuthProvider } from "./src/auth/AuthContext";
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor } from './src/redux/store';
 import AppNav from "./src/components/navigation/AppNav";
 
 import { useFonts } from 'expo-font';
 
-import {Store} from "./src/redux/store";
+import store from "./src/redux/store";
 import 'expo-dev-menu';
-// import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
-// import { userApi } from './src/redux/api';
 
 
 
@@ -24,12 +23,12 @@ function App() {
 
 	if (fontsLoaded) {
 		return (
-			<Provider store={Store}>
-				<AuthProvider>
-					{/* <ApiProvider userApi={userApi}> */}
-						<AppNav/>
-					{/* </ApiProvider> */}
-				</AuthProvider >
+			<Provider store={store}>
+				<PersistGate loading={null} persistor={persistor}>
+					<AuthProvider>
+							<AppNav/>
+					</AuthProvider >
+				</PersistGate>
 			</Provider>
 		);
 	}

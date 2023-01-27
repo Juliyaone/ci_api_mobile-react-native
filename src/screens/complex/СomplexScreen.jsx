@@ -2,7 +2,7 @@ import React, {useId} from 'react';
 import {StyleSheet, View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import {useGetComplexesQuery} from "../../redux/api";
+import {useGetComplexesQuery} from "../../redux/usersApi";
 
 import Swiper from 'react-native-swiper';
 

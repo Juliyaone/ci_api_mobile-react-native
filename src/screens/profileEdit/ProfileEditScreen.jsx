@@ -1,5 +1,5 @@
 import React, { useEffect, useId, useState} from "react";
-import {useGetMeQuery, useEditProfileMutation} from "../../redux/api";
+import {useGetMeQuery, useEditProfileMutation} from "../../redux/usersApi";
 
 import {StyleSheet, RefreshControl, SafeAreaView, Text, TextInput, ScrollView, View, TouchableOpacity} from 'react-native';
 import { useNavigation} from '@react-navigation/native';
@@ -80,7 +80,7 @@ function ProfileEditScreen() {
 
     const editUserData = async (values) => {
         await sendEditProfile(values);
-        // navigation.navigate('Profile');
+        navigation.navigate('Profile');
     }
 
 

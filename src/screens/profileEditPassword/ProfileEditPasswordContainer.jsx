@@ -1,5 +1,5 @@
 import React from 'react';
-import {useGetMeQuery, useEditPasswordMutation} from "../../redux/api";
+import {useGetMeQuery, useEditPasswordMutation} from "../../redux/usersApi";
 import Loader from "../../components/loader/Loader";
 import Message, {ERROR_TYPE, SUCCESS_TYPE} from "../../message/Message";
 import ProfileEditPassword from "./ProfileEditPassword";

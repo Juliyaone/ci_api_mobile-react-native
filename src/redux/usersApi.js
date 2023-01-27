@@ -1,30 +1,11 @@
-import * as urls from "../redux/urls";
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-import {getTokenFromStorage} from "../auth/tokenStorage";
+import { api } from './apiRtk';
+import * as urls from "./urls";
 
-
-
-export const userApi = createApi({
-    reducerPath: 'userApi',
-    tagTypes: ['MetaInfo', 'Videos', 'Rate', 'User', 'Complexes', 'NOT_FOUND', 'UNKNOWN_ERROR', 'FirstEntryInfo', 'Mood', 'Avatar'],
-    baseQuery: fetchBaseQuery(
-        {
-            baseUrl: urls.BASE_URL,
-            prepareHeaders: async (headers) => {
-                const token = await getTokenFromStorage()
-                if (token) {
-                    headers.set('Authorization', `Bearer ${token}`);
-                }
-                headers.set('Content-Type', 'application/json')
-
-                return headers;
-            },
-        }),
-
+export const userApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getMetaInfo: builder.query({
             query: () => urls.META_INFO,
-            providesTags: ['MetaInfo']
+            providesTags: (_) => ['MetaInfo']
         }),
         getMe: builder.query({
             query: () => urls.GET_ME,
@@ -61,8 +42,6 @@ export const userApi = createApi({
         }),
         getMoods: builder.query({
             query: () => urls.GET_ALL_MOODS,
-            providesTags: (_) => ['Mood']
-
         }),
         getRateLink: builder.query({
             query: (rateID) => urls.GET_RATE_LINK + rateID,
@@ -150,5 +129,3 @@ export const {
     useUnsubscribeUserMutation,
     useSetUserMoodMutation,
 } = userApi
-
-export default userApi;

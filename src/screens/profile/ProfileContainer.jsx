@@ -1,5 +1,5 @@
 import React from 'react';
-import {useGetUserRateQuery, useGetUserAvatarQuery, useGetUserMoodQuery} from "../../redux/api";
+import {useGetUserRateQuery, useGetUserAvatarQuery, useGetUserMoodQuery} from "../../redux/usersApi";
 import Loader from "../../components/loader/Loader";
 import Message, {ERROR_TYPE} from "../../message/Message";
 import ProfileScreen from "./ProfileScreen";
@@ -7,7 +7,6 @@ import ProfileScreen from "./ProfileScreen";
 
 const ProfileContainer = () => {
 
-    // const {data: user, error: userError, isLoading: userLoading } = useGetMeQuery();
     const {data: rate, error: rateError, isLoading: rateLoading} = useGetUserRateQuery();
     const {data: mood, error: moodError, isLoading: moodLoading} = useGetUserMoodQuery()
     const {data: avatar, error: avatarError, isLoading: avatarLoading} = useGetUserAvatarQuery()

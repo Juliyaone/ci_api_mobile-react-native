@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 import LogoIcon from "../img/icons/logo.svg";
 
 
-import { useSendSmsCodeMutation} from "../redux/api";
+import { useSendSmsCodeMutation} from "../redux/usersApi";
 import {saveTokenToStorage} from "../auth/tokenStorage";
 import Message, {ERROR_TYPE} from "../message/Message";
 

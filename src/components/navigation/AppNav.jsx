@@ -5,7 +5,7 @@ import AuthStack from "./AuthStack";
 import AppStack from "./AppStack";
 
 // import {AuthContext} from "../../auth/AuthContext";
-import {useGetMeQuery} from "../../redux/api";
+import {useGetMeQuery} from "../../redux/usersApi";
 
 
 import Message, {ERROR_TYPE} from "../../message/Message";

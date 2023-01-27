@@ -12,7 +12,7 @@ import CloseEyeIcon from "../img/icons/closeEye.svg";
 import LogoIcon from "../img/icons/logo.svg";
 
 
-import {useLoginUserMutation} from "../redux/api";
+import {useLoginUserMutation} from "../redux/usersApi";
 import {saveTokenToStorage} from "../auth/tokenStorage";
 import Message, {ERROR_TYPE} from "../message/Message";
 
